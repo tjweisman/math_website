@@ -1,0 +1,5 @@
+#!/bin/bash
+
+WEBPAGE_DIR=/home/teddy/math/webpage
+
+rsync -r --copy-unsafe-links --delete $WEBPAGE_DIR/users/weisman/ $UT_MATH:~/public_html
