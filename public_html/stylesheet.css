@@ -66,3 +66,9 @@ body {
 	margin:auto;
 	padding:20px;
 }
+.box {
+	display: table-cell;
+	vertical-align: top;
+	width: auto;
+	padding: 10px;
+}

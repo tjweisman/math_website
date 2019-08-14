@@ -1,0 +1,5 @@
+#! /bin/bash
+
+WEBPAGE_DIR=~/math/webpage
+
+python -m http.server -d $WEBPAGE_DIR
