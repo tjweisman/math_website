@@ -35,6 +35,7 @@ body {
 }
 
 #topbar {
+	font-family: serif;
 	color: white;
 	background-color: #141247;
 	margin: 0px;
@@ -48,6 +49,7 @@ body {
 }
 
 #name {
+	padding: 15px 0px 0px 15px;
 	font-size: 30px;
 	font-weight: bold;
 	float: left;
@@ -59,6 +61,10 @@ body {
 
 #pagebody {
 	margin: 0px;
+}
+
+#content a {
+	color: #008c19;
 }
 
 #content {
