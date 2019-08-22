@@ -7,6 +7,14 @@ body {
 	margin: 0px;
 }
 
+h1 {
+	font-size: 25px;
+}
+
+h2 {
+	font-size: 20px;
+}
+
 .navbar {
 	font-variant: small-caps;
 	text-align: center;
@@ -77,9 +85,27 @@ body {
 	margin:auto;
 	padding:20px;
 }
+
+#content li {
+	margin: 8px;
+}
+
 .box {
 	display: table-cell;
 	vertical-align: top;
 	width: auto;
 	padding: 10px;
+}
+
+#content img {
+	display: block;
+	padding: 20px 0;
+	margin:0 auto;
+	max-width: 700px;
+}
+
+iframe {
+	display: block;
+	padding: 20px 0;
+	margin: 0 auto;
 }

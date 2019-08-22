@@ -1,7 +1,7 @@
 % Hyperbolic groups SMC
 
 Hyperbolic groups summer minicourse
-------------------------------------
+===================================
 
 This course took place in summer 2019, as part of a series of [summer mini-courses](https://web.ma.utexas.edu/users/richard.wong/Minicourses.html) for graduate students organized by Richard Wong. It was an introductory course on hyperbolic groups, intended for those with little to no background in the subject.
 
@@ -9,7 +9,7 @@ Exercises: [Day 1](teaching/exercises_day1.pdf), [Day 2](teaching/exercises_day2
 
 --------------------------------------------
 
-### Schedule
+## Schedule
 
 #### Day 1
 
