@@ -48,7 +48,8 @@ def ignore_file(filename):
     return re.match(IGNORE_REGEX, filename)
 
 def process_markdown_file(site_data, filename):
-    with open(os.path.join(SCRIPT_DIR, SITE_DIR, filename)) as md_file:
+    with open(os.path.join(SCRIPT_DIR, SITE_DIR, filename),
+              encoding='utf-8') as md_file:
         line = md_file.readline()
         title = None
         template_file = DEFAULT_MARKDOWN_TEMPLATE
@@ -69,7 +70,8 @@ def process_markdown_file(site_data, filename):
 
     template = lookup_dirs.get_template(template_file)
     with open(os.path.join(SCRIPT_DIR, OUTPUT_DIR,
-                           change_ext(filename, ".html")), "w") as html_file:
+                           change_ext(filename, ".html")),
+              "w", encoding='utf-8') as html_file:
         html_file.write(template.render(site_data=site_data,
                                         page_contents=html_output,
                                         page_title=title))
