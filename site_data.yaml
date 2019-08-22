@@ -5,3 +5,4 @@ navbar_links:
         - {url: research.html, name: Research}
         - {url: teaching, name: Teaching}
         - {url: CV.html, name: CV}
+        - {url: etc.html, name: Etc.}
