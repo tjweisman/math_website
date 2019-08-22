@@ -1,0 +1,7 @@
+title: Theodore Weisman
+
+navbar_links:
+        - {url: index.html, name: Home}
+        - {url: research.html, name: Research}
+        - {url: teaching, name: Teaching}
+        - {url: CV.html, name: CV}

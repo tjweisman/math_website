@@ -1,0 +1,48 @@
+<%!
+
+	active_page = "index.html"
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<base href="/users/weisman/">
+	<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+	% if page_title:
+		<title>${site_data["title"]} | ${page_title}</title>
+	% else:
+		<title>${site_data["title"]}</title>
+	% endif
+</head>
+<body>
+	<div id="pagebody">
+		<div id="topbar">
+			<div id="header">
+				<div id="name">
+				Theodore Weisman
+				</div>
+				<div id="contact">
+					weisman@math.utexas.edu<br />
+					office: RLM 9.116
+				</div>
+			</div>
+			<%block name="navbar">
+			<div class="navbar">
+				<ul>
+					% for link in site_data["navbar_links"]:
+						% if self.attr.active_page == link["url"]:
+							<li><a class="active" href="${link['url']}">${link['name']}</a></li>
+						% else:
+							<li><a class="inactive" href="${link['url']}">${link['name']}</a></li>
+						% endif
+					% endfor
+				</ul>
+			</div>
+			</%block>
+		</div>
+		<div id="content">
+			${self.body()}
+		</div>
+	</div>	
+</body>
+</html>
