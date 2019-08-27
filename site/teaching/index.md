@@ -5,7 +5,13 @@ Teaching
 
 ## Fall 2019
 
-TBD
+TA for M408C: Integral and Differential Calculus
+
+Instructor: David Clark
+
+[Course webpage](https://web.ma.utexas.edu/users/clark/Courses/2019/Fall/408C/408C.html)
+
+Office hours: Tuesday/Thursday, 1:45pm - 3:15pm, RLM 9.116
 
 ************************
 
