@@ -3,9 +3,9 @@
 Hyperbolic groups summer minicourse
 ===================================
 
-This course took place in summer 2019, as part of a series of [summer mini-courses](https://web.ma.utexas.edu/users/richard.wong/Minicourses.html) for graduate students organized by Richard Wong. It was an introductory course on hyperbolic groups, intended for those with little to no background in the subject.
+This course took place in summer 2019, as part of a series of [summer mini-courses](https://web.ma.utexas.edu/users/richard.wong/Minicourses.html) for graduate students organized by Richard Wong. It was an introductory course on hyperbolic groups, intended to be accessible for people without much background in the subject.
 
-Much of the course followed _Metric Spaces of Non-positive Curvature_, by Martin Bridson and André Haefliger. I also referred to _Geometric Group Theory_ by Cornelia Druţu and Michael Kapovich, as well as Brian Bowditch's paper [_Relatively Hyperbolic Groups_](https://homepages.warwick.ac.uk/~masgak/papers/bhb-relhyp.pdf).
+For most of the course, we followed the book _Metric Spaces of Non-positive Curvature_, by Martin Bridson and André Haefliger. I also referred to _Geometric Group Theory_ by Cornelia Druţu and Michael Kapovich, as well as Brian Bowditch's paper [_Relatively Hyperbolic Groups_](https://homepages.warwick.ac.uk/~masgak/papers/bhb-relhyp.pdf).
 
 Exercises: [Day 1](teaching/exercises_day1.pdf), [Day 2](teaching/exercises_day2.pdf), [Day 3](teaching/exercises_day3.pdf), [Day 4](teaching/exercises_day4.pdf), [Day 5](teaching/exercises_day5.pdf)
 
