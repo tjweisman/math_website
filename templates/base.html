@@ -8,6 +8,7 @@
 <head>
 	<base href="/users/weisman/">
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" type="text/css" href="stylesheet.css" />
 	% if page_title:
 		<title>${site_data["title"]} | ${page_title}</title>
@@ -23,8 +24,10 @@
 				<a href="index.html">Theodore Weisman</a>
 				</div>
 				<div id="contact">
-					weisman@math.utexas.edu<br />
-					office: RLM 9.116
+					<ul>
+					<li class="contact-item">weisman@math.utexas.edu</li>
+					<li class="contact-item">office: RLM 9.116</li>
+					</ul>
 				</div>
 			</div>
 			<%block name="navbar">
