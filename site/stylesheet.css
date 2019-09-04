@@ -119,6 +119,14 @@ hr {
 	padding: 10px;
 }
 
+.image_container {
+	display: flex;
+}
+
+.image_container img {
+	justify-content: center;
+}
+
 #pagebody {
 	margin: 0px;
 }
