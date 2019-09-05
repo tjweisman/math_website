@@ -119,11 +119,13 @@ hr {
 	padding: 10px;
 }
 
-.image_container {
+.image-container {
 	display: flex;
+	flex-direction: row;
+	width: 100%;
 }
 
-.image_container img {
+.img-cell {
 	justify-content: center;
 }
 
