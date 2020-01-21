@@ -1,7 +1,16 @@
 % Teaching
 
+
 Teaching
 ===================
+
+## Spring 2020
+
+TA for M408C: Integral and Differential Calculus
+
+Instructor: [Stefania Patrizi](http://stepatrizi.altervista.org/)
+
+***********************
 
 ## Fall 2019
 
@@ -10,8 +19,6 @@ TA for M408C: Integral and Differential Calculus
 Instructor: David Clark
 
 [Course webpage](https://web.ma.utexas.edu/users/clark/Courses/2019/Fall/408C/408C.html)
-
-Office hours: Tuesday/Thursday, 1:45pm - 3:15pm, RLM 9.116
 
 ************************
 

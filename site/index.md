@@ -8,6 +8,6 @@ I am a fourth-year mathematics PhD candidate at the University of Texas at Austi
 
 I graduated with a bachelor's in mathematics from Yale University in 2016.
 
-This semester I'm a supplemental instructor (SI) TA for M408C, Integral and Differential Calculus, taught by Professor David Clark. The course webpage is [here](https://web.ma.utexas.edu/users/clark/Courses/2019/Fall/408C/408C.html).
+This semester I'm a TA for M408C, Integral and Differential Calculus, taught by Professor [Stefania Patrizi](http://stepatrizi.altervista.org/).
 
-**Office hours: Tuesday/Thursday 1:45pm - 3:15pm, RLM 9.116**
+**Office hours: Tuesday/Thursday 12:30pm - 2:00pm, RLM 9.116**
