@@ -21,12 +21,12 @@ h2 {
 
 h3 {
 	font-family: Georgia, serif;
-	font-size: 110%;
+	font-size: 105%;
 }
 
 h4 {
 	font-family: Georgia, serif;
-	font-size: 105%;
+	font-size: 100%;
 }
 
 hr {
@@ -151,8 +151,18 @@ hr {
 	padding-top: 0px;
 }
 
+#content p {
+	padding-left: 10px;
+}
+
+#content ul {
+	padding-left: 10px;
+}
+
 #content li {
-	margin: 8px;
+	margin: 2px;
+	padding: 0px;
+	list-style-type: none;
 }
 
 #content hr {
