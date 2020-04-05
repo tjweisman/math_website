@@ -10,6 +10,8 @@ TA for M408C: Integral and Differential Calculus
 
 Instructor: [Stefania Patrizi](http://stepatrizi.altervista.org/)
 
+Course information and support can be found on Canvas or Piazza.
+
 ***********************
 
 ## Past

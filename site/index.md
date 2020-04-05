@@ -10,4 +10,4 @@ I graduated with a bachelor's in mathematics from Yale University in 2016.
 
 This semester I'm a TA for M408C, Integral and Differential Calculus, taught by Professor [Stefania Patrizi](http://stepatrizi.altervista.org/).
 
-**Office hours: Tuesday/Thursday 12:30pm - 2:00pm, PMA (RLM) 9.116**
+**Office hours for spring 2020 are now by appointment only. Email me to set up a meeting.**
