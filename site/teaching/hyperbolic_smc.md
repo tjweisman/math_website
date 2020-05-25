@@ -13,22 +13,22 @@ Exercises: [Day 1](teaching/exercises_day1.pdf), [Day 2](teaching/exercises_day2
 
 ## Schedule
 
-#### Day 1
+### Day 1
 
 Quasi-isometries, the Milnor-Svarc Lemma, and a definiton of hyperbolic metric spaces
 
-#### Day 2 (led by Max Riestenberg)
+### Day 2 (led by Max Riestenberg)
 
 The Morse Lemma and the local-to-global principle in hyperbolic metric spaces
 
-#### Day 3
+### Day 3
 
 Definition of the boundary of a hyperbolic metric space. The topology on the boundary, and the dynamics of hyperbolic group actions on their boundaries
 
-#### Day 4
+### Day 4
 
 Algorithmic properties of hyperbolic groups: the word and conjugacy problems, the geodesic automaton
 
-#### Day 5
+### Day 5
 
 Generalizations of hyperbolicity: semihyperbolic spaces (and groups), relatively hyperbolic groups

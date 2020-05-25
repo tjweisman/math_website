@@ -32,7 +32,7 @@ From June 1 to June 5, I'll be leading a [summer minicourse](https://web.ma.utex
 - **Fall 2018:** M408C: Integral and Differential Calculus
 - Instructor: Rostyslav Kravchenko
 
-### Minicourses
+#### Minicourses
 
 **Summer 2019:** I led a [minicourse](teaching/hyperbolic_smc.html) for graduate students on the basics of hyperbolic groups. You can see other math department minicourses from that summer [here](https://web.ma.utexas.edu/SMC/2019/Minicourses.html).
 
