@@ -14,21 +14,23 @@ From June 1 to June 5, I'll be leading a [summer minicourse](https://web.ma.utex
 
 #### TA positions
 
-- 
-	- **Spring 2020:** M408C: Integral and Differential Calculus.
-	- Instructor: [Stefania Patrizi](http://stepatrizi.altervista.org/)
+- **Spring 2020:** M408C: Integral and Differential Calculus.
+- Instructor: [Stefania Patrizi](http://stepatrizi.altervista.org/)
 
-- 
-	- **Fall 2019:** [M408C: Integral and Differential Calculus](https://web.ma.utexas.edu/users/clark/Courses/2019/Fall/408C/408C.html).
-	- Instructor: David Clark
+<!-- -->
 
-- 
-	- **Spring 2019:** [M408S: Integral Calculus for Science](https://sites.google.com/site/lauravillafuertealtuzar030680/home/teaching/m408s--52-54)
-	- Instructor: [Laura Villafuerte Altúzar](https://sites.google.com/site/lauravillafuertealtuzar030680/)
+- **Fall 2019:** [M408C: Integral and Differential Calculus](https://web.ma.utexas.edu/users/clark/Courses/2019/Fall/408C/408C.html).
+- Instructor: David Clark
 
-- 
-	- **Fall 2018:** M408C: Integral and Differential Calculus
-	- Instructor: Rostyslav Kravchenko
+<!-- -->
+ 
+- **Spring 2019:** [M408S: Integral Calculus for Science](https://sites.google.com/site/lauravillafuertealtuzar030680/home/teaching/m408s--52-54)
+- Instructor: [Laura Villafuerte Altúzar](https://sites.google.com/site/lauravillafuertealtuzar030680/)
+
+<!-- -->
+ 
+- **Fall 2018:** M408C: Integral and Differential Calculus
+- Instructor: Rostyslav Kravchenko
 
 ### Minicourses
 
