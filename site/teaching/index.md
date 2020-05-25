@@ -4,32 +4,33 @@
 Teaching
 ===================
 
-## Current (spring 2020)
+## Current (summer 2020)
 
-TA for M408C: Integral and Differential Calculus
-
-Instructor: [Stefania Patrizi](http://stepatrizi.altervista.org/)
-
-Course information and support can be found on Canvas or Piazza.
+From June 1 to June 5, I'll be leading a [summer minicourse](https://web.ma.utexas.edu/SMC/) called "Boundaries of Groups and Spaces." Check back soon for more information.
 
 ***********************
 
-## Past
+## Past teaching
 
-### Fall 2019
+#### TA positions
 
-- TA for M408C: Integral and Differential Calculus (David Clark)
-- [Course webpage](https://web.ma.utexas.edu/users/clark/Courses/2019/Fall/408C/408C.html)
+- 
+	- **Spring 2020:** M408C: Integral and Differential Calculus.
+	- Instructor: [Stefania Patrizi](http://stepatrizi.altervista.org/)
 
-### Summer 2019
+- 
+	- **Fall 2019:** [M408C: Integral and Differential Calculus](https://web.ma.utexas.edu/users/clark/Courses/2019/Fall/408C/408C.html).
+	- Instructor: David Clark
 
-I led a [minicourse](teaching/hyperbolic_smc.html) for graduate students on the basics of hyperbolic groups. You can see other math department minicourses from that summer [here](https://web.ma.utexas.edu/users/richard.wong/Minicourses.html).
+- 
+	- **Spring 2019:** [M408S: Integral Calculus for Science](https://sites.google.com/site/lauravillafuertealtuzar030680/home/teaching/m408s--52-54)
+	- Instructor: [Laura Villafuerte Altúzar](https://sites.google.com/site/lauravillafuertealtuzar030680/)
 
-### Spring 2019
+- 
+	- **Fall 2018:** M408C: Integral and Differential Calculus
+	- Instructor: Rostyslav Kravchenko
 
-- TA for M408S: Integral Calculus for Science ([Laura Villafuerte Altúzar](https://sites.google.com/site/lauravillafuertealtuzar030680/))
-- [Course webpage](https://sites.google.com/site/lauravillafuertealtuzar030680/home/teaching/m408s--52-54)
+### Minicourses
 
-### Fall 2018
+**Summer 2019:** I led a [minicourse](teaching/hyperbolic_smc.html) for graduate students on the basics of hyperbolic groups. You can see other math department minicourses from that summer [here](https://web.ma.utexas.edu/SMC/2019/Minicourses.html).
 
-- TA for M408C: Integral and Differential Calculus (Rostyslav Kravchenko)

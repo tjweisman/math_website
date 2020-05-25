@@ -8,6 +8,6 @@ I am a fourth-year mathematics PhD candidate at the University of Texas at Austi
 
 I graduated with a bachelor's in mathematics from Yale University in 2016.
 
-This semester I'm a TA for M408C, Integral and Differential Calculus, taught by Professor [Stefania Patrizi](http://stepatrizi.altervista.org/).
+*************************************
 
-**Office hours for spring 2020 are now by appointment only. Email me to set up a meeting.**
+From June 1 to June 5, I'm leading a [summer mini-course](https://web.ma.utexas.edu/SMC/) on boundaries of CAT(0) spaces and Gromov-hyperbolic spaces. Check back here soon for more info.
