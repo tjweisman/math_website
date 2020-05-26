@@ -10,4 +10,4 @@ I graduated with a bachelor's in mathematics from Yale University in 2016.
 
 *************************************
 
-From June 1 to June 5, I'm leading a [summer mini-course](https://web.ma.utexas.edu/SMC/) on boundaries of CAT(0) spaces and Gromov-hyperbolic spaces. Check back here soon for more info.
+From June 1 to June 5, I'm leading a [summer mini-course](teaching/boundaries_smc.html) on boundaries of CAT(0) spaces and Gromov-hyperbolic spaces.
