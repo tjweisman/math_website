@@ -1,0 +1,8 @@
+title: Topology Seminar
+
+navbar_links:
+        - {url: index.html, name: Home}
+        - {url: about.html, name: About}
+        - {url: people.html, name: People}
+        - {url: calendar.html, name: Calendar}
+        - {url: resources.html, name: Resources}

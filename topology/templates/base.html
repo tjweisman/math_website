@@ -1,0 +1,47 @@
+<%!
+
+	active_page = "index.html"
+%>
+<!DOCTYPE html>
+<html>
+<head>
+	<base href="/users/topology/">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+	% if page_title:
+		<title>${site_data["title"]} | ${page_title}</title>
+	% else:
+		<title>${site_data["title"]}</title>
+	% endif
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="pagebody">
+		<div id="topbar">
+			<div id="header">
+				<div id="titlebox">
+				<a href="index.html">Topology Seminar</a>
+					<div id="subtitle">University of Texas at Austin</div>
+				</div>
+			</div>
+			<%block name="navbar">
+			<div class="navbar">
+				<ul>
+					% for link in site_data["navbar_links"]:
+						% if self.attr.active_page == link["url"]:
+							<li><a class="active" href="${link['url']}">${link['name']}</a></li>
+						% else:
+							<li><a class="inactive" href="${link['url']}">${link['name']}</a></li>
+						% endif
+					% endfor
+				</ul>
+			</div>
+			</%block>
+		</div>
+		<div id="content">
+			${self.body()}
+		</div>
+	</div>	
+</body>
+</html>

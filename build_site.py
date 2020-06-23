@@ -5,6 +5,8 @@ import os
 import re
 import shutil
 
+from argparse import ArgumentParser
+
 import markdown
 from mako.template import Template
 from mako.lookup import TemplateLookup
@@ -12,6 +14,10 @@ from mako.lookup import TemplateLookup
 from ruamel.yaml import YAML
 
 SCRIPT_DIR = "/home/teddy/math/webpage"
+SITES_LIST = "sites.yaml"
+
+DEFAULT_SITE = "weisman"
+
 TEMPLATE_DIR = "templates"
 SITE_DATA = "site_data.yaml"
 SITE_DIR = "site"
@@ -26,18 +32,96 @@ IGNORE_REGEX = ".*~$"
 
 yaml = YAML(typ="safe")
 
-lookup_dirs = TemplateLookup(
-    directories=[os.path.join(SCRIPT_DIR, TEMPLATE_DIR),
-                 os.path.join(SCRIPT_DIR, SITE_DIR)]
+class SiteBuilder:
+    def __init__(self, site_dir):
+        self.site_dir = os.path.join(SCRIPT_DIR, site_dir)
+        self.load_site_data()
+
+        self.lookup_dirs = TemplateLookup(
+            directories=[os.path.join(self.site_dir, TEMPLATE_DIR),
+                         os.path.join(self.site_dir, SITE_DIR)]
 )
 
-def mkoputdir(filename):
-    try:
-        os.makedirs(os.path.join(SCRIPT_DIR,
-                                 OUTPUT_DIR,
-                                 os.path.dirname(filename)))
-    except os.error:
-        pass
+    def mkoputdir(self, filename):
+        try:
+            os.makedirs(os.path.join(self.site_dir,
+                                     OUTPUT_DIR,
+                                     os.path.dirname(filename)))
+        except os.error:
+            pass
+
+    def load_site_data(self):
+        with open(os.path.join(self.site_dir, SITE_DATA), "r") as site_data_file:
+            self.site_data = yaml.load(site_data_file)
+
+    def process_markdown_file(self, filename):
+        with open(os.path.join(self.site_dir, SITE_DIR, filename),
+                  encoding='utf-8') as md_file:
+            line = md_file.readline()
+            title = None
+            template_file = DEFAULT_MARKDOWN_TEMPLATE
+            while line:
+                match = re.match("%\s*(.*)", line)
+                if match:
+                    if not title:
+                        title = match.group(1).strip()
+                    else:
+                        template_file = match.group(1).strip()
+                else:
+                    break
+                line = md_file.readline()
+
+            html_output = markdown.markdown(md_file.read())
+
+        self.mkoputdir(filename)
+
+        template = self.lookup_dirs.get_template(template_file)
+        with open(os.path.join(self.site_dir, OUTPUT_DIR,
+                               change_ext(filename, ".html")),
+                  "w", encoding='utf-8') as html_file:
+            html_file.write(template.render(site_data=self.site_data,
+                                            page_contents=html_output,
+                                            page_title=title))
+
+    def process_html_file(self, filename):
+        self.mkoputdir(filename)
+        template = self.lookup_dirs.get_template(filename)
+        with open(os.path.join(self.site_dir, OUTPUT_DIR, filename), "w") as html_oput:
+            html_oput.write(template.render(site_data=self.site_data))
+
+    def process_other_file(self, filename):
+        self.mkoputdir(filename)
+        shutil.copyfile(os.path.join(self.site_dir, SITE_DIR, filename),
+                        os.path.join(self.site_dir, OUTPUT_DIR, filename))
+
+    def process_file(self, filename):
+        if ignore_file(filename):
+            pass
+        elif re.match(HTMLFILE_REGEX, filename):
+            self.process_html_file(filename)
+        elif re.match(MDFILE_REGEX, filename):
+            self.process_markdown_file(filename)
+        else:
+            self.process_other_file(filename)
+
+
+    def build_site(self):
+        site_files = os.walk(os.path.join(self.site_dir, SITE_DIR),
+                             followlinks=True)
+
+        for dirpath, dirnames, filenames in site_files:
+            filedir = os.path.relpath(dirpath, os.path.join(self.site_dir, SITE_DIR))
+            for filename in filenames:
+                self.process_file(os.path.join(filedir, filename))
+
+    def clean_site(self):
+        try:
+            shutil.rmtree(os.path.join(self.site_dir, OUTPUT_DIR))
+        except FileNotFoundError:
+            pass
+
+        os.mkdir(os.path.join(self.site_dir, OUTPUT_DIR))
+
 
 def change_ext(filename, new_ext):
     """return a new filename, with the extension changed.
@@ -47,90 +131,25 @@ def change_ext(filename, new_ext):
 def ignore_file(filename):
     return re.match(IGNORE_REGEX, filename)
 
-def process_markdown_file(site_data, filename):
-    with open(os.path.join(SCRIPT_DIR, SITE_DIR, filename),
-              encoding='utf-8') as md_file:
-        line = md_file.readline()
-        title = None
-        template_file = DEFAULT_MARKDOWN_TEMPLATE
-        while line:
-            match = re.match("%\s*(.*)", line)
-            if match:
-                if not title:
-                    title = match.group(1).strip()
-                else:
-                    template_file = match.group(1).strip()
-            else:
-                break
-            line = md_file.readline()
 
-        html_output = markdown.markdown(md_file.read())
+def build_argument_parser():
+    parser = ArgumentParser()
 
-    mkoputdir(filename)
+    parser.add_argument("-c", "--clean", action="store_true",
+                        help="""Clean the site output rather than rebuilding the site""")
 
-    template = lookup_dirs.get_template(template_file)
-    with open(os.path.join(SCRIPT_DIR, OUTPUT_DIR,
-                           change_ext(filename, ".html")),
-              "w", encoding='utf-8') as html_file:
-        html_file.write(template.render(site_data=site_data,
-                                        page_contents=html_output,
-                                        page_title=title))
+    parser.add_argument("--site", default=DEFAULT_SITE,
+                        help="""which site to build/clean""")
 
-
-def process_html_file(site_data, filename):
-    mkoputdir(filename)
-    template = lookup_dirs.get_template(filename)
-    with open(os.path.join(SCRIPT_DIR, OUTPUT_DIR, filename), "w") as html_oput:
-        html_oput.write(template.render(site_data=site_data))
-
-def process_other_file(site_data, filename):
-    mkoputdir(filename)
-    shutil.copyfile(os.path.join(SCRIPT_DIR, SITE_DIR, filename),
-                    os.path.join(SCRIPT_DIR, OUTPUT_DIR, filename))
-
-def process_file(site_data, filename):
-    if ignore_file(filename):
-        pass
-    elif re.match(HTMLFILE_REGEX, filename):
-        process_html_file(site_data, filename)
-    elif re.match(MDFILE_REGEX, filename):
-        process_markdown_file(site_data, filename)
-    else:
-        process_other_file(site_data, filename)
-
-
-def load_site_data():
-    with open(os.path.join(SCRIPT_DIR, SITE_DATA), "r") as site_data_file:
-        site_data = yaml.load(site_data_file)
-
-    return site_data
-
-
-def build_site():
-    site_data = load_site_data()
-    site_files = os.walk(os.path.join(SCRIPT_DIR, SITE_DIR),
-                         followlinks=True)
-
-    for dirpath, dirnames, filenames in site_files:
-        filedir = os.path.relpath(dirpath, os.path.join(SCRIPT_DIR, SITE_DIR))
-        for filename in filenames:
-            process_file(site_data, os.path.join(filedir, filename))
-
-def clean_site():
-    try:
-        shutil.rmtree(os.path.join(SCRIPT_DIR, OUTPUT_DIR))
-    except FileNotFoundError:
-        pass
-
-    os.mkdir(os.path.join(SCRIPT_DIR, OUTPUT_DIR))
+    return parser
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "clean":
-            clean_site()
-        elif sys.argv[1] == "build":
-            build_site()
-        else:
-            print("Unrecognized command: {}".format(sys.argv[1]))
+    parser = build_argument_parser()
+    args = parser.parse_args(sys.argv[1:])
+
+    sitebuilder = SiteBuilder(args.site)
+
+    if args.clean:
+        sitebuilder.clean_site()
     else:
-        build_site()
+        sitebuilder.build_site()
