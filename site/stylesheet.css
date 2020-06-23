@@ -1,5 +1,5 @@
 html {
-	font-size: 17px;
+	font-size: 16px;
 	font-family: Georgia, serif;
 	background-color: white;
 /*	background-color: #edf6fc; */
@@ -69,6 +69,14 @@ hr {
 	max-width:900px;
 	border: none;
 	border-bottom: 1px solid black;
+}
+
+#pma-link {
+	color: #36c;
+	text-decoration: none;
+}
+#pma-link:hover {
+	text-decoration: underline;
 }
 
 #topbar {
@@ -159,14 +167,12 @@ hr {
 }
 
 #content ul {
-	padding: 0px;
-	margin-left: 10px;
+	/*padding: 0px;
+	margin-left: 10px;*/
 }
 
 #content li {
-	margin: 2px;
-	padding: 0px;
-	list-style-type: none;
+	
 }
 
 #content hr {
