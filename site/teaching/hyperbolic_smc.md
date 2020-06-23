@@ -7,7 +7,7 @@ This course took place in summer 2019, as part of a series of [summer mini-cours
 
 For most of the course, we followed the book _Metric Spaces of Non-positive Curvature_, by Martin Bridson and André Haefliger. I also referred to _Geometric Group Theory_ by Cornelia Druţu and Michael Kapovich, as well as Brian Bowditch's paper [_Relatively Hyperbolic Groups_](https://homepages.warwick.ac.uk/~masgak/papers/bhb-relhyp.pdf).
 
-Exercises: [Day 1](teaching/exercises_day1.pdf), [Day 2](teaching/exercises_day2.pdf) (Max), [Day 3](teaching/exercises_day3.pdf), [Day 4](teaching/exercises_day4.pdf), [Day 5](teaching/exercises_day5.pdf)
+Exercises: [Day 1](teaching/hyperbolic/exercises_day1.pdf), [Day 2](teaching/hyperbolic/exercises_day2.pdf) (Max), [Day 3](teaching/hyperbolic/exercises_day3.pdf), [Day 4](teaching/hyperbolic/exercises_day4.pdf), [Day 5](teaching/hyperbolic/exercises_day5.pdf)
 
 --------------------------------------------
 
