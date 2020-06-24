@@ -131,6 +131,10 @@ def change_ext(filename, new_ext):
 def ignore_file(filename):
     return re.match(IGNORE_REGEX, filename)
 
+def load_sites():
+    with open(os.path.join(SCRIPT_DIR, SITES_LIST), "r") as sites_list:
+        return yaml.load(sites_list)
+
 
 def build_argument_parser():
     parser = ArgumentParser()
@@ -141,15 +145,26 @@ def build_argument_parser():
     parser.add_argument("--site", default=DEFAULT_SITE,
                         help="""which site to build/clean""")
 
+    parser.add_argument("-a", "--all", action="store_true",
+                        help="""apply action to all sites""")
+
     return parser
 
 if __name__ == "__main__":
     parser = build_argument_parser()
     args = parser.parse_args(sys.argv[1:])
 
-    sitebuilder = SiteBuilder(args.site)
-
-    if args.clean:
-        sitebuilder.clean_site()
+    if args.all:
+        sites = load_sites()
     else:
-        sitebuilder.build_site()
+        sites = [args.site]
+
+    print(sites)
+
+    for site in sites:
+        sitebuilder = SiteBuilder(site)
+
+        if args.clean:
+            sitebuilder.clean_site()
+        else:
+            sitebuilder.build_site()
