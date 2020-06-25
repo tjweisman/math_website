@@ -11,7 +11,9 @@ There's a lot of information on this page. Some shortcuts:
 
 - I want to [use the command line](network_access.html#command-line)
 
-Remember your website lives in the "public_html" folder in your home directory.
+Remember your website lives in the "public_html" folder in your home directory. Whatever you put in there can be accessed at the link:
+
+	https://web.ma.utexas.edu/users/[your username]
 
 --------------------------------------------------------
 

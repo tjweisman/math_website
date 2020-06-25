@@ -177,14 +177,14 @@ hr {
 
 #content pre {
 	margin: 10px 10px 10px 10px;
-	width: 100%;
+	min-width: 100%;
 }
 
 #content code {
 	background-color: #ebebeb;
 	padding: 10px;
 	display: inline-block;
-	width: 90%;
+	min-width: 90%;
 }
 
 #content hr {

@@ -6,7 +6,7 @@
 
 *************************************************************************
 
-[Resolution](https://www.google.com/url?q=https://static1.squarespace.com/static/57c75a1cf5e2317342584ca0/t/5e73d50a17379b5a471ab959/1584649491025/S.R.%2B1904%2B-%2BA%2BResolution%2BIn%2BSupport%2Bof%2Bthe%2BPeople%2Bfor%2BPMA%2BMovement%2Band%2BPMA-Related%2BInclusion%2BInitiatives.pdf&sa=D&ust=1591412551558000&usg=AFQjCNE89a3D6-ys5gI_d_AvGN8lCHZYxQ) passed by the UT Senate of College Councils supporting the use of the name "PMA" for the University of Texas physics, math, and astronomy building.
+[Resolution](https://static1.squarespace.com/static/57c75a1cf5e2317342584ca0/t/5e73d50a17379b5a471ab959/1584649491025/S.R.%2B1904%2B-%2BA%2BResolution%2BIn%2BSupport%2Bof%2Bthe%2BPeople%2Bfor%2BPMA%2BMovement%2Band%2BPMA-Related%2BInclusion%2BInitiatives.pdf) passed by the UT Senate of College Councils supporting the use of the name "PMA" for the University of Texas physics, math, and astronomy building.
 
 **************************************************************************
 
