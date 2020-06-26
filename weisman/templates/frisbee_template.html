@@ -1,8 +1,8 @@
 <%inherit file="base.html" />
 
-<h1><a href="frisbee">Frisbee seminar</a>: ${page_title.lower()}</h1>
+<h1><a href="frisbee">Frisbee seminar</a>: ${page_data["title"].lower()}</h1>
 
-${page_contents}
+${page_data["contents"]}
 
 <p><a href="frisbee">Back to frisbee articles</a></p>
 

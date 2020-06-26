@@ -10,8 +10,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" type="text/css" href="stylesheet.css" />
 	<link rel="stylesheet" type="text/css" href="media_stylesheet.css" />
-	% if page_title:
-		<title>${site_data["title"]} | ${page_title}</title>
+	% if "title" in page_data:
+		<title>${site_data["title"]} | ${page_data["title"]}</title>
 	% else:
 		<title>${site_data["title"]}</title>
 	% endif
@@ -33,7 +33,7 @@
 			<div class="navbar">
 				<ul>
 					% for link in site_data["navbar_links"]:
-						% if self.attr.active_page == link["url"]:
+						% if page_data["filename"] == link["url"] or page_data["directory"] == link["url"]:
 							<li><a class="active" href="${link['url']}">${link['name']}</a></li>
 						% else:
 							<li><a class="inactive" href="${link['url']}">${link['name']}</a></li>

@@ -59,16 +59,24 @@ class SiteBuilder:
             os.path.join(self.site_dir, SITE_DIR, filename)
         )
 
+
+
+
         self.mkoputdir(filename)
 
         template = self.lookup_dirs.get_template(template_file)
+        output_filename = change_ext(filename, ".html")
+
+        page_data = {"title": title,
+                     "contents": html_output,
+                     "directory":filedir,
+                     "filename": output_filename}
+
         with open(os.path.join(self.site_dir, OUTPUT_DIR,
-                               change_ext(filename, ".html")),
+                               output_filename),
                   "w", encoding='utf-8') as html_file:
             html_file.write(template.render(site_data=self.site_data,
-                                            page_contents=html_output,
-                                            directory=filedir,
-                                            page_title=title))
+                                            page_data=page_data))
 
     def process_html_file(self, filename):
         self.mkoputdir(filename)
@@ -97,6 +105,8 @@ class SiteBuilder:
 
         for dirpath, dirnames, filenames in site_files:
             filedir = os.path.relpath(dirpath, os.path.join(self.site_dir, SITE_DIR))
+            if filedir == ".":
+                filedir = ""
             for filename in filenames:
                 self.process_file(filedir, os.path.join(filedir, filename))
 

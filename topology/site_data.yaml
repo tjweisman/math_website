@@ -2,12 +2,12 @@ title: Topology Seminar
 
 navbar_links:
         - {url: index.html, name: Home}
-        - {url: about, name: About}
-        - {url: people.html, name: People}
+        - {url: about/contact.html, name: About}
+        - {url: people/all.html, name: People}
         - {url: calendar.html, name: Calendar}
         - {url: resources.html, name: Resources}
 
 subdirectories:
         about :
-              - {url: about, name: Contact}
+              - {url: about/contact.html, name: Contact}
               - {url: about/inclusivity.html, name: Inclusivity Statement}

@@ -3,8 +3,8 @@
 <div class="box left">
 	<div class="toc">
 		<ul>
-			% for link in site_data["subdirectories"][directory]:
-				% if self.attr.active_page == link["url"]:
+			% for link in site_data["subdirectories"][page_data["directory"]]:
+				% if page_data["filename"] == link["url"]:
 					<li><a class="active" href="${link['url']}">${link['name']}</a></li>
 				% else:
 					<li><a class="inactive" href="${link['url']}">${link['name']}</a></li>
@@ -14,5 +14,5 @@
 	</div>
 </div>
 <div class="box right">
-	${page_contents}
+	${page_data["contents"]}
 </div>
