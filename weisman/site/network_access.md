@@ -195,6 +195,18 @@ Alternatively, you can push changes directly to a repository hosted on the math 
 
 	Now you can make changes to this repository and push them to the math network directly.
 
+If you're already using GitHub to version control your website, you can still set up your math department site as a remote so you can update it directly. Instead of step (3) above, instead run:
+
+	git remote add [remote-name] [username]@math.utexas.edu:~/public_html
+
+You can choose *remote-name* to be whatever you want (say, *website*). You can then push changes to GitHub (or wherever your repository is hosted) by running
+
+	git push
+
+and push changes to the web by running:
+
+	git push [remote-name] master
+
 ----------------------------------------------------------
 
 ## RSA fingerprints <a name = "rsa-fingerprint"></a>
