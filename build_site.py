@@ -54,24 +54,10 @@ class SiteBuilder:
         with open(os.path.join(self.site_dir, SITE_DATA), "r") as site_data_file:
             self.site_data = yaml.load(site_data_file)
 
-    def process_markdown_file(self, filename):
-        with open(os.path.join(self.site_dir, SITE_DIR, filename),
-                  encoding='utf-8') as md_file:
-            line = md_file.readline()
-            title = None
-            template_file = DEFAULT_MARKDOWN_TEMPLATE
-            while line:
-                match = re.match("%\s*(.*)", line)
-                if match:
-                    if not title:
-                        title = match.group(1).strip()
-                    else:
-                        template_file = match.group(1).strip()
-                else:
-                    break
-                line = md_file.readline()
-
-            html_output = markdown.markdown(md_file.read())
+    def process_markdown_file(self, filedir, filename):
+        title, template_file, html_output = get_mdfile_data(
+            os.path.join(self.site_dir, SITE_DIR, filename)
+        )
 
         self.mkoputdir(filename)
 
@@ -81,6 +67,7 @@ class SiteBuilder:
                   "w", encoding='utf-8') as html_file:
             html_file.write(template.render(site_data=self.site_data,
                                             page_contents=html_output,
+                                            directory=filedir,
                                             page_title=title))
 
     def process_html_file(self, filename):
@@ -94,16 +81,15 @@ class SiteBuilder:
         shutil.copyfile(os.path.join(self.site_dir, SITE_DIR, filename),
                         os.path.join(self.site_dir, OUTPUT_DIR, filename))
 
-    def process_file(self, filename):
+    def process_file(self, filedir, filename):
         if ignore_file(filename):
             pass
         elif re.match(HTMLFILE_REGEX, filename):
             self.process_html_file(filename)
         elif re.match(MDFILE_REGEX, filename):
-            self.process_markdown_file(filename)
+            self.process_markdown_file(filedir, filename)
         else:
             self.process_other_file(filename)
-
 
     def build_site(self):
         site_files = os.walk(os.path.join(self.site_dir, SITE_DIR),
@@ -112,7 +98,7 @@ class SiteBuilder:
         for dirpath, dirnames, filenames in site_files:
             filedir = os.path.relpath(dirpath, os.path.join(self.site_dir, SITE_DIR))
             for filename in filenames:
-                self.process_file(os.path.join(filedir, filename))
+                self.process_file(filedir, os.path.join(filedir, filename))
 
     def clean_site(self):
         try:
@@ -122,6 +108,25 @@ class SiteBuilder:
 
         os.mkdir(os.path.join(self.site_dir, OUTPUT_DIR))
 
+def get_mdfile_data(abspath):
+    with open(abspath, "r", encoding='utf-8') as md_file:
+        line = md_file.readline()
+        title = None
+        template_file = DEFAULT_MARKDOWN_TEMPLATE
+        while line:
+            match = re.match("%\s*(.*)", line)
+            if match:
+                if not title:
+                    title = match.group(1).strip()
+                else:
+                    template_file = match.group(1).strip()
+            else:
+                break
+            line = md_file.readline()
+
+        html_output = markdown.markdown(md_file.read())
+
+    return (title, template_file, html_output)
 
 def change_ext(filename, new_ext):
     """return a new filename, with the extension changed.
