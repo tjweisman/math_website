@@ -1,0 +1,18 @@
+<%inherit file="base.html" />
+
+<div class="box left">
+	<div class="toc">
+		<ul>
+			% for link in site_data["subdirectories"][directory]:
+				% if self.attr.active_page == link["url"]:
+					<li><a class="active" href="${link['url']}">${link['name']}</a></li>
+				% else:
+					<li><a class="inactive" href="${link['url']}">${link['name']}</a></li>
+				% endif
+			% endfor
+		</ul>
+	</div>
+</div>
+<div class="box right">
+	${page_contents}
+</div>

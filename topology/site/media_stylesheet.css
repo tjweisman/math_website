@@ -1,0 +1,104 @@
+@media (max-width: 768px) {
+	html {
+		font-size: 17px;
+	}
+	#header {
+		margin-bottom: 5px;
+	}
+	h1 {
+		margin:5px 0px 5px 0px;
+		font-size: 120%;
+	}
+	h2 {
+		padding-left: 5px;
+		margin: 0px 0px 10px 0px;
+		font-size: 110%;
+	}
+	h3 {
+		padding-left: 5px;
+		margin: 0px 0px 10px 0px;
+		font-size: 105%;
+	}
+	h4 {
+		text-align: center;
+		margin: 0px;
+	}
+	#content p {
+		margin: 5px 0px 10px 5px;
+	}
+	#content {
+		padding-left: 10px;
+	}
+
+	#content hr {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	.navbar ul {
+		text-align: center;
+		width: 100%;
+		padding: 0px;
+	}
+
+	.navbar a {
+		font-size: 15px;
+		padding: 15px 10px 15px 10px;
+	}
+
+	.toc {
+		padding: 2px;
+	}
+
+	.toc ul {
+		margin: 0px;
+	}
+
+	.toc a {
+		font-size: 100%;
+	}
+
+	.toc li {
+		margin: 5px;
+	}
+
+	#header .mathlogo {
+		display: none;
+	}
+
+	footer .mathlogo {
+		display: block;
+		margin-top: 25px;
+	}
+
+	footer {
+		font-size: 14px;
+	}
+
+	.box {
+		display: block;
+		padding: 0px;
+	}
+
+	img#title-photo {
+		max-height: 240px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+}
+
+@media (max-width: 500px) {
+	#name {
+		font-size: 130%;
+	}
+
+	#contact {
+		font-size: 13px;
+	}
+
+	.navbar a {
+		font-size: 13px;
+		padding: 15px 6px 15px 6px;
+	}
+}
