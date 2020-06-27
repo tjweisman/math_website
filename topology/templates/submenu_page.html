@@ -3,7 +3,13 @@
 <div class="box left">
 	<div class="toc">
 		<ul>
-			% for link in site_data["subdirectories"][page_data["directory"]]:
+			<%
+				if page_data["filename"] in site_data["submenus"]:
+					submenu = page_data["filename"]
+				else:
+					submenu = page_data["directory"]
+			%>
+			% for link in site_data["submenus"][submenu]:
 				% if page_data["filename"] == link["url"]:
 					<li><a class="active" href="${link['url']}">${link['name']}</a></li>
 				% else:

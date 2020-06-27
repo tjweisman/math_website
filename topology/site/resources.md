@@ -1,6 +1,6 @@
 % Resources
 
 Resources
-=============
+==========
 
-... link to the other website ...
+[UT Groups and Dynamics RTG](https://sites.cns.utexas.edu/utgd/about)

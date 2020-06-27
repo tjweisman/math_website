@@ -1,6 +1,6 @@
 html {
 	font-size: 14px;
-	font-family: 'Libre-Franklin', sans-serif;
+	font-family: sans-serif;
 	background-color: white;
 /*	background-color: #edf6fc; */
 }
@@ -112,6 +112,7 @@ hr {
 }
 
 #titlebox {
+	font-family: Georgia, serif;
 	padding: 0px;
 	padding-left: 10px;
 	font-size: 190%;
@@ -120,7 +121,7 @@ hr {
 
 #subtitle {
 	font-size: 70%;
-	font-weight: lighter !important;
+	font-weight: lighter;
 }
 
 #titlebox a{
@@ -173,6 +174,10 @@ footer {
 	text-decoration: none;
 	text-transform: uppercase;
 	padding: 15px;
+}
+
+.footer-menu a:hover {
+	text-decoration: underline;
 }
 
 .box {

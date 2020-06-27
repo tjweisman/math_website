@@ -2,12 +2,17 @@ title: Topology Seminar
 
 navbar_links:
         - {url: index.html, name: Home}
-        - {url: about/contact.html, name: About}
-        - {url: people/all.html, name: People}
+        - {url: about, name: About}
+        - {url: people.html, name: People}
         - {url: calendar.html, name: Calendar}
         - {url: resources.html, name: Resources}
 
-subdirectories:
+submenus:
         about :
-              - {url: about/contact.html, name: Contact}
-              - {url: about/inclusivity.html, name: Inclusivity Statement}
+          - {url: about/index.html, name: Contact}
+          - {url: about/inclusivity.html, name: Inclusivity Statement}
+
+        people.html :
+          - {url: people.html#faculty, name: Faculty}
+          - {url: people.html#postdocs, name: Postdoctoral Researchers}
+          - {url: people.html#gradstudents, name: Graduate Students}

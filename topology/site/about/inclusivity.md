@@ -1,5 +1,5 @@
 % Inclusivity Statement
-% subdir_page.html
+% submenu_page.html
 
 Inclusivity Statement
 ======================

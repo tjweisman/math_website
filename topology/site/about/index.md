@@ -1,5 +1,5 @@
 % About
-% subdir_page.html
+% submenu_page.html
 
 Contact the seminar organizers
 ==============================
