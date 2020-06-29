@@ -1,5 +1,7 @@
 title: Theodore Weisman
 
+relative_path: users/weisman
+
 navbar_links:
         - {url: index.html, name: Home}
         - {url: research.html, name: Research}

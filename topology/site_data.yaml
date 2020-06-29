@@ -1,5 +1,7 @@
 title: Topology Seminar
 
+relative_path: users/weisman/topology
+
 navbar_links:
         - {url: index.html, name: Home}
         - {url: about, name: About}
