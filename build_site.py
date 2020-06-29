@@ -39,8 +39,9 @@ class SiteBuilder:
 
         self.lookup_dirs = TemplateLookup(
             directories=[os.path.join(self.site_dir, TEMPLATE_DIR),
-                         os.path.join(self.site_dir, SITE_DIR)]
-)
+                         os.path.join(self.site_dir, SITE_DIR)],
+            input_encoding='utf-8'
+        )
 
     def mkoputdir(self, filename):
         try:
@@ -81,7 +82,8 @@ class SiteBuilder:
     def process_html_file(self, filename):
         self.mkoputdir(filename)
         template = self.lookup_dirs.get_template(filename)
-        with open(os.path.join(self.site_dir, OUTPUT_DIR, filename), "w") as html_oput:
+        with open(os.path.join(self.site_dir, OUTPUT_DIR, filename), "w",
+                  encoding='utf-8') as html_oput:
             html_oput.write(template.render(site_data=self.site_data))
 
     def process_other_file(self, filename):
