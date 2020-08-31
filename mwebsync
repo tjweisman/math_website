@@ -2,4 +2,10 @@
 
 WEBPAGE_DIR=/home/teddy/math/web/personal/weisman
 
-rsync -r --copy-unsafe-links --delete --exclude=*.mkv $WEBPAGE_DIR/public_html/ $UT_MATH:~/public_html
+EXCLUDE_MKVS="--exclude=*.mkv"
+if [[ "$1" == "--mkv" ]]; then
+    echo "Not excluding mkvs"
+    EXCLUDE_MKVS=""
+fi
+
+rsync -r --copy-unsafe-links --delete $EXCLUDE_MKVS $WEBPAGE_DIR/public_html/ $UT_MATH:~/public_html
