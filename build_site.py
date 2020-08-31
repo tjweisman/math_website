@@ -8,12 +8,13 @@ import shutil
 from argparse import ArgumentParser
 
 import markdown
+from markdown_include.include import MarkdownInclude
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
 from ruamel.yaml import YAML
 
-SCRIPT_DIR = "/home/teddy/math/webpage"
+SCRIPT_DIR = "/home/teddy/math/web/personal"
 SITES_LIST = "sites.yaml"
 
 DEFAULT_SITE = "weisman"
@@ -32,6 +33,8 @@ IGNORE_REGEX = ".*~$"
 
 yaml = YAML(typ="safe")
 
+
+
 class SiteBuilder:
     def __init__(self, site_dir):
         self.site_dir = os.path.join(SCRIPT_DIR, site_dir)
@@ -41,6 +44,12 @@ class SiteBuilder:
             directories=[os.path.join(self.site_dir, TEMPLATE_DIR),
                          os.path.join(self.site_dir, SITE_DIR)],
             input_encoding='utf-8'
+        )
+
+        self.markdown_include = MarkdownInclude(
+            configs={'base_path':
+                     os.path.join(self.site_dir, SITE_DIR)
+            }
         )
 
     def mkoputdir(self, filename):
@@ -57,7 +66,8 @@ class SiteBuilder:
 
     def process_markdown_file(self, filedir, filename):
         title, template_file, html_output = get_mdfile_data(
-            os.path.join(self.site_dir, SITE_DIR, filename)
+            os.path.join(self.site_dir, SITE_DIR, filename),
+            extensions=[self.markdown_include]
         )
 
 
@@ -120,7 +130,7 @@ class SiteBuilder:
 
         os.mkdir(os.path.join(self.site_dir, OUTPUT_DIR))
 
-def get_mdfile_data(abspath):
+def get_mdfile_data(abspath, extensions=[]):
     with open(abspath, "r", encoding='utf-8') as md_file:
         line = md_file.readline()
         title = None
@@ -136,7 +146,7 @@ def get_mdfile_data(abspath):
                 break
             line = md_file.readline()
 
-        html_output = markdown.markdown(md_file.read())
+        html_output = markdown.markdown(md_file.read(), extensions=extensions)
 
     return (title, template_file, html_output)
 

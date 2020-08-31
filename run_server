@@ -1,5 +1,5 @@
 #! /bin/bash
 
-WEBPAGE_DIR=~/math/webpage
+WEBPAGE_DIR=~/math/web/personal/weisman
 
 python -m http.server -d $WEBPAGE_DIR
