@@ -1,0 +1,118 @@
+<style  type="text/css" >
+    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col0 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col1 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col2 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col3 {
+            background-color:  #08306b;
+            color:  #f1f1f1;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col4 {
+            background-color:  #08306b;
+            color:  #f1f1f1;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col0 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col1 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col2 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col3 {
+            background-color:  #2070b4;
+            color:  #f1f1f1;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col4 {
+            background-color:  #2070b4;
+            color:  #f1f1f1;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col0 {
+            background-color:  #f7fbff;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col1 {
+            background-color:  #6aaed6;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col2 {
+            background-color:  #6aaed6;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col3 {
+            background-color:  #6aaed6;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col4 {
+            background-color:  #6aaed6;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col0 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col1 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col2 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col3 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col4 {
+            background-color:  #c6dbef;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col0 {
+            background-color:  #f7fbff;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col1 {
+            background-color:  #f7fbff;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col2 {
+            background-color:  #f7fbff;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col3 {
+            background-color:  #f7fbff;
+            color:  #000000;
+        }    #T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col4 {
+            background-color:  #f7fbff;
+            color:  #000000;
+        }</style><table class="dataframe" id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73" ><caption>60% scoring chance, game to 5</caption><thead>    <tr>        <th class="index_name level0" >Opponent's score</th>        <th class="col_heading level0 col0" >0</th>        <th class="col_heading level0 col1" >1</th>        <th class="col_heading level0 col2" >2</th>        <th class="col_heading level0 col3" >3</th>        <th class="col_heading level0 col4" >4</th>    </tr>    <tr>        <th class="index_name level0" >Your score</th>        <th class="blank" ></th>        <th class="blank" ></th>        <th class="blank" ></th>        <th class="blank" ></th>        <th class="blank" ></th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73level0_row0" class="row_heading level0 row0" >0</th>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col0" class="data row0 col0" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col1" class="data row0 col1" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col2" class="data row0 col2" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col3" class="data row0 col3" >4</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row0_col4" class="data row0 col4" >4</td>
+            </tr>
+            <tr>
+                        <th id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73level0_row1" class="row_heading level0 row1" >1</th>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col0" class="data row1 col0" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col1" class="data row1 col1" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col2" class="data row1 col2" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col3" class="data row1 col3" >3</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row1_col4" class="data row1 col4" >3</td>
+            </tr>
+            <tr>
+                        <th id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73level0_row2" class="row_heading level0 row2" >2</th>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col0" class="data row2 col0" >0</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col1" class="data row2 col1" >2</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col2" class="data row2 col2" >2</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col3" class="data row2 col3" >2</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row2_col4" class="data row2 col4" >2</td>
+            </tr>
+            <tr>
+                        <th id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73level0_row3" class="row_heading level0 row3" >3</th>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col0" class="data row3 col0" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col1" class="data row3 col1" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col2" class="data row3 col2" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col3" class="data row3 col3" >1</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row3_col4" class="data row3 col4" >1</td>
+            </tr>
+            <tr>
+                        <th id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73level0_row4" class="row_heading level0 row4" >4</th>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col0" class="data row4 col0" >0</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col1" class="data row4 col1" >0</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col2" class="data row4 col2" >0</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col3" class="data row4 col3" >0</td>
+                        <td id="T_1a6216d6_e975_11ea_88b3_a0a4c596eb73row4_col4" class="data row4 col4" >0</td>
+            </tr>
+    </tbody></table>

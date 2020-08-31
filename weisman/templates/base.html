@@ -9,12 +9,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+	<link rel="stylesheet" type="text/css" href="extra.css" />
 	% if "title" in page_data:
 		<title>${site_data["title"]} | ${page_data["title"]}</title>
 	% else:
 		<title>${site_data["title"]}</title>
 	% endif
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 	<!-- <script src="elt-dodge.js"></script> -->
 </head>
 <body>
@@ -27,7 +30,7 @@
 				<div id="contact">
 					<ul>
 					<li class="contact-item">weisman@math.utexas.edu</li>
-					<li class="contact-item">office: <a id="pma-link" href="pma.html">PMA</a> 9.116</li>
+					<li class="contact-item">office: PMA 9.116</li>
 					</ul>
 				</div>
 			</div>
