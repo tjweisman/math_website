@@ -147,7 +147,7 @@ If your scoring probability is high enough, the best available strategy is to ju
 
 For instance, we can see that in a game to 5, the cutoff is at about 70%, just like we saw before.
 
-I strongly suspect (but do not know for sure) that as the length of the game tends to infinity, the level of confidence you need to always let it ride tends to 1. It's also not hard to see that if the scoring probability is high enough, letting it ride is the *dominant* strategy and not just the minimax strategy (although the threshold possibly occurs at a different value).
+I strongly suspect (but do not know for sure) that as the length of the game tends to infinity, the level of confidence you need to always let it ride tends to 1. It's also not hard to see that if the scoring probability is high enough, letting it ride is the *dominant* strategy and not just the minimax strategy.
 
 ### What about always banking?
 
@@ -256,7 +256,7 @@ We're modelling *Let it ride* as a *competetive Markov decision process* (or *co
 
 Each state is *controlled* by one of the two players. If a player controls a state, then whenever the game is in that state, the player can choose to either *bank* or *ride*; then the game will transition to some other state, which depends only on the player's choice and the outcome of a random variable (whether or not that player scores a point, if they choose to let it ride).
 
-A number of states represent *win conditions* for each player. The goal of each player is to assign a choice to each possible game state, which maximimizes the probability that the game ends in one of their win conditions.
+A number of states represent *win conditions* for each player. The goal of each player is to assign a choice to each game state in their control which maximimizes the probability that the game ends in one of their win conditions.
 
 ### Naive solution for competitive MDP: backwards induction
 

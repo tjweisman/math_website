@@ -4,11 +4,10 @@
 Teaching
 ===================
 
-## Current (summer 2020)
+## Current (fall 2020)
 
-From June 1 to June 5, I led a summer minicourse called "Boundaries of Groups and Spaces."
+I'm not TAing for any classes this semester.
 
-[Course webpage](teaching/boundaries_smc.html) | [More about summer minicourses](https://web.ma.utexas.edu/SMC/)
 ***********************
 
 ## Past teaching
@@ -29,7 +28,12 @@ Instructor: Rostyslav Kravchenko
 
 #### Minicourses
 
-**Summer 2019:** I led a minicourse for graduate students on the basics of hyperbolic groups. 
+**Summer 2020:** I led a minicourse for graduate students called "Boundaries of Groups and Spaces."
 
-[Course webpage](teaching/hyperbolic_smc.html) | [Other 2019 summer minicourses](https://web.ma.utexas.edu/SMC/2019/Minicourses.html)
+[Course webpage](teaching/boundaries_smc.html) | [More about 2020 minicourses](https://web.ma.utexas.edu/SMC/)
+
+
+**Summer 2019:** I led a minicourse on the basics of hyperbolic groups. 
+
+[Course webpage](teaching/hyperbolic_smc.html) | [More about 2019 minicourses](https://web.ma.utexas.edu/SMC/2019/Minicourses.html)
 
