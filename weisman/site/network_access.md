@@ -15,6 +15,10 @@ Remember your website lives in the "public_html" folder in your home directory. 
 
 	https://web.ma.utexas.edu/users/[your username]
 
+If you're a first-year, your username is probably just your EID. If you're not a first-year, your username is probably the part of your UT email address before the "@" sign.
+
+The instructions on this page are for accessing your files on the math department network. If you want to update your *directory page* on the *math department website*, [log on](https://www.ma.utexas.edu/log-on-off) at the math department website and then follow the instructions [here](https://www.ma.utexas.edu/my-profile/activate-my-directory-entry).
+
 --------------------------------------------------------
 
 ## Accessing your files through the web <a name="web-access"></a>
@@ -23,11 +27,13 @@ The web interface can be found at this link: <a href="https://web.ma.utexas.edu/
 
 **You need to log in *twice* to get this to work.**
 
-1. First login: the prompt will ask you for your **full UT email address** and your **UT EID password.** Enter those.
+1. First login: make sure that the *Server* is set to **UTM**. Then, under "UTM username" and "UTM password," enter your **math department network username** and **math department network password.**
 
-2. Second login: the prompt asks you for a username and password. Enter your **math department network username** (*not* your email address) and your **math department network password**.
+2. Second login: the prompt asks you for a username and password. Again, enter your **math department network username** and your **math department network password**.
 
 3. If all goes well you should have a web interface for uploading/managing files in your home folder.
+
+If Step 1 doesn't work for some reason: try setting the server to **Office365**, and then enter your **UT email address** and **UT EID password**. Then follow Step 2 as before. 
 
 ### Getting to the web interface from the [math department website](https://www.ma.utexas.edu/)
 
@@ -35,7 +41,7 @@ If you want to know how to get to the interface without having to go to this pag
 
 1. Go to [Quick Links for UT Math](https://www.ma.utexas.edu/services/quick-links#ut-links) at the bottom of the page.
 2. Click on [Access your files on Math network](https://web.ma.utexas.edu/horde/login.php) on the list.
-3. Log in via the Horde client using your **UT email address** and **EID password**.
+3. Log in via the Horde client using your **math department username and password** (see step 1 above).
 4. In the top menu, go to Others => File Manager. This takes you to the link given above.
 5. Log in again using your **math department username and password.**
 

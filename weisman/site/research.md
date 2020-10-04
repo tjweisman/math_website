@@ -7,11 +7,11 @@ I'm interested in studying some of the interaction between geometric group theor
 
 I'm especially interested in possible generalizations of convex cocompactness, for instance Anosov representations, and currently I'm thinking about notions of convex cocompact representations that make sense for groups which are not necessarily word-hyperbolic. At the moment I'm working on this in the context of group actions on properly convex domains in projective space.
 
-## Preprints (available on request)
+## Preprints
 
-1. *Dynamical properties of convex cocompact actions in projective space*
+1. *Dynamical properties of convex cocompact actions in projective space*. [arXiv:2009.10994](https://arxiv.org/abs/2009.10994).
 
-2. *Characterizing group actions on boundaries of convex divisible domains*
+2. *Characterizing group actions on boundaries of convex divisible domains* (in preparation)
 
 ## Talks
 
