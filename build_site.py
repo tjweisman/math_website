@@ -33,12 +33,11 @@ IGNORE_REGEX = ".*~$"
 
 yaml = YAML(typ="safe")
 
-
-
 class SiteBuilder:
     def __init__(self, site_dir):
         self.site_dir = os.path.join(SCRIPT_DIR, site_dir)
         self.load_site_data()
+        self.ignore_patterns = [IGNORE_REGEX]
 
         self.lookup_dirs = TemplateLookup(
             directories=[os.path.join(self.site_dir, TEMPLATE_DIR),
@@ -51,6 +50,12 @@ class SiteBuilder:
                      os.path.join(self.site_dir, SITE_DIR)
             }
         )
+
+    def add_ignore_pattern(self, pattern):
+        self.ignore_patterns.append(pattern)
+
+    def add_ignores(self, ignores):
+        self.ignore_patterns += ignores
 
     def mkoputdir(self, filename):
         try:
@@ -101,8 +106,14 @@ class SiteBuilder:
         shutil.copyfile(os.path.join(self.site_dir, SITE_DIR, filename),
                         os.path.join(self.site_dir, OUTPUT_DIR, filename))
 
+    def ignore_file(self, filename):
+        for regex in self.ignore_patterns:
+            if re.match(regex, filename):
+                return True
+        return False
+
     def process_file(self, filedir, filename):
-        if ignore_file(filename):
+        if self.ignore_file(filename):
             pass
         elif re.match(HTMLFILE_REGEX, filename):
             self.process_html_file(filename)
@@ -155,7 +166,7 @@ def change_ext(filename, new_ext):
     """
     return re.sub(r"\.\w+$", new_ext, filename)
 
-def ignore_file(filename):
+def ignore_file(filename, regex=IGNORE_REGEX):
     return re.match(IGNORE_REGEX, filename)
 
 def load_sites():
@@ -168,6 +179,15 @@ def build_argument_parser():
 
     parser.add_argument("-c", "--clean", action="store_true",
                         help="""Clean the site output rather than rebuilding the site""")
+
+    parser.add_argument("-r", "--rebuild", action="store_true",
+                        help="""Clean the site output and then rebuild the site""")
+
+    parser.add_argument("--mkv", action="store_true",
+                        help="""don't ignore mkv files when copying""")
+
+    parser.add_argument("--exclude", action="append",
+                        help="""regex to exclude when copying files""")
 
     parser.add_argument("--site", default=DEFAULT_SITE,
                         help="""which site to build/clean""")
@@ -191,7 +211,14 @@ if __name__ == "__main__":
     for site in sites:
         sitebuilder = SiteBuilder(site)
 
-        if args.clean:
+        if args.exclude:
+            sitebuilder.add_ignores(args.exclude)
+
+        if not args.mkv:
+            sitebuilder.add_ignore_pattern(r".*\.mkv")
+
+        if args.clean or args.rebuild:
             sitebuilder.clean_site()
-        else:
+
+        if not args.clean:
             sitebuilder.build_site()
