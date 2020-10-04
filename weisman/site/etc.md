@@ -14,6 +14,8 @@ I also co-organize (along with [Richard Wong](https://web.ma.utexas.edu/users/ri
 
 I somewhat regularly spend time working on little programming projects, a few of which you can see on [my GitHub](https://github.com/tjweisman/).
 
+[Dixit](dixit/)
+
 [How to play *Let it Ride* optimally](frisbee/let_it_ride.html) 
 
 [Is it a horse, or is it a frisbee team?](https://tjweisman.github.io/horseorfris/)
