@@ -8,4 +8,4 @@ if [[ "$1" == "--mkv" ]]; then
     EXCLUDE_MKVS=""
 fi
 
-rsync -r --copy-unsafe-links --delete $EXCLUDE_MKVS $WEBPAGE_DIR/public_html/ $UT_MATH:~/public_html
+rsync -r --copy-unsafe-links -F --delete-after $EXCLUDE_MKVS $WEBPAGE_DIR/public_html/ $UT_MATH:~/public_html
