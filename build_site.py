@@ -75,9 +75,6 @@ class SiteBuilder:
             extensions=[self.markdown_include]
         )
 
-
-
-
         self.mkoputdir(filename)
 
         template = self.lookup_dirs.get_template(template_file)
@@ -197,7 +194,7 @@ def build_argument_parser():
 
     return parser
 
-if __name__ == "__main__":
+def main():
     parser = build_argument_parser()
     args = parser.parse_args(sys.argv[1:])
 
@@ -222,3 +219,6 @@ if __name__ == "__main__":
 
         if not args.clean:
             sitebuilder.build_site()
+
+if __name__ == "__main__":
+    main()

@@ -10,6 +10,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" type="text/css" href="stylesheet.css" />
 	<link rel="stylesheet" type="text/css" href="extra.css" />
+	% if "stylesheets" in page_data:
+		% for stylesheet in page_data["stylesheets"]:
+			<link rel="stylesheet" type="text/css" href="${stylesheet}" />
+		% endfor
+	% endif
 	% if "title" in page_data:
 		<title>${site_data["title"]} | ${page_data["title"]}</title>
 	% else:
@@ -18,6 +23,11 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	% if "scripts" in page_data:
+		% for script in page_data["scripts"]:
+			<script src="${script}"></script>
+		% endfor
+	% endif
 	<!-- <script src="elt-dodge.js"></script> -->
 </head>
 <body>

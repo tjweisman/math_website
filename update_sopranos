@@ -1,6 +1,6 @@
 #! /bin/bash
 
-SEASON=5
+SEASON=6
 
 rm ~/math/personal_website/sopranos/sopranos*.mkv
 
