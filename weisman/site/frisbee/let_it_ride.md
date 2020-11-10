@@ -13,7 +13,7 @@ Moontower splits into two teams (say, O line and D line). Each line takes turns 
 1. You can "bank" your point, and add it to your score. Then it's the other team's turn.
 2. You can let it ride! You get to go again, and if you score again, you'll get another point! But if you fail, you'll lose all of the points you haven't "banked," and it'll be the other team's turn to go.
 
-You can let it ride as many times as you like, but the longer you go without banking your points, the more stand to lose with each possession. The first team to bank a predetermined number of points (usually around 5) wins the game.
+You can let it ride as many times as you like, but the longer you go without banking your points, the more you stand to lose with each possession. The first team to bank a predetermined number of points (usually around 5) wins the game.
 
 ### An example
 
@@ -196,7 +196,7 @@ Here we can see how likely the first player is to win a game to **8 points** if 
 
 ### What if you know your opponent's strategy?
 
-You can do *even better* if you know ahead of time exactly when your opponent will let it ride, and exactly when they'll bank it (assuming they make consistent choices throughout the game). Here, instead of employing a minimax strategy, you can simply maximize your odds of winning *given your opponent's choices*; if those choices happen to be suboptimal, you can get a slight extra edge.
+You can do *even better* if you know ahead of time exactly when your opponent will let it ride, and exactly when they'll bank it (assuming they make consistent choices throughout the game). Here, instead of employing a minimax strategy, you can simply maximize your odds of winning *given your opponent's choices*. If those choices happen to be suboptimal, you can get a slight extra edge.
 
 Here's a side-by-side comparison of optimal strategies in a game to 6 with a scoring probability of 60%. On the left is the strategy you should employ if you assume your opponent is playing rationally. On the right is your best strategy if you think your opponent will *always* bank their points.
 
@@ -252,9 +252,9 @@ If you've gotten this far and you're *still* not scared away by the phrase "tech
 
 ### Formal description of the game
 
-We're modelling *Let it ride* as a *competetive Markov decision process* (or *competitive MDP*), a special case of a *stochastic game* and a generalization of a typical *Markov process*. We can think of the game as taking place on the vertices of a directed graph, each of which represents a *game state*. The *state* of the game includes the scores of each player, whose turn it is, and how many points that player currently has at risk.
+We're modelling *Let it ride* as a *competitive Markov decision process* (or *competitive MDP*), a special case of a *stochastic game* and a generalization of a typical *Markov process*. We can think of the game as taking place on the vertices of a directed graph, each of which represents a *game state*. The *state* of the game depends only on the scores of each player, whose turn it is, and how many points that player currently has at risk.
 
-Each state is *controlled* by one of the two players. If a player controls a state, then whenever the game is in that state, the player can choose to either *bank* or *ride*; then the game will transition to some other state, which depends only on the player's choice and the outcome of a random variable (whether or not that player scores a point, if they choose to let it ride).
+Each state is *controlled* by one of the two players. If a player controls a state, then whenever the game is in that state, the player can choose to either *bank* or *ride*. Then the game will transition to some other state. Which state it transitions to depends only on the player's choice and the outcome of a random variable (whether or not that player scores a point, if they choose to let it ride).
 
 A number of states represent *win conditions* for each player. The goal of each player is to assign a choice to each game state in their control which maximimizes the probability that the game ends in one of their win conditions.
 
@@ -262,7 +262,7 @@ A number of states represent *win conditions* for each player. The goal of each 
 
 When the directed graph for a competitive MDP is acyclic (in particular, if it's a tree), then it's fairly straightforward to solve for optimal strategies using *backwards induction*. Each leaf node of the tree is a win state for one of the players. So we simply compute win probabilities going backwards up the tree, starting from the leaves and ending at the root: at each vertex, we can just compute the probability that we win the game going down each child branch, and then select the branch that gives us the highest probability of winning. This approach lends itself well to dynamic programming and isn't too hard to implement.
 
-However, the directed graph representing the *Let it ride* competitive MDP *contains loops.* That is, it's possible for the game state to *return* to an earlier state. In this particular game, this happens whenever both teams consecutively fail to score a point; no overall progress is made. So if we attempt backwards induction, we'll end up in an infinite loop.
+However, the directed graph representing the *Let it ride* competitive MDP *contains loops.* That is, it's possible for the game state to *return* to an earlier state. In this particular game, this happens whenever both teams consecutively fail to score a point, because then no overall progress is made. So if we attempt backwards induction, we'll end up in an infinite loop.
 
 ### Approximate solution
 
@@ -274,11 +274,11 @@ We can use backward induction to find optimal strategies for this approximation,
 
 ### Exact solution
 
-Approximating solutions is useful, in part because it's in some ways a more accurate model of how *Let it ride* actually works in real life: when we play the game at practice, we don't assume that it will go on for arbitrarily long times. The main disadvantage of approximating optimal strategies is that the backwards induction algorithm is fairly slow when the length of the game is long; we have to artificially introduce more and more branches to get rid of the cycles in our original graph.
+Approximating solutions is useful, in part because it's in some ways a more accurate model of how *Let it ride* actually works in real life: when we play the game at practice, we don't assume that it will go on for arbitrarily long times. The main disadvantage of approximating optimal strategies is that the backwards induction algorithm is fairly slow when the length of the game is long. That's because we have to artificially introduce more and more branches to get rid of the cycles in our original graph.
 
 To get an *exact* solution, we can modify our model a little bit. We still think of the game as being played on the vertices of a directed graph. Each vertex corresponds to a particular game state, but we *only* keep track of the game states where there are no points currently at risk.
 
-The players' strategies are represented by a choice, at each of these states, of *how many times they will let it ride*; this is exactly what's recorded in the strategy tables above. The key observation is the following: 
+The players' strategies are represented by a choice, at each of these states, of *how many times they will let it ride*. This is exactly what's recorded in the strategy tables above. The key observation is the following: 
 
 ##### If both players always employ the same strategies at a particular state, we can exactly compute the probability that the game eventually transitions to another state, given those strategies.
 
@@ -288,7 +288,7 @@ p_{4-1} = p^2 \cdot \frac{1}{1 - (1 - p^2)(1 - q)}.
 $$
 This is just the probability that the first player scores twice in a row before the second player manages to score at all. Since the game will almost surely *eventually* leave the state **2-1**, the probability that the game transitions to state **2-2** is just \\(1 - p_{4-1}\\).
 
-This turns *Let it ride* into a *stochastic game* played on an *acyclic* finite directed graph, since the total score always *increases* whenever we transition to a new state. At each vertex we have a two-player zero-sum game, where the choices correspond to possible maximum allowable risks (at that particular state), and the payoffs for a pair of choices correspond to the likelihood of winning the game, should the players employ that pair of strategies. Once the payoffs have been computed, we can just use a minimax algorithm to find optimal play for each player, and thus the win probability for each player at that state (given optimal play). The payoffs themselves are computed recursively, by traversing the graph from leaves to root; the leaf nodes are win states for a single player.
+This turns *Let it ride* into a *stochastic game* played on an *acyclic* finite directed graph, since the total score always *increases* whenever we transition to a new state. At each vertex we have a two-player zero-sum game, where the choices correspond to possible maximum allowable risks (at that particular state), and the payoffs for a pair of choices correspond to the likelihood of winning the game, should the players employ that pair of strategies. Once the payoffs have been computed, we can just use a minimax algorithm to find optimal play for each player, and thus the win probability for each player at that state (given optimal play). The payoffs themselves are computed recursively, by traversing the graph from leaves to root. The leaf nodes are win states for a single player.
 
 This approach generalizes if we want to compute win probabilities when the players *aren't* using minimax to select their strategies, which is how we can compare optimal vs. suboptimal play.
 

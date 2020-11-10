@@ -1,6 +1,6 @@
 % Etc.
 
-Outside of math, I spend a lot of time playing ultimate frisbee. I've played three seasons with Moontower, a mixed club team here in Austin, TX. Previously I played for one year on TUFF, the University of Texas men's team, and for four years on Süperfly, the Yale college men's team.
+I spend a lot of time playing ultimate frisbee. I've played three seasons with Moontower, a mixed club team here in Austin, TX. Previously I played for one year on TUFF, the University of Texas men's team, and for four years on Süperfly, the Yale college men's team.
 
 <div class="image-container">
 <div class="img-cell"><img src="resources/fly_logo.png" alt="Superfly logo" /></div>
@@ -12,12 +12,12 @@ I also co-organize (along with [Richard Wong](https://web.ma.utexas.edu/users/ri
 
 --------------------------------------------------------------------
 
-I somewhat regularly spend time working on little programming projects, a few of which you can see on [my GitHub](https://github.com/tjweisman/).
+Sometimes I also work on small programming projects. You can see a few of them on [my GitHub](https://github.com/tjweisman/).
 
 [Dixit](dixit/)
 
-[How to play *Let it Ride* optimally](frisbee/let_it_ride.html) 
+[How to play *Let it Ride* optimally](frisbee/let_it_ride.html)
 
-[Is it a horse, or is it a frisbee team?](https://tjweisman.github.io/horseorfris/)
+[Is it a horse, or is it a frisbee team?](frisbee/horseorfris/)
 
 --------------------------------------------------------------------
