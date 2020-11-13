@@ -3,7 +3,7 @@
 Summer minicourse: Boundaries of groups and spaces
 ==================================================
 
-This is the homepage for the minicourse I'm teaching from June 1 - June 5, 2020. You can find the lecture notes and exercises from each day of the course below, along with references. You can also find the notes that Casandra Monroe wrote up during lecture.
+This is the homepage for the minicourse I'm teaching from June 1 - June 5, 2020. You can find the lecture notes and exercises from each day of the course below, along with references. You can also find the notes that [Casandra Monroe](https://sites.google.com/utexas.edu/cmonroe/) wrote up during lecture.
 
 ## Course information
 
