@@ -14,6 +14,8 @@ I also co-organize (along with [Richard Wong](https://web.ma.utexas.edu/users/ri
 
 Sometimes I also work on small programming projects. You can see a few of them on [my GitHub](https://github.com/tjweisman/).
 
+[Geometry Tools](geometry_tools_usage.html)
+
 [Dixit](dixit/)
 
 [How to play *Let it Ride* optimally](frisbee/let_it_ride.html)

@@ -1,5 +1,11 @@
+var skitteringEnabled = false;
+
 $(document).ready(function () {
 	$(".navbar li").mouseover(function (evt) {
+		if(!skitteringEnabled) {
+			return;
+		}
+		
 		var distance = 100;
 		var angle = Math.random() * Math.PI / 2;
 		
@@ -15,8 +21,6 @@ $(document).ready(function () {
 		if(Math.random() > .5) {
 			v_dist = "-=" + dy + "px";
 		}
-
-
 
 		$(evt.currentTarget).animate({
 			left : h_dist,
