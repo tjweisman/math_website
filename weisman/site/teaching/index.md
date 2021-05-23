@@ -4,9 +4,7 @@
 Teaching
 ===================
 
-## Current (fall 2020)
-
-I'm not TAing for any classes this semester.
+## Current (Summer 2021)
 
 ***********************
 
@@ -25,6 +23,14 @@ Instructor: [Laura Villafuerte Altúzar](https://sites.google.com/site/lauravill
  
 **Fall 2018:** M408C: Integral and Differential Calculus<br />
 Instructor: Rostyslav Kravchenko
+
+*************************
+
+#### Mentorship
+
+**Spring 2021:** I worked as a graduate student mentor at the [Texas Geometry Lab](https://sites.cns.utexas.edu/geometry_lab).
+
+**************************
 
 #### Minicourses
 

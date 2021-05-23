@@ -15,7 +15,7 @@ Remember your website lives in the "public_html" folder in your home directory. 
 
 	https://web.ma.utexas.edu/users/[your username]
 
-If you're a first-year, your username is probably just your EID. If you're not a first-year, your username is probably the part of your UT email address before the "@" sign.
+If you're in the 2021 cohort, your username is probably just your EID. Otherwise, your username is probably the part of your UT email address before the "@" sign.
 
 The instructions on this page are for accessing your files on the math department network. If you want to update your *directory page* on the *math department website*, [log on](https://www.ma.utexas.edu/log-on-off) at the math department website and then follow the instructions [here](https://www.ma.utexas.edu/my-profile/activate-my-directory-entry).
 
@@ -145,7 +145,7 @@ You can set up SSH keys so that you don't have to enter your username and passwo
 
 3. To make sure this worked, try running
 
-		ssh [username]@ssh.ma.utexas.edu
+		ssh [username]@math.utexas.edu
 
 You should be able to log in without being prompted for your UT network password or two-factor authentication.
 
@@ -167,7 +167,7 @@ You should be able to log in without being prompted for your UT network password
 
 7. On your own computer, run PuTTY, and navigate to Connection => SSH => Auth. In the box labelled "Private key file for authentication", load the file you saved in step 4.
 
-8. If you save the configuration, you should be able to connect to *[username]@ssh.ma.utexas.edu* via PuTTY.
+8. If you save the configuration, you should be able to connect to *[username]@math.utexas.edu* via PuTTY.
 
 [More information about PuTTYgen](https://www.ssh.com/ssh/putty/windows/puttygen)
 

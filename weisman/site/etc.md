@@ -14,6 +14,7 @@ I also co-organize (along with [Richard Wong](https://web.ma.utexas.edu/users/ri
 
 Sometimes I also work on small programming projects. You can see a few of them on [my GitHub](https://github.com/tjweisman/).
 
+
 [Geometry Tools](geometry_tools_usage.html)
 
 [Dixit](dixit/)
@@ -22,4 +23,5 @@ Sometimes I also work on small programming projects. You can see a few of them o
 
 [Is it a horse, or is it a frisbee team?](frisbee/horseorfris/)
 
---------------------------------------------------------------------
+<img src="resources/237_shortlex.png" alt="shortlex automatic structure for a 237 triangle group in H2" width=540px />
+A shortlex [automatic structure](https://en.wikipedia.org/wiki/Automatic_group) for a [(2,3,7) triangle group](https://en.wikipedia.org/wiki/(2,3,7)_triangle_group) in the hyperbolic plane. The yellow edges give a spanning tree for the Cayley graph of the group. Paths in the tree starting at the identity represent accepted words.
