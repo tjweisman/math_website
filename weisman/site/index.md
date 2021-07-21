@@ -10,4 +10,15 @@ I graduated with a bachelor's in mathematics from Yale University in 2016.
 
 *************************************
 
+## Contact
+<a name="contact"></a>
+
+Pronouns: he/him
+
+Email: weisman@math.utexas.edu
+
+Office: PMA 9.116
+
+*************************************
+
 [How can I connect to the UT math network remotely and update my website?](network_access.html)

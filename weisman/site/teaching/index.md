@@ -30,6 +30,8 @@ Instructor: Rostyslav Kravchenko
 
 **Spring 2021:** I worked as a graduate student mentor at the [Texas Geometry Lab](https://sites.cns.utexas.edu/geometry_lab).
 
+**Directed reading program:** I have been a mentor in the UT math department's [Directed Reading Program](https://web.ma.utexas.edu/users/drp/) for six students from 2017 - 2021.
+
 **************************
 
 #### Minicourses

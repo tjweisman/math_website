@@ -1,3 +1,3 @@
 % CV
 
-Here's my [CV](resources/weisman.pdf) (updated May 2020).
+Here's my [CV](resources/weisman.pdf) (updated May 2021).

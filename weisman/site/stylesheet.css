@@ -14,6 +14,15 @@ h1 {
 	font-size: 135%;
 }
 
+a {
+	text-decoration: none;
+	color: #36c;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
 h2 {
 	font-family: Georgia, serif;
 	font-size: 115%;
@@ -139,6 +148,8 @@ hr {
 
 .img-cell {
 	justify-content: center;
+	display: flex;
+	align-items: center;
 }
 
 #pagebody {
@@ -203,6 +214,13 @@ hr {
 
 img#title-photo {
 	max-width: 180px;
+}
+
+.caption {
+	width: 90%;
+	color: #575757;
+	margin: auto;
+	font-style: italic;
 }
 
 iframe {
