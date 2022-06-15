@@ -27,12 +27,11 @@ D-line scores on a nice hammer, and lets it ride! Then the iso defender gets cau
 
 ## Strategy
 
-Let's completely set aside the question of frisbee strategy. It's not like we'll actually be playing any competitive frisbee any time soon anyway, so we might as well focus on how to be good at the gambling aspect of the game. You might want to know: 
+For this article, let's completely set aside the question of frisbee strategy. You might want to know: 
 
 ##### Given an accurate estimate of how often both teams succesfully convert their endzone possessions, when should I bank, and when should I let it ride?
 
-The rest of this article has some pretty careful analysis of optimal strategy for this part of *Let it ride.* But first, let's see if we can conclude anything based on our intuition.
-
+First of all - if you just want to look up what strategy you might want to use in a given situation, you can just consult [these tables](frisbee/let_it_ride_more.html). You should keep reading this article if you want to understand more of the details behind the strategies I've computed. Before we get into any careful analysis, though, let's see if we can conclude anything about *Let it ride* strategy, just based on our intuition.
 
 ### Observations
 
@@ -252,11 +251,11 @@ If you've gotten this far and you're *still* not scared away by the phrase "tech
 
 ### Formal description of the game
 
-We're modelling *Let it ride* as a *competitive Markov decision process* (or *competitive MDP*), a special case of a *stochastic game* and a generalization of a typical *Markov process*. We can think of the game as taking place on the vertices of a directed graph, each of which represents a *game state*. The *state* of the game depends only on the scores of each player, whose turn it is, and how many points that player currently has at risk.
+We're modeling *Let it ride* as a *competitive Markov decision process* (or *competitive MDP*), a special case of a *stochastic game* and a generalization of a typical *Markov process*. We can think of the game as taking place on the vertices of a directed graph, each of which represents a *game state*. The *state* of the game depends only on the scores of each player, whose turn it is, and how many points that player currently has at risk.
 
 Each state is *controlled* by one of the two players. If a player controls a state, then whenever the game is in that state, the player can choose to either *bank* or *ride*. Then the game will transition to some other state. Which state it transitions to depends only on the player's choice and the outcome of a random variable (whether or not that player scores a point, if they choose to let it ride).
 
-A number of states represent *win conditions* for each player. The goal of each player is to assign a choice to each game state in their control which maximimizes the probability that the game ends in one of their win conditions.
+A number of states represent *win conditions* for each player. The goal of each player is to assign a choice to each game state in their control which maximizes the probability that the game ends in one of their win conditions.
 
 ### Naive solution for competitive MDP: backwards induction
 

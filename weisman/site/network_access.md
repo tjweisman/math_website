@@ -23,6 +23,8 @@ The instructions on this page are for accessing your files on the math departmen
 
 ## Accessing your files through the web <a name="web-access"></a>
 
+**Warning: this section is slightly out of date. I will update it when I have time.**
+
 The web interface can be found at this link: <a href="https://web.ma.utexas.edu/horde/gollem/manager.php?backend_key=ssh2" target="_blank">https://web.ma.utexas.edu/horde/gollem/manager.php?backend_key=ssh2</a>
 
 **You need to log in *twice* to get this to work.**

@@ -1,7 +1,12 @@
-% Frisbee articles
+% SO(2)
 
-Frisbee articles
+SO(2)
 ===================
+
+Here's the homepage for SO(2)!
+
+
+## Frisbee articles
 
 These are basic frisbee strategy articles I wrote in fall of 2017 for the math department IM ultimate team, SO(2).
 

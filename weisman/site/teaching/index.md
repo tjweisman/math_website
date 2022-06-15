@@ -4,7 +4,15 @@
 Teaching
 ===================
 
-## Current (Summer 2021)
+## Current (Spring 2022)
+
+I'm currently a TA for [M427L: Advanced Calculus for Applications II](https://web.ma.utexas.edu/users/rusin/427L/index.html) with Professor [David Rusin](https://web.ma.utexas.edu/users/rusin/).
+
+I will upload resources for discussion section both to Canvas and to the [discussion section webpage](teaching/427L).
+
+#### Texas Experimental Geometry Lab
+
+I'm also currently a graduate student mentor at the [Texas Experimental Geometry Lab](https://sites.cns.utexas.edu/geometry_lab).
 
 ***********************
 
@@ -28,9 +36,9 @@ Instructor: Rostyslav Kravchenko
 
 #### Mentorship
 
-**Spring 2021:** I worked as a graduate student mentor at the [Texas Geometry Lab](https://sites.cns.utexas.edu/geometry_lab).
+**Texas Experimental Geometry Lab:** I've worked as a graduate student mentor for two projects at the [Texas Experimental Geometry Lab](https://sites.cns.utexas.edu/geometry_lab) (TXGL), in Spring 2021 and Fall 2021.
 
-**Directed reading program:** I have been a mentor in the UT math department's [Directed Reading Program](https://web.ma.utexas.edu/users/drp/) for six students from 2017 - 2021.
+**Directed reading program:** I have been a mentor in the UT math department's [Directed Reading Program](https://web.ma.utexas.edu/users/drp/) for seven students from 2017 - 2021.
 
 **************************
 

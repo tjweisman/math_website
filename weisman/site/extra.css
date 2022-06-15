@@ -52,3 +52,6 @@ h5 {
 	padding-bottom: 10px;
 }
 
+.hidden {
+	display: none;
+}
