@@ -1,0 +1,1979 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>geometry_tools.drawtools API documentation</title>
+<meta name="description" content="This submodule provides an interface between the
+`geometry_tools.projective` and `geometry_tools.hyperbolic` submodules
+and …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>geometry_tools.drawtools</code></h1>
+</header>
+<section id="section-intro">
+<p>This submodule provides an interface between the
+<code><a title="geometry_tools.projective" href="projective.html">geometry_tools.projective</a></code> and <code><a title="geometry_tools.hyperbolic" href="hyperbolic.html">geometry_tools.hyperbolic</a></code> submodules
+and <a href="https://matplotlib.org/">matplotlib</a>.</p>
+<p>The central classes in this module are <code><a title="geometry_tools.drawtools.ProjectiveDrawing" href="#geometry_tools.drawtools.ProjectiveDrawing">ProjectiveDrawing</a></code> and
+<code><a title="geometry_tools.drawtools.HyperbolicDrawing" href="#geometry_tools.drawtools.HyperbolicDrawing">HyperbolicDrawing</a></code>. To create a matplotlib figure, instantiate one of
+these classes and use the provided methods to add geometric objects to
+the drawing.</p>
+<pre><code class="python">from geometry_tools import hyperbolic, drawtools
+from numpy import pi
+
+hyp_drawing = drawtools.HyperbolicDrawing(model=&quot;halfplane&quot;)
+triangle = hyperbolic.Polygon.regular_polygon(3, angle=pi / 6)
+
+hyp_drawing.draw_plane()
+hyp_drawing.draw_polygon(triangle, facecolor=&quot;lightgreen&quot;)
+
+hyp_drawing.show()
+</code></pre>
+<p><img alt="triangle" src="triangle.png"></p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;This submodule provides an interface between the
+`geometry_tools.projective` and `geometry_tools.hyperbolic` submodules
+and [matplotlib](https://matplotlib.org/).
+
+The central classes in this module are `ProjectiveDrawing` and
+`HyperbolicDrawing`. To create a matplotlib figure, instantiate one of
+these classes and use the provided methods to add geometric objects to
+the drawing.
+
+```python
+from geometry_tools import hyperbolic, drawtools
+from numpy import pi
+
+hyp_drawing = drawtools.HyperbolicDrawing(model=&#34;halfplane&#34;)
+triangle = hyperbolic.Polygon.regular_polygon(3, angle=pi / 6)
+
+hyp_drawing.draw_plane()
+hyp_drawing.draw_polygon(triangle, facecolor=&#34;lightgreen&#34;)
+
+hyp_drawing.show()
+```
+
+![triangle](triangle.png)
+
+    &#34;&#34;&#34;
+
+import copy
+
+import numpy as np
+
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle, Arc, PathPatch, Rectangle, Polygon
+from matplotlib.collections import LineCollection, PolyCollection, EllipseCollection
+
+from matplotlib.transforms import Affine2D
+from matplotlib.path import Path
+
+from geometry_tools import hyperbolic, utils, projective
+from geometry_tools.hyperbolic import Model
+
+#I played around with this a bit, but it&#39;s an eyeball test
+#TBH. Determines the radius at which we start approximating circular
+#arcs with straight lines.
+RADIUS_THRESHOLD = 80
+
+#how far apart points can be before we decide that we ordered the
+#polygon wrong
+DISTANCE_THRESHOLD = 1e-4
+
+#the default amount of &#34;room&#34; we leave outside the boundary of our model
+DRAW_NEIGHBORHOOD = 0.1
+
+#when drawing objects &#34;to infinity&#34;, how far offscreen we draw them
+#(as a % of the width/height)
+OFFSCREEN_FACTOR = 0.1
+
+#this is a bit unpythonic since these are meant to be constants
+def default_model_limits(model):
+    if model == Model.POINCARE or model == Model.KLEIN:
+        return ((-1 - DRAW_NEIGHBORHOOD, 1 + DRAW_NEIGHBORHOOD),
+                (-1 - DRAW_NEIGHBORHOOD, 1 + DRAW_NEIGHBORHOOD))
+
+    if model == Model.HALFSPACE:
+        return ((-6., 6.),
+                (-1 * DRAW_NEIGHBORHOOD, 8.))
+
+class DrawingError(Exception):
+    &#34;&#34;&#34;Thrown if we try and draw an object in a model which we haven&#39;t
+    implemented yet.
+
+    &#34;&#34;&#34;
+    pass
+
+class ProjectiveDrawing:
+    def __init__(self, figsize=8,
+                 ax=None,
+                 fig=None,
+                 xlim=(-5., 5.),
+                 ylim=(-5., 5.),
+                 transform=None):
+
+        if ax is None or fig is None:
+            fig, ax = plt.subplots(figsize=(figsize, figsize))
+
+        self.xlim, self.ylim = xlim, ylim
+
+        self.width = self.xlim[1] - self.xlim[0]
+        self.height = self.ylim[1] - self.ylim[0]
+
+        self.ax, self.fig = ax, fig
+
+        plt.tight_layout()
+        self.ax.axis(&#34;off&#34;)
+        self.ax.set_aspect(&#34;equal&#34;)
+        self.ax.set_xlim(self.xlim)
+        self.ax.set_ylim(self.ylim)
+
+        self.transform = projective.identity(2)
+        if transform is not None:
+            self.transform = transform
+
+    def draw_point(self, point, **kwargs):
+        pointlist = self.transform @ point.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34; : &#34;black&#34;,
+            &#34;marker&#34;: &#34;o&#34;,
+            &#34;linestyle&#34;:&#34;none&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        x, y = pointlist.affine_coords().T
+        plt.plot(x, y, **default_kwargs)
+
+    def draw_proj_segment(self, segment, **kwargs):
+        seglist = self.transform @ segment.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34;:&#34;black&#34;,
+            &#34;linewidth&#34;:1
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        lines = LineCollection(seglist.endpoint_affine_coords(),
+                               **default_kwargs)
+        self.ax.add_collection(lines)
+
+    def view_diam(self):
+        return np.sqrt(self.width * self.width + self.height * self.height)
+
+    def view_ctr(self):
+        return np.array([(self.xlim[0] + self.xlim[1])/2,
+                         (self.ylim[0] + self.ylim[1])/2])
+
+    def draw_nonaff_polygon(self, polygon, **kwargs):
+        if len(polygon.proj_data) == 0:
+            return
+
+         # first, find the first index where we switch signs
+        sign_switch = utils.first_sign_switch(polygon.projective_coords()[..., 0])
+
+        # roll the coordinates by the signs
+        coord_mat = polygon.projective_coords()
+
+        rows, cols = np.ogrid[:coord_mat.shape[0], :coord_mat.shape[1]]
+        cols = (cols + sign_switch[:, np.newaxis]) % coord_mat.shape[-2]
+        rolled_coords = coord_mat[rows, cols]
+
+        # find the index where signs switch back
+        second_switch = utils.first_sign_switch(rolled_coords[..., 0])
+
+        # re-index polygon affine coordinates by first sign switch
+        rolled_polys = projective.Polygon(rolled_coords)
+        poly_affine = rolled_polys.affine_coords()
+
+        # find affine coordinates of sign-switch points
+        s1_v1 = poly_affine[..., -1, :]
+        s1_v2 = poly_affine[..., 0, :]
+
+        s2_v1 = np.take_along_axis(poly_affine, second_switch[:, np.newaxis, np.newaxis] - 1, axis=1
+                                  ).squeeze(axis=1)
+        s2_v2 = np.take_along_axis(poly_affine, second_switch[:, np.newaxis, np.newaxis], axis=1
+                                  ).squeeze(axis=1)
+
+        # compute normalized (affine) displacement vectors between
+        # endpoints of segments which cross infinity
+        disp_1 = s1_v2 - s1_v1
+        disp_2 = s2_v2 - s2_v1
+
+        n_disp_1 = utils.normalize(disp_1)
+        n_disp_2 = utils.normalize(disp_2)
+
+        # compute dummy vertex coordinates for segments which cross infinity.
+        # this could be DRYer.
+        dummy_p1v1 = s1_v2 + (
+            n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v2, axis=-1))[:, np.newaxis]
+        )
+        dummy_p2v1 = s1_v1 - (
+            n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v1, axis=-1))[:, np.newaxis]
+        )
+
+        dummy_p1v2 = s2_v1 - (
+            n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v1, axis=-1))[:, np.newaxis]
+        )
+        dummy_p2v2 = s2_v2 + (
+            n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v2, axis=-1))[:, np.newaxis]
+        )
+
+        dummy_coords_1 = np.stack([dummy_p1v2, dummy_p1v1], axis=-2)
+        dummy_coords_2 = np.stack([dummy_p2v1, dummy_p2v2], axis=-2)
+
+
+        # draw a pair of polygons for each non-affine polygon
+        for poly_coords, s_index, dc_1, dc_2 in zip(
+            poly_affine, second_switch, dummy_coords_1, dummy_coords_2):
+
+            p1 = Polygon(np.concatenate([poly_coords[:s_index], dc_1]),
+                        **kwargs)
+            p2 = Polygon(np.concatenate([poly_coords[s_index:], dc_2]),
+                        **kwargs)
+            self.ax.add_patch(p1)
+            self.ax.add_patch(p2)
+
+
+
+    def draw_polygon(self, polygon, assume_affine=True, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        polylist = projective.Polygon(self.transform @ polygon.flatten_to_unit())
+
+        if assume_affine:
+            polys = PolyCollection(polylist.affine_coords(), **default_kwargs)
+            self.ax.add_collection(polys)
+            return
+
+        in_chart = polylist.in_standard_chart()
+        affine_polys = PolyCollection(polylist[in_chart].affine_coords(),
+                                      **default_kwargs)
+        self.ax.add_collection(affine_polys)
+
+        self.draw_nonaff_polygon(polylist[~in_chart], **default_kwargs)
+
+    def set_transform(self, transform):
+        self.transform = transform
+
+    def add_transform(self, transform):
+        self.transform = transform @ self.transform
+
+    def precompose_transform(self, transform):
+        self.transform = self.transform @ transform
+
+    def show(self):
+        plt.show()
+
+class HyperbolicDrawing(ProjectiveDrawing):
+    def __init__(self, figsize=8,
+                 ax=None,
+                 fig=None,
+                 facecolor=&#34;aliceblue&#34;,
+                 edgecolor=&#34;lightgray&#34;,
+                 linewidth=1,
+                 model=Model.POINCARE,
+                 xlim=None,
+                 ylim=None,
+                 transform=None):
+
+        if ax is None or fig is None:
+            fig, ax = plt.subplots(figsize=(figsize, figsize))
+
+        default_x, default_y = default_model_limits(model)
+
+        self.xlim, self.ylim = xlim, ylim
+        if xlim is None:
+            self.xlim = default_x
+        if ylim is None:
+            self.ylim = default_y
+
+        self.width = self.xlim[1] - self.xlim[0]
+        self.height = self.ylim[1] - self.ylim[0]
+
+        self.left_infinity = self.xlim[0] - OFFSCREEN_FACTOR * self.width
+        self.right_infinity = self.xlim[1] + OFFSCREEN_FACTOR * self.width
+        self.up_infinity = self.ylim[1] + OFFSCREEN_FACTOR * self.height
+        self.down_infinity = self.ylim[0] - OFFSCREEN_FACTOR * self.height
+        self.h_infinity = self.right_infinity - self.left_infinity
+        self.v_infinity = self.up_infinity - self.down_infinity
+
+        self.ax, self.fig = ax, fig
+
+        plt.tight_layout()
+        self.ax.axis(&#34;off&#34;)
+        self.ax.set_aspect(&#34;equal&#34;)
+        self.ax.set_xlim(self.xlim)
+        self.ax.set_ylim(self.ylim)
+
+        self.facecolor = facecolor
+        self.edgecolor = edgecolor
+        self.linewidth = linewidth
+
+        self.model = model
+
+        self.transform = hyperbolic.identity(2)
+
+        if transform is not None:
+            self.transform = transform
+
+
+
+    def draw_plane(self, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: self.facecolor,
+            &#34;edgecolor&#34;: self.edgecolor,
+            &#34;linewidth&#34;: self.linewidth,
+            &#34;zorder&#34;: 0
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        if self.model == Model.POINCARE or self.model == Model.KLEIN:
+            plane = Circle((0., 0.), 1.0, **default_kwargs)
+
+            self.ax.add_patch(plane)
+        elif self.model == Model.HALFSPACE:
+            xmin, xmax = self.xlim
+            ymin, ymax = self.ylim
+            plane = Rectangle((self.left_infinity, 0.),
+                              self.h_infinity, self.up_infinity,
+                              facecolor=self.facecolor,
+                              edgecolor=self.edgecolor,
+                              zorder=0,
+                              **kwargs)
+            self.ax.add_patch(plane)
+
+        else:
+            raise DrawingError(
+                &#34;Drawing in model &#39;{}&#39; is not implemented&#34;.format(self.model)
+            )
+
+    def get_vertical_segment(self, endpts):
+        ordered_endpts = endpts[:]
+        if (np.isnan(endpts[0,0]) or
+            endpts[0, 0] &lt; self.left_infinity or
+            endpts[0, 0] &gt; self.right_infinity):
+            ordered_endpts = np.flip(endpts, axis=0)
+
+        if (np.isnan(ordered_endpts[1, 0]) or
+            ordered_endpts[1, 0] &lt; self.left_infinity or
+            ordered_endpts[1, 0] &gt; self.right_infinity):
+
+            ordered_endpts[1, 1] = self.up_infinity
+
+        ordered_endpts[1, 0] = ordered_endpts[0, 0]
+
+        return ordered_endpts
+
+
+
+    def draw_geodesic(self, segment,
+                      radius_threshold=RADIUS_THRESHOLD, **kwargs):
+        seglist = self.transform @ segment.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34;:&#34;black&#34;,
+            &#34;linewidth&#34;:1
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        if self.model not in [Model.KLEIN, Model.POINCARE, Model.HALFSPACE]:
+            raise DrawingError(
+                &#34;Drawing geodesics in model &#39;{}&#39; is not implemented&#34;.format(
+                    self.model)
+            )
+
+        if self.model == Model.KLEIN:
+            lines = LineCollection(seglist.endpoint_coords(self.model),
+                                   **default_kwargs)
+            self.ax.add_collection(lines)
+            return
+
+        centers, radii, thetas = seglist.circle_parameters(model=self.model,
+                                                               degrees=True)
+        for center, radius, theta, segment in zip(centers, radii,
+                                                  thetas, seglist):
+            if np.isnan(radius) or radius &gt; radius_threshold:
+                arcpath = self.get_straight_arcpath(segment)
+                arc = PathPatch(arcpath, **default_kwargs)
+                self.ax.add_patch(arc)
+                continue
+
+            arc = Arc(center, radius * 2, radius * 2,
+                      theta1=theta[0], theta2=theta[1],
+                      **kwargs)
+            self.ax.add_patch(arc)
+
+
+    def draw_point(self, point, **kwargs):
+        pointlist = self.transform @ point.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34; : &#34;black&#34;,
+            &#34;marker&#34;: &#34;o&#34;,
+            &#34;linestyle&#34;:&#34;none&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        x, y = pointlist.coords(self.model).T
+        plt.plot(x, y, **default_kwargs)
+
+    def get_circle_arcpath(self, center, radius, theta):
+        &#34;&#34;&#34;Get a matplotlib path object for the circular arc representing this
+        geometric object.
+
+        &#34;&#34;&#34;
+        cx, cy = center
+        transform = Affine2D()
+        transform.scale(radius)
+        transform.translate(cx, cy)
+        return transform.transform_path(Path.arc(theta[0], theta[1]))
+
+    def get_straight_arcpath(self, segment):
+        endpts = segment.endpoint_coords(self.model)
+
+        if self.model == Model.POINCARE:
+            return Path(endpts, [Path.MOVETO, Path.LINETO])
+        if self.model == Model.HALFSPACE:
+            v_endpts = self.get_vertical_segment(endpts)
+            return Path(v_endpts, [Path.MOVETO, Path.LINETO])
+
+    def get_polygon_arcpath(self, polygon,
+                            radius_threshold=RADIUS_THRESHOLD,
+                            distance_threshold=DISTANCE_THRESHOLD):
+        vertices = np.zeros((0, 2))
+        codes = np.zeros((0,))
+        first_segment = True
+
+        polysegs = polygon.get_edges()
+        centers, radii, thetas = polysegs.circle_parameters(model=self.model)
+
+        for center, radius, theta, segment in zip(centers, radii, thetas, polysegs):
+            if not np.isnan(radius) and radius &lt; radius_threshold:
+                g_path = self.get_circle_arcpath(center, radius, theta)
+            else:
+                g_path = self.get_straight_arcpath(segment)
+
+            g_verts = g_path.vertices
+            p1, p2 = segment.get_end_pair(as_points=True)
+
+            p1_opp_dist = np.linalg.norm(p1.coords(self.model) - g_verts[-1])
+            p2_opp_dist = np.linalg.norm(p2.coords(self.model) - g_verts[0])
+            if (p1_opp_dist &lt; distance_threshold or
+                p2_opp_dist &lt; distance_threshold):
+                g_verts = g_verts[::-1]
+
+            g_codes = copy.deepcopy(g_path.codes)
+            if not first_segment:
+                g_codes[0] = Path.LINETO
+
+            vertices = np.concatenate((vertices, g_verts), axis=-2)
+            codes = np.concatenate((codes, g_codes))
+            first_segment = False
+
+        return Path(vertices, codes)
+
+    def draw_polygon(self, polygon, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        polylist = self.transform @ polygon.flatten_to_unit()
+
+        if self.model == Model.KLEIN:
+            polys = PolyCollection(polylist.coords(&#34;klein&#34;), **default_kwargs)
+            self.ax.add_collection(polys)
+
+        elif self.model == Model.POINCARE or self.model == Model.HALFSPACE:
+            for poly in polylist:
+                path = self.get_polygon_arcpath(poly)
+                self.ax.add_patch(PathPatch(path, **default_kwargs))
+        else:
+            raise DrawingError(
+                &#34;Drawing polygons in model &#39;{}&#39; is not implemented&#34;.format(
+                    self.model)
+            )
+
+    def draw_horosphere(self, horoball, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        horolist = self.transform @ horoball.flatten_to_unit()
+        if self.model == Model.POINCARE or self.model == Model.HALFSPACE:
+            center, radius = horolist.sphere_parameters(model=self.model)
+
+            good_indices = ((radius &lt; RADIUS_THRESHOLD) &amp;
+                            ~np.isnan(radius) &amp;
+                            ~(np.isnan(center).any(axis=-1)))
+
+            circle_ctrs = center[good_indices]
+            circle_radii = radius[good_indices]
+
+            if len(circle_ctrs) &gt; 0:
+                self.ax.add_collection(
+                    EllipseCollection(circle_radii * 2, circle_radii * 2,
+                                      0, units=&#34;xy&#34;, offsets=circle_ctrs,
+                                      transOffset=self.ax.transData,
+                                      **default_kwargs)
+                )
+
+            if self.model == Model.HALFSPACE:
+                for horoball in horolist[~good_indices]:
+                    height = horoball.ref_coords(self.model)[1]
+                    h_rect = Rectangle((self.left_infinity, height),
+                                       self.h_infinity,
+                                       self.up_infinity - height,
+                                       **default_kwargs)
+
+                    self.ax.add_patch(h_rect)
+        else:
+            raise DrawingError(
+                &#34;Drawing horospheres in model &#39;{}&#39; is not implemented.&#34;.format(
+                self.model)
+            )
+
+    def draw_horoarc(self, horoarc, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        if self.model != Model.POINCARE and self.model != Model.HALFSPACE:
+            raise DrawingError(
+                &#34;Drawing horoarcs in model &#39;{}&#39; is not implemented.&#34;.format(
+                    self.model)
+            )
+
+        horolist = self.transform @ horoarc.flatten_to_unit()
+        endpts = horolist.endpoint_coords(model=self.model)
+        centers, radii, thetas = horolist.circle_parameters(model=self.model)
+
+        for center, radius, theta, endpt in zip(centers, radii, thetas, endpts):
+            if np.isnan(radius) or radius &gt; RADIUS_THRESHOLD:
+                path = Path(endpt, [Path.MOVETO, Path.LINETO])
+                pathpatch = PathPatch(path, **default_kwargs)
+                self.ax.add_patch(pathpatch)
+            else:
+                arc = Arc(center, radius * 2, radius * 2,
+                          theta1=theta[0], theta2=theta[1],
+                          **default_kwargs)
+                self.ax.add_patch(arc)
+
+    def draw_boundary_arc(self, boundary_arc, **kwargs):
+        default_kwargs = {
+            &#34;edgecolor&#34;: &#34;black&#34;,
+            &#34;linewidth&#34;: 3
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        arclist = self.transform @ boundary_arc.flatten_to_unit()
+
+        if self.model == Model.POINCARE or self.model == Model.KLEIN:
+            centers, radii, thetas = arclist.circle_parameters(model=self.model)
+            for center, radius, theta in zip(centers, radii, thetas):
+                arc = Arc(center, radius * 2, radius * 2,
+                          theta1=theta[0], theta2=theta[1],
+                          **default_kwargs)
+
+                self.ax.add_patch(arc)
+
+        elif self.model == Model.HALFSPACE:
+            endpoints = arclist.endpoint_coords(self.model, ordered=True)
+
+            endpoints[..., 1] = 0.
+            endpoints[np.isnan(endpoints)[..., 0], 0] = np.inf
+
+            # first, draw all the lines where we go left to right
+            leftright = (endpoints[..., 0, 0] &lt; endpoints[..., 1, 0])
+            leftright_endpts = endpoints[leftright]
+
+            leftright_arcs = LineCollection(leftright_endpts, **default_kwargs)
+            self.ax.add_collection(leftright_arcs)
+
+            # then, draw all the lines that wrap around infinity
+
+            infty_right = np.array([self.right_infinity, 0.])
+            infty_left = np.array([self.left_infinity, 0.])
+
+            to_right = np.broadcast_to(infty_right, endpoints[~leftright, 0].shape)
+            left_to = np.broadcast_to(infty_left, endpoints[~leftright, 1].shape)
+
+            coords1 = np.stack([endpoints[~leftright, 0], to_right], axis=-2)
+            coords2 = np.stack([endpoints[~leftright, 1], left_to], axis=-2)
+
+            right_arcs = LineCollection(coords1, **default_kwargs)
+            left_arcs = LineCollection(coords2, **default_kwargs)
+
+            self.ax.add_collection(right_arcs)
+            self.ax.add_collection(left_arcs)
+
+        else:
+            raise DrawingError(
+                &#34;Drawing boundary arcs in model &#39;{}&#39; is not implemented.&#34;.format(
+                    self.model)
+            )</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="geometry_tools.drawtools.default_model_limits"><code class="name flex">
+<span>def <span class="ident">default_model_limits</span></span>(<span>model)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def default_model_limits(model):
+    if model == Model.POINCARE or model == Model.KLEIN:
+        return ((-1 - DRAW_NEIGHBORHOOD, 1 + DRAW_NEIGHBORHOOD),
+                (-1 - DRAW_NEIGHBORHOOD, 1 + DRAW_NEIGHBORHOOD))
+
+    if model == Model.HALFSPACE:
+        return ((-6., 6.),
+                (-1 * DRAW_NEIGHBORHOOD, 8.))</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="geometry_tools.drawtools.DrawingError"><code class="flex name class">
+<span>class <span class="ident">DrawingError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Thrown if we try and draw an object in a model which we haven't
+implemented yet.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DrawingError(Exception):
+    &#34;&#34;&#34;Thrown if we try and draw an object in a model which we haven&#39;t
+    implemented yet.
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing"><code class="flex name class">
+<span>class <span class="ident">HyperbolicDrawing</span></span>
+<span>(</span><span>figsize=8, ax=None, fig=None, facecolor='aliceblue', edgecolor='lightgray', linewidth=1, model=Model.POINCARE, xlim=None, ylim=None, transform=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HyperbolicDrawing(ProjectiveDrawing):
+    def __init__(self, figsize=8,
+                 ax=None,
+                 fig=None,
+                 facecolor=&#34;aliceblue&#34;,
+                 edgecolor=&#34;lightgray&#34;,
+                 linewidth=1,
+                 model=Model.POINCARE,
+                 xlim=None,
+                 ylim=None,
+                 transform=None):
+
+        if ax is None or fig is None:
+            fig, ax = plt.subplots(figsize=(figsize, figsize))
+
+        default_x, default_y = default_model_limits(model)
+
+        self.xlim, self.ylim = xlim, ylim
+        if xlim is None:
+            self.xlim = default_x
+        if ylim is None:
+            self.ylim = default_y
+
+        self.width = self.xlim[1] - self.xlim[0]
+        self.height = self.ylim[1] - self.ylim[0]
+
+        self.left_infinity = self.xlim[0] - OFFSCREEN_FACTOR * self.width
+        self.right_infinity = self.xlim[1] + OFFSCREEN_FACTOR * self.width
+        self.up_infinity = self.ylim[1] + OFFSCREEN_FACTOR * self.height
+        self.down_infinity = self.ylim[0] - OFFSCREEN_FACTOR * self.height
+        self.h_infinity = self.right_infinity - self.left_infinity
+        self.v_infinity = self.up_infinity - self.down_infinity
+
+        self.ax, self.fig = ax, fig
+
+        plt.tight_layout()
+        self.ax.axis(&#34;off&#34;)
+        self.ax.set_aspect(&#34;equal&#34;)
+        self.ax.set_xlim(self.xlim)
+        self.ax.set_ylim(self.ylim)
+
+        self.facecolor = facecolor
+        self.edgecolor = edgecolor
+        self.linewidth = linewidth
+
+        self.model = model
+
+        self.transform = hyperbolic.identity(2)
+
+        if transform is not None:
+            self.transform = transform
+
+
+
+    def draw_plane(self, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: self.facecolor,
+            &#34;edgecolor&#34;: self.edgecolor,
+            &#34;linewidth&#34;: self.linewidth,
+            &#34;zorder&#34;: 0
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        if self.model == Model.POINCARE or self.model == Model.KLEIN:
+            plane = Circle((0., 0.), 1.0, **default_kwargs)
+
+            self.ax.add_patch(plane)
+        elif self.model == Model.HALFSPACE:
+            xmin, xmax = self.xlim
+            ymin, ymax = self.ylim
+            plane = Rectangle((self.left_infinity, 0.),
+                              self.h_infinity, self.up_infinity,
+                              facecolor=self.facecolor,
+                              edgecolor=self.edgecolor,
+                              zorder=0,
+                              **kwargs)
+            self.ax.add_patch(plane)
+
+        else:
+            raise DrawingError(
+                &#34;Drawing in model &#39;{}&#39; is not implemented&#34;.format(self.model)
+            )
+
+    def get_vertical_segment(self, endpts):
+        ordered_endpts = endpts[:]
+        if (np.isnan(endpts[0,0]) or
+            endpts[0, 0] &lt; self.left_infinity or
+            endpts[0, 0] &gt; self.right_infinity):
+            ordered_endpts = np.flip(endpts, axis=0)
+
+        if (np.isnan(ordered_endpts[1, 0]) or
+            ordered_endpts[1, 0] &lt; self.left_infinity or
+            ordered_endpts[1, 0] &gt; self.right_infinity):
+
+            ordered_endpts[1, 1] = self.up_infinity
+
+        ordered_endpts[1, 0] = ordered_endpts[0, 0]
+
+        return ordered_endpts
+
+
+
+    def draw_geodesic(self, segment,
+                      radius_threshold=RADIUS_THRESHOLD, **kwargs):
+        seglist = self.transform @ segment.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34;:&#34;black&#34;,
+            &#34;linewidth&#34;:1
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        if self.model not in [Model.KLEIN, Model.POINCARE, Model.HALFSPACE]:
+            raise DrawingError(
+                &#34;Drawing geodesics in model &#39;{}&#39; is not implemented&#34;.format(
+                    self.model)
+            )
+
+        if self.model == Model.KLEIN:
+            lines = LineCollection(seglist.endpoint_coords(self.model),
+                                   **default_kwargs)
+            self.ax.add_collection(lines)
+            return
+
+        centers, radii, thetas = seglist.circle_parameters(model=self.model,
+                                                               degrees=True)
+        for center, radius, theta, segment in zip(centers, radii,
+                                                  thetas, seglist):
+            if np.isnan(radius) or radius &gt; radius_threshold:
+                arcpath = self.get_straight_arcpath(segment)
+                arc = PathPatch(arcpath, **default_kwargs)
+                self.ax.add_patch(arc)
+                continue
+
+            arc = Arc(center, radius * 2, radius * 2,
+                      theta1=theta[0], theta2=theta[1],
+                      **kwargs)
+            self.ax.add_patch(arc)
+
+
+    def draw_point(self, point, **kwargs):
+        pointlist = self.transform @ point.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34; : &#34;black&#34;,
+            &#34;marker&#34;: &#34;o&#34;,
+            &#34;linestyle&#34;:&#34;none&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        x, y = pointlist.coords(self.model).T
+        plt.plot(x, y, **default_kwargs)
+
+    def get_circle_arcpath(self, center, radius, theta):
+        &#34;&#34;&#34;Get a matplotlib path object for the circular arc representing this
+        geometric object.
+
+        &#34;&#34;&#34;
+        cx, cy = center
+        transform = Affine2D()
+        transform.scale(radius)
+        transform.translate(cx, cy)
+        return transform.transform_path(Path.arc(theta[0], theta[1]))
+
+    def get_straight_arcpath(self, segment):
+        endpts = segment.endpoint_coords(self.model)
+
+        if self.model == Model.POINCARE:
+            return Path(endpts, [Path.MOVETO, Path.LINETO])
+        if self.model == Model.HALFSPACE:
+            v_endpts = self.get_vertical_segment(endpts)
+            return Path(v_endpts, [Path.MOVETO, Path.LINETO])
+
+    def get_polygon_arcpath(self, polygon,
+                            radius_threshold=RADIUS_THRESHOLD,
+                            distance_threshold=DISTANCE_THRESHOLD):
+        vertices = np.zeros((0, 2))
+        codes = np.zeros((0,))
+        first_segment = True
+
+        polysegs = polygon.get_edges()
+        centers, radii, thetas = polysegs.circle_parameters(model=self.model)
+
+        for center, radius, theta, segment in zip(centers, radii, thetas, polysegs):
+            if not np.isnan(radius) and radius &lt; radius_threshold:
+                g_path = self.get_circle_arcpath(center, radius, theta)
+            else:
+                g_path = self.get_straight_arcpath(segment)
+
+            g_verts = g_path.vertices
+            p1, p2 = segment.get_end_pair(as_points=True)
+
+            p1_opp_dist = np.linalg.norm(p1.coords(self.model) - g_verts[-1])
+            p2_opp_dist = np.linalg.norm(p2.coords(self.model) - g_verts[0])
+            if (p1_opp_dist &lt; distance_threshold or
+                p2_opp_dist &lt; distance_threshold):
+                g_verts = g_verts[::-1]
+
+            g_codes = copy.deepcopy(g_path.codes)
+            if not first_segment:
+                g_codes[0] = Path.LINETO
+
+            vertices = np.concatenate((vertices, g_verts), axis=-2)
+            codes = np.concatenate((codes, g_codes))
+            first_segment = False
+
+        return Path(vertices, codes)
+
+    def draw_polygon(self, polygon, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        polylist = self.transform @ polygon.flatten_to_unit()
+
+        if self.model == Model.KLEIN:
+            polys = PolyCollection(polylist.coords(&#34;klein&#34;), **default_kwargs)
+            self.ax.add_collection(polys)
+
+        elif self.model == Model.POINCARE or self.model == Model.HALFSPACE:
+            for poly in polylist:
+                path = self.get_polygon_arcpath(poly)
+                self.ax.add_patch(PathPatch(path, **default_kwargs))
+        else:
+            raise DrawingError(
+                &#34;Drawing polygons in model &#39;{}&#39; is not implemented&#34;.format(
+                    self.model)
+            )
+
+    def draw_horosphere(self, horoball, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        horolist = self.transform @ horoball.flatten_to_unit()
+        if self.model == Model.POINCARE or self.model == Model.HALFSPACE:
+            center, radius = horolist.sphere_parameters(model=self.model)
+
+            good_indices = ((radius &lt; RADIUS_THRESHOLD) &amp;
+                            ~np.isnan(radius) &amp;
+                            ~(np.isnan(center).any(axis=-1)))
+
+            circle_ctrs = center[good_indices]
+            circle_radii = radius[good_indices]
+
+            if len(circle_ctrs) &gt; 0:
+                self.ax.add_collection(
+                    EllipseCollection(circle_radii * 2, circle_radii * 2,
+                                      0, units=&#34;xy&#34;, offsets=circle_ctrs,
+                                      transOffset=self.ax.transData,
+                                      **default_kwargs)
+                )
+
+            if self.model == Model.HALFSPACE:
+                for horoball in horolist[~good_indices]:
+                    height = horoball.ref_coords(self.model)[1]
+                    h_rect = Rectangle((self.left_infinity, height),
+                                       self.h_infinity,
+                                       self.up_infinity - height,
+                                       **default_kwargs)
+
+                    self.ax.add_patch(h_rect)
+        else:
+            raise DrawingError(
+                &#34;Drawing horospheres in model &#39;{}&#39; is not implemented.&#34;.format(
+                self.model)
+            )
+
+    def draw_horoarc(self, horoarc, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        if self.model != Model.POINCARE and self.model != Model.HALFSPACE:
+            raise DrawingError(
+                &#34;Drawing horoarcs in model &#39;{}&#39; is not implemented.&#34;.format(
+                    self.model)
+            )
+
+        horolist = self.transform @ horoarc.flatten_to_unit()
+        endpts = horolist.endpoint_coords(model=self.model)
+        centers, radii, thetas = horolist.circle_parameters(model=self.model)
+
+        for center, radius, theta, endpt in zip(centers, radii, thetas, endpts):
+            if np.isnan(radius) or radius &gt; RADIUS_THRESHOLD:
+                path = Path(endpt, [Path.MOVETO, Path.LINETO])
+                pathpatch = PathPatch(path, **default_kwargs)
+                self.ax.add_patch(pathpatch)
+            else:
+                arc = Arc(center, radius * 2, radius * 2,
+                          theta1=theta[0], theta2=theta[1],
+                          **default_kwargs)
+                self.ax.add_patch(arc)
+
+    def draw_boundary_arc(self, boundary_arc, **kwargs):
+        default_kwargs = {
+            &#34;edgecolor&#34;: &#34;black&#34;,
+            &#34;linewidth&#34;: 3
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        arclist = self.transform @ boundary_arc.flatten_to_unit()
+
+        if self.model == Model.POINCARE or self.model == Model.KLEIN:
+            centers, radii, thetas = arclist.circle_parameters(model=self.model)
+            for center, radius, theta in zip(centers, radii, thetas):
+                arc = Arc(center, radius * 2, radius * 2,
+                          theta1=theta[0], theta2=theta[1],
+                          **default_kwargs)
+
+                self.ax.add_patch(arc)
+
+        elif self.model == Model.HALFSPACE:
+            endpoints = arclist.endpoint_coords(self.model, ordered=True)
+
+            endpoints[..., 1] = 0.
+            endpoints[np.isnan(endpoints)[..., 0], 0] = np.inf
+
+            # first, draw all the lines where we go left to right
+            leftright = (endpoints[..., 0, 0] &lt; endpoints[..., 1, 0])
+            leftright_endpts = endpoints[leftright]
+
+            leftright_arcs = LineCollection(leftright_endpts, **default_kwargs)
+            self.ax.add_collection(leftright_arcs)
+
+            # then, draw all the lines that wrap around infinity
+
+            infty_right = np.array([self.right_infinity, 0.])
+            infty_left = np.array([self.left_infinity, 0.])
+
+            to_right = np.broadcast_to(infty_right, endpoints[~leftright, 0].shape)
+            left_to = np.broadcast_to(infty_left, endpoints[~leftright, 1].shape)
+
+            coords1 = np.stack([endpoints[~leftright, 0], to_right], axis=-2)
+            coords2 = np.stack([endpoints[~leftright, 1], left_to], axis=-2)
+
+            right_arcs = LineCollection(coords1, **default_kwargs)
+            left_arcs = LineCollection(coords2, **default_kwargs)
+
+            self.ax.add_collection(right_arcs)
+            self.ax.add_collection(left_arcs)
+
+        else:
+            raise DrawingError(
+                &#34;Drawing boundary arcs in model &#39;{}&#39; is not implemented.&#34;.format(
+                    self.model)
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="geometry_tools.drawtools.ProjectiveDrawing" href="#geometry_tools.drawtools.ProjectiveDrawing">ProjectiveDrawing</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.draw_boundary_arc"><code class="name flex">
+<span>def <span class="ident">draw_boundary_arc</span></span>(<span>self, boundary_arc, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_boundary_arc(self, boundary_arc, **kwargs):
+    default_kwargs = {
+        &#34;edgecolor&#34;: &#34;black&#34;,
+        &#34;linewidth&#34;: 3
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    arclist = self.transform @ boundary_arc.flatten_to_unit()
+
+    if self.model == Model.POINCARE or self.model == Model.KLEIN:
+        centers, radii, thetas = arclist.circle_parameters(model=self.model)
+        for center, radius, theta in zip(centers, radii, thetas):
+            arc = Arc(center, radius * 2, radius * 2,
+                      theta1=theta[0], theta2=theta[1],
+                      **default_kwargs)
+
+            self.ax.add_patch(arc)
+
+    elif self.model == Model.HALFSPACE:
+        endpoints = arclist.endpoint_coords(self.model, ordered=True)
+
+        endpoints[..., 1] = 0.
+        endpoints[np.isnan(endpoints)[..., 0], 0] = np.inf
+
+        # first, draw all the lines where we go left to right
+        leftright = (endpoints[..., 0, 0] &lt; endpoints[..., 1, 0])
+        leftright_endpts = endpoints[leftright]
+
+        leftright_arcs = LineCollection(leftright_endpts, **default_kwargs)
+        self.ax.add_collection(leftright_arcs)
+
+        # then, draw all the lines that wrap around infinity
+
+        infty_right = np.array([self.right_infinity, 0.])
+        infty_left = np.array([self.left_infinity, 0.])
+
+        to_right = np.broadcast_to(infty_right, endpoints[~leftright, 0].shape)
+        left_to = np.broadcast_to(infty_left, endpoints[~leftright, 1].shape)
+
+        coords1 = np.stack([endpoints[~leftright, 0], to_right], axis=-2)
+        coords2 = np.stack([endpoints[~leftright, 1], left_to], axis=-2)
+
+        right_arcs = LineCollection(coords1, **default_kwargs)
+        left_arcs = LineCollection(coords2, **default_kwargs)
+
+        self.ax.add_collection(right_arcs)
+        self.ax.add_collection(left_arcs)
+
+    else:
+        raise DrawingError(
+            &#34;Drawing boundary arcs in model &#39;{}&#39; is not implemented.&#34;.format(
+                self.model)
+        )</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.draw_geodesic"><code class="name flex">
+<span>def <span class="ident">draw_geodesic</span></span>(<span>self, segment, radius_threshold=80, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_geodesic(self, segment,
+                  radius_threshold=RADIUS_THRESHOLD, **kwargs):
+    seglist = self.transform @ segment.flatten_to_unit()
+    default_kwargs = {
+        &#34;color&#34;:&#34;black&#34;,
+        &#34;linewidth&#34;:1
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    if self.model not in [Model.KLEIN, Model.POINCARE, Model.HALFSPACE]:
+        raise DrawingError(
+            &#34;Drawing geodesics in model &#39;{}&#39; is not implemented&#34;.format(
+                self.model)
+        )
+
+    if self.model == Model.KLEIN:
+        lines = LineCollection(seglist.endpoint_coords(self.model),
+                               **default_kwargs)
+        self.ax.add_collection(lines)
+        return
+
+    centers, radii, thetas = seglist.circle_parameters(model=self.model,
+                                                           degrees=True)
+    for center, radius, theta, segment in zip(centers, radii,
+                                              thetas, seglist):
+        if np.isnan(radius) or radius &gt; radius_threshold:
+            arcpath = self.get_straight_arcpath(segment)
+            arc = PathPatch(arcpath, **default_kwargs)
+            self.ax.add_patch(arc)
+            continue
+
+        arc = Arc(center, radius * 2, radius * 2,
+                  theta1=theta[0], theta2=theta[1],
+                  **kwargs)
+        self.ax.add_patch(arc)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.draw_horoarc"><code class="name flex">
+<span>def <span class="ident">draw_horoarc</span></span>(<span>self, horoarc, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_horoarc(self, horoarc, **kwargs):
+    default_kwargs = {
+        &#34;facecolor&#34;: &#34;none&#34;,
+        &#34;edgecolor&#34;: &#34;black&#34;
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    if self.model != Model.POINCARE and self.model != Model.HALFSPACE:
+        raise DrawingError(
+            &#34;Drawing horoarcs in model &#39;{}&#39; is not implemented.&#34;.format(
+                self.model)
+        )
+
+    horolist = self.transform @ horoarc.flatten_to_unit()
+    endpts = horolist.endpoint_coords(model=self.model)
+    centers, radii, thetas = horolist.circle_parameters(model=self.model)
+
+    for center, radius, theta, endpt in zip(centers, radii, thetas, endpts):
+        if np.isnan(radius) or radius &gt; RADIUS_THRESHOLD:
+            path = Path(endpt, [Path.MOVETO, Path.LINETO])
+            pathpatch = PathPatch(path, **default_kwargs)
+            self.ax.add_patch(pathpatch)
+        else:
+            arc = Arc(center, radius * 2, radius * 2,
+                      theta1=theta[0], theta2=theta[1],
+                      **default_kwargs)
+            self.ax.add_patch(arc)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.draw_horosphere"><code class="name flex">
+<span>def <span class="ident">draw_horosphere</span></span>(<span>self, horoball, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_horosphere(self, horoball, **kwargs):
+    default_kwargs = {
+        &#34;facecolor&#34;: &#34;none&#34;,
+        &#34;edgecolor&#34;: &#34;black&#34;
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    horolist = self.transform @ horoball.flatten_to_unit()
+    if self.model == Model.POINCARE or self.model == Model.HALFSPACE:
+        center, radius = horolist.sphere_parameters(model=self.model)
+
+        good_indices = ((radius &lt; RADIUS_THRESHOLD) &amp;
+                        ~np.isnan(radius) &amp;
+                        ~(np.isnan(center).any(axis=-1)))
+
+        circle_ctrs = center[good_indices]
+        circle_radii = radius[good_indices]
+
+        if len(circle_ctrs) &gt; 0:
+            self.ax.add_collection(
+                EllipseCollection(circle_radii * 2, circle_radii * 2,
+                                  0, units=&#34;xy&#34;, offsets=circle_ctrs,
+                                  transOffset=self.ax.transData,
+                                  **default_kwargs)
+            )
+
+        if self.model == Model.HALFSPACE:
+            for horoball in horolist[~good_indices]:
+                height = horoball.ref_coords(self.model)[1]
+                h_rect = Rectangle((self.left_infinity, height),
+                                   self.h_infinity,
+                                   self.up_infinity - height,
+                                   **default_kwargs)
+
+                self.ax.add_patch(h_rect)
+    else:
+        raise DrawingError(
+            &#34;Drawing horospheres in model &#39;{}&#39; is not implemented.&#34;.format(
+            self.model)
+        )</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.draw_plane"><code class="name flex">
+<span>def <span class="ident">draw_plane</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_plane(self, **kwargs):
+    default_kwargs = {
+        &#34;facecolor&#34;: self.facecolor,
+        &#34;edgecolor&#34;: self.edgecolor,
+        &#34;linewidth&#34;: self.linewidth,
+        &#34;zorder&#34;: 0
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    if self.model == Model.POINCARE or self.model == Model.KLEIN:
+        plane = Circle((0., 0.), 1.0, **default_kwargs)
+
+        self.ax.add_patch(plane)
+    elif self.model == Model.HALFSPACE:
+        xmin, xmax = self.xlim
+        ymin, ymax = self.ylim
+        plane = Rectangle((self.left_infinity, 0.),
+                          self.h_infinity, self.up_infinity,
+                          facecolor=self.facecolor,
+                          edgecolor=self.edgecolor,
+                          zorder=0,
+                          **kwargs)
+        self.ax.add_patch(plane)
+
+    else:
+        raise DrawingError(
+            &#34;Drawing in model &#39;{}&#39; is not implemented&#34;.format(self.model)
+        )</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.draw_point"><code class="name flex">
+<span>def <span class="ident">draw_point</span></span>(<span>self, point, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_point(self, point, **kwargs):
+    pointlist = self.transform @ point.flatten_to_unit()
+    default_kwargs = {
+        &#34;color&#34; : &#34;black&#34;,
+        &#34;marker&#34;: &#34;o&#34;,
+        &#34;linestyle&#34;:&#34;none&#34;
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    x, y = pointlist.coords(self.model).T
+    plt.plot(x, y, **default_kwargs)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.draw_polygon"><code class="name flex">
+<span>def <span class="ident">draw_polygon</span></span>(<span>self, polygon, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_polygon(self, polygon, **kwargs):
+    default_kwargs = {
+        &#34;facecolor&#34;: &#34;none&#34;,
+        &#34;edgecolor&#34;: &#34;black&#34;
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    polylist = self.transform @ polygon.flatten_to_unit()
+
+    if self.model == Model.KLEIN:
+        polys = PolyCollection(polylist.coords(&#34;klein&#34;), **default_kwargs)
+        self.ax.add_collection(polys)
+
+    elif self.model == Model.POINCARE or self.model == Model.HALFSPACE:
+        for poly in polylist:
+            path = self.get_polygon_arcpath(poly)
+            self.ax.add_patch(PathPatch(path, **default_kwargs))
+    else:
+        raise DrawingError(
+            &#34;Drawing polygons in model &#39;{}&#39; is not implemented&#34;.format(
+                self.model)
+        )</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.get_circle_arcpath"><code class="name flex">
+<span>def <span class="ident">get_circle_arcpath</span></span>(<span>self, center, radius, theta)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a matplotlib path object for the circular arc representing this
+geometric object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_circle_arcpath(self, center, radius, theta):
+    &#34;&#34;&#34;Get a matplotlib path object for the circular arc representing this
+    geometric object.
+
+    &#34;&#34;&#34;
+    cx, cy = center
+    transform = Affine2D()
+    transform.scale(radius)
+    transform.translate(cx, cy)
+    return transform.transform_path(Path.arc(theta[0], theta[1]))</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.get_polygon_arcpath"><code class="name flex">
+<span>def <span class="ident">get_polygon_arcpath</span></span>(<span>self, polygon, radius_threshold=80, distance_threshold=0.0001)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_polygon_arcpath(self, polygon,
+                        radius_threshold=RADIUS_THRESHOLD,
+                        distance_threshold=DISTANCE_THRESHOLD):
+    vertices = np.zeros((0, 2))
+    codes = np.zeros((0,))
+    first_segment = True
+
+    polysegs = polygon.get_edges()
+    centers, radii, thetas = polysegs.circle_parameters(model=self.model)
+
+    for center, radius, theta, segment in zip(centers, radii, thetas, polysegs):
+        if not np.isnan(radius) and radius &lt; radius_threshold:
+            g_path = self.get_circle_arcpath(center, radius, theta)
+        else:
+            g_path = self.get_straight_arcpath(segment)
+
+        g_verts = g_path.vertices
+        p1, p2 = segment.get_end_pair(as_points=True)
+
+        p1_opp_dist = np.linalg.norm(p1.coords(self.model) - g_verts[-1])
+        p2_opp_dist = np.linalg.norm(p2.coords(self.model) - g_verts[0])
+        if (p1_opp_dist &lt; distance_threshold or
+            p2_opp_dist &lt; distance_threshold):
+            g_verts = g_verts[::-1]
+
+        g_codes = copy.deepcopy(g_path.codes)
+        if not first_segment:
+            g_codes[0] = Path.LINETO
+
+        vertices = np.concatenate((vertices, g_verts), axis=-2)
+        codes = np.concatenate((codes, g_codes))
+        first_segment = False
+
+    return Path(vertices, codes)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.get_straight_arcpath"><code class="name flex">
+<span>def <span class="ident">get_straight_arcpath</span></span>(<span>self, segment)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_straight_arcpath(self, segment):
+    endpts = segment.endpoint_coords(self.model)
+
+    if self.model == Model.POINCARE:
+        return Path(endpts, [Path.MOVETO, Path.LINETO])
+    if self.model == Model.HALFSPACE:
+        v_endpts = self.get_vertical_segment(endpts)
+        return Path(v_endpts, [Path.MOVETO, Path.LINETO])</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.HyperbolicDrawing.get_vertical_segment"><code class="name flex">
+<span>def <span class="ident">get_vertical_segment</span></span>(<span>self, endpts)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_vertical_segment(self, endpts):
+    ordered_endpts = endpts[:]
+    if (np.isnan(endpts[0,0]) or
+        endpts[0, 0] &lt; self.left_infinity or
+        endpts[0, 0] &gt; self.right_infinity):
+        ordered_endpts = np.flip(endpts, axis=0)
+
+    if (np.isnan(ordered_endpts[1, 0]) or
+        ordered_endpts[1, 0] &lt; self.left_infinity or
+        ordered_endpts[1, 0] &gt; self.right_infinity):
+
+        ordered_endpts[1, 1] = self.up_infinity
+
+    ordered_endpts[1, 0] = ordered_endpts[0, 0]
+
+    return ordered_endpts</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing"><code class="flex name class">
+<span>class <span class="ident">ProjectiveDrawing</span></span>
+<span>(</span><span>figsize=8, ax=None, fig=None, xlim=(-5.0, 5.0), ylim=(-5.0, 5.0), transform=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ProjectiveDrawing:
+    def __init__(self, figsize=8,
+                 ax=None,
+                 fig=None,
+                 xlim=(-5., 5.),
+                 ylim=(-5., 5.),
+                 transform=None):
+
+        if ax is None or fig is None:
+            fig, ax = plt.subplots(figsize=(figsize, figsize))
+
+        self.xlim, self.ylim = xlim, ylim
+
+        self.width = self.xlim[1] - self.xlim[0]
+        self.height = self.ylim[1] - self.ylim[0]
+
+        self.ax, self.fig = ax, fig
+
+        plt.tight_layout()
+        self.ax.axis(&#34;off&#34;)
+        self.ax.set_aspect(&#34;equal&#34;)
+        self.ax.set_xlim(self.xlim)
+        self.ax.set_ylim(self.ylim)
+
+        self.transform = projective.identity(2)
+        if transform is not None:
+            self.transform = transform
+
+    def draw_point(self, point, **kwargs):
+        pointlist = self.transform @ point.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34; : &#34;black&#34;,
+            &#34;marker&#34;: &#34;o&#34;,
+            &#34;linestyle&#34;:&#34;none&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        x, y = pointlist.affine_coords().T
+        plt.plot(x, y, **default_kwargs)
+
+    def draw_proj_segment(self, segment, **kwargs):
+        seglist = self.transform @ segment.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34;:&#34;black&#34;,
+            &#34;linewidth&#34;:1
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        lines = LineCollection(seglist.endpoint_affine_coords(),
+                               **default_kwargs)
+        self.ax.add_collection(lines)
+
+    def view_diam(self):
+        return np.sqrt(self.width * self.width + self.height * self.height)
+
+    def view_ctr(self):
+        return np.array([(self.xlim[0] + self.xlim[1])/2,
+                         (self.ylim[0] + self.ylim[1])/2])
+
+    def draw_nonaff_polygon(self, polygon, **kwargs):
+        if len(polygon.proj_data) == 0:
+            return
+
+         # first, find the first index where we switch signs
+        sign_switch = utils.first_sign_switch(polygon.projective_coords()[..., 0])
+
+        # roll the coordinates by the signs
+        coord_mat = polygon.projective_coords()
+
+        rows, cols = np.ogrid[:coord_mat.shape[0], :coord_mat.shape[1]]
+        cols = (cols + sign_switch[:, np.newaxis]) % coord_mat.shape[-2]
+        rolled_coords = coord_mat[rows, cols]
+
+        # find the index where signs switch back
+        second_switch = utils.first_sign_switch(rolled_coords[..., 0])
+
+        # re-index polygon affine coordinates by first sign switch
+        rolled_polys = projective.Polygon(rolled_coords)
+        poly_affine = rolled_polys.affine_coords()
+
+        # find affine coordinates of sign-switch points
+        s1_v1 = poly_affine[..., -1, :]
+        s1_v2 = poly_affine[..., 0, :]
+
+        s2_v1 = np.take_along_axis(poly_affine, second_switch[:, np.newaxis, np.newaxis] - 1, axis=1
+                                  ).squeeze(axis=1)
+        s2_v2 = np.take_along_axis(poly_affine, second_switch[:, np.newaxis, np.newaxis], axis=1
+                                  ).squeeze(axis=1)
+
+        # compute normalized (affine) displacement vectors between
+        # endpoints of segments which cross infinity
+        disp_1 = s1_v2 - s1_v1
+        disp_2 = s2_v2 - s2_v1
+
+        n_disp_1 = utils.normalize(disp_1)
+        n_disp_2 = utils.normalize(disp_2)
+
+        # compute dummy vertex coordinates for segments which cross infinity.
+        # this could be DRYer.
+        dummy_p1v1 = s1_v2 + (
+            n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v2, axis=-1))[:, np.newaxis]
+        )
+        dummy_p2v1 = s1_v1 - (
+            n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v1, axis=-1))[:, np.newaxis]
+        )
+
+        dummy_p1v2 = s2_v1 - (
+            n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v1, axis=-1))[:, np.newaxis]
+        )
+        dummy_p2v2 = s2_v2 + (
+            n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v2, axis=-1))[:, np.newaxis]
+        )
+
+        dummy_coords_1 = np.stack([dummy_p1v2, dummy_p1v1], axis=-2)
+        dummy_coords_2 = np.stack([dummy_p2v1, dummy_p2v2], axis=-2)
+
+
+        # draw a pair of polygons for each non-affine polygon
+        for poly_coords, s_index, dc_1, dc_2 in zip(
+            poly_affine, second_switch, dummy_coords_1, dummy_coords_2):
+
+            p1 = Polygon(np.concatenate([poly_coords[:s_index], dc_1]),
+                        **kwargs)
+            p2 = Polygon(np.concatenate([poly_coords[s_index:], dc_2]),
+                        **kwargs)
+            self.ax.add_patch(p1)
+            self.ax.add_patch(p2)
+
+
+
+    def draw_polygon(self, polygon, assume_affine=True, **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        polylist = projective.Polygon(self.transform @ polygon.flatten_to_unit())
+
+        if assume_affine:
+            polys = PolyCollection(polylist.affine_coords(), **default_kwargs)
+            self.ax.add_collection(polys)
+            return
+
+        in_chart = polylist.in_standard_chart()
+        affine_polys = PolyCollection(polylist[in_chart].affine_coords(),
+                                      **default_kwargs)
+        self.ax.add_collection(affine_polys)
+
+        self.draw_nonaff_polygon(polylist[~in_chart], **default_kwargs)
+
+    def set_transform(self, transform):
+        self.transform = transform
+
+    def add_transform(self, transform):
+        self.transform = transform @ self.transform
+
+    def precompose_transform(self, transform):
+        self.transform = self.transform @ transform
+
+    def show(self):
+        plt.show()</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="geometry_tools.drawtools.HyperbolicDrawing" href="#geometry_tools.drawtools.HyperbolicDrawing">HyperbolicDrawing</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.add_transform"><code class="name flex">
+<span>def <span class="ident">add_transform</span></span>(<span>self, transform)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_transform(self, transform):
+    self.transform = transform @ self.transform</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.draw_nonaff_polygon"><code class="name flex">
+<span>def <span class="ident">draw_nonaff_polygon</span></span>(<span>self, polygon, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_nonaff_polygon(self, polygon, **kwargs):
+    if len(polygon.proj_data) == 0:
+        return
+
+     # first, find the first index where we switch signs
+    sign_switch = utils.first_sign_switch(polygon.projective_coords()[..., 0])
+
+    # roll the coordinates by the signs
+    coord_mat = polygon.projective_coords()
+
+    rows, cols = np.ogrid[:coord_mat.shape[0], :coord_mat.shape[1]]
+    cols = (cols + sign_switch[:, np.newaxis]) % coord_mat.shape[-2]
+    rolled_coords = coord_mat[rows, cols]
+
+    # find the index where signs switch back
+    second_switch = utils.first_sign_switch(rolled_coords[..., 0])
+
+    # re-index polygon affine coordinates by first sign switch
+    rolled_polys = projective.Polygon(rolled_coords)
+    poly_affine = rolled_polys.affine_coords()
+
+    # find affine coordinates of sign-switch points
+    s1_v1 = poly_affine[..., -1, :]
+    s1_v2 = poly_affine[..., 0, :]
+
+    s2_v1 = np.take_along_axis(poly_affine, second_switch[:, np.newaxis, np.newaxis] - 1, axis=1
+                              ).squeeze(axis=1)
+    s2_v2 = np.take_along_axis(poly_affine, second_switch[:, np.newaxis, np.newaxis], axis=1
+                              ).squeeze(axis=1)
+
+    # compute normalized (affine) displacement vectors between
+    # endpoints of segments which cross infinity
+    disp_1 = s1_v2 - s1_v1
+    disp_2 = s2_v2 - s2_v1
+
+    n_disp_1 = utils.normalize(disp_1)
+    n_disp_2 = utils.normalize(disp_2)
+
+    # compute dummy vertex coordinates for segments which cross infinity.
+    # this could be DRYer.
+    dummy_p1v1 = s1_v2 + (
+        n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v2, axis=-1))[:, np.newaxis]
+    )
+    dummy_p2v1 = s1_v1 - (
+        n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v1, axis=-1))[:, np.newaxis]
+    )
+
+    dummy_p1v2 = s2_v1 - (
+        n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v1, axis=-1))[:, np.newaxis]
+    )
+    dummy_p2v2 = s2_v2 + (
+        n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v2, axis=-1))[:, np.newaxis]
+    )
+
+    dummy_coords_1 = np.stack([dummy_p1v2, dummy_p1v1], axis=-2)
+    dummy_coords_2 = np.stack([dummy_p2v1, dummy_p2v2], axis=-2)
+
+
+    # draw a pair of polygons for each non-affine polygon
+    for poly_coords, s_index, dc_1, dc_2 in zip(
+        poly_affine, second_switch, dummy_coords_1, dummy_coords_2):
+
+        p1 = Polygon(np.concatenate([poly_coords[:s_index], dc_1]),
+                    **kwargs)
+        p2 = Polygon(np.concatenate([poly_coords[s_index:], dc_2]),
+                    **kwargs)
+        self.ax.add_patch(p1)
+        self.ax.add_patch(p2)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.draw_point"><code class="name flex">
+<span>def <span class="ident">draw_point</span></span>(<span>self, point, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_point(self, point, **kwargs):
+    pointlist = self.transform @ point.flatten_to_unit()
+    default_kwargs = {
+        &#34;color&#34; : &#34;black&#34;,
+        &#34;marker&#34;: &#34;o&#34;,
+        &#34;linestyle&#34;:&#34;none&#34;
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    x, y = pointlist.affine_coords().T
+    plt.plot(x, y, **default_kwargs)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.draw_polygon"><code class="name flex">
+<span>def <span class="ident">draw_polygon</span></span>(<span>self, polygon, assume_affine=True, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_polygon(self, polygon, assume_affine=True, **kwargs):
+    default_kwargs = {
+        &#34;facecolor&#34;: &#34;none&#34;,
+        &#34;edgecolor&#34;: &#34;black&#34;
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    polylist = projective.Polygon(self.transform @ polygon.flatten_to_unit())
+
+    if assume_affine:
+        polys = PolyCollection(polylist.affine_coords(), **default_kwargs)
+        self.ax.add_collection(polys)
+        return
+
+    in_chart = polylist.in_standard_chart()
+    affine_polys = PolyCollection(polylist[in_chart].affine_coords(),
+                                  **default_kwargs)
+    self.ax.add_collection(affine_polys)
+
+    self.draw_nonaff_polygon(polylist[~in_chart], **default_kwargs)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.draw_proj_segment"><code class="name flex">
+<span>def <span class="ident">draw_proj_segment</span></span>(<span>self, segment, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_proj_segment(self, segment, **kwargs):
+    seglist = self.transform @ segment.flatten_to_unit()
+    default_kwargs = {
+        &#34;color&#34;:&#34;black&#34;,
+        &#34;linewidth&#34;:1
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    lines = LineCollection(seglist.endpoint_affine_coords(),
+                           **default_kwargs)
+    self.ax.add_collection(lines)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.precompose_transform"><code class="name flex">
+<span>def <span class="ident">precompose_transform</span></span>(<span>self, transform)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def precompose_transform(self, transform):
+    self.transform = self.transform @ transform</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.set_transform"><code class="name flex">
+<span>def <span class="ident">set_transform</span></span>(<span>self, transform)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_transform(self, transform):
+    self.transform = transform</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.show"><code class="name flex">
+<span>def <span class="ident">show</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show(self):
+    plt.show()</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.view_ctr"><code class="name flex">
+<span>def <span class="ident">view_ctr</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def view_ctr(self):
+    return np.array([(self.xlim[0] + self.xlim[1])/2,
+                     (self.ylim[0] + self.ylim[1])/2])</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.ProjectiveDrawing.view_diam"><code class="name flex">
+<span>def <span class="ident">view_diam</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def view_diam(self):
+    return np.sqrt(self.width * self.width + self.height * self.height)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="geometry_tools" href="index.html">geometry_tools</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="geometry_tools.drawtools.default_model_limits" href="#geometry_tools.drawtools.default_model_limits">default_model_limits</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="geometry_tools.drawtools.DrawingError" href="#geometry_tools.drawtools.DrawingError">DrawingError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="geometry_tools.drawtools.HyperbolicDrawing" href="#geometry_tools.drawtools.HyperbolicDrawing">HyperbolicDrawing</a></code></h4>
+<ul class="">
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.draw_boundary_arc" href="#geometry_tools.drawtools.HyperbolicDrawing.draw_boundary_arc">draw_boundary_arc</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.draw_geodesic" href="#geometry_tools.drawtools.HyperbolicDrawing.draw_geodesic">draw_geodesic</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.draw_horoarc" href="#geometry_tools.drawtools.HyperbolicDrawing.draw_horoarc">draw_horoarc</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.draw_horosphere" href="#geometry_tools.drawtools.HyperbolicDrawing.draw_horosphere">draw_horosphere</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.draw_plane" href="#geometry_tools.drawtools.HyperbolicDrawing.draw_plane">draw_plane</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.draw_point" href="#geometry_tools.drawtools.HyperbolicDrawing.draw_point">draw_point</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.draw_polygon" href="#geometry_tools.drawtools.HyperbolicDrawing.draw_polygon">draw_polygon</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.get_circle_arcpath" href="#geometry_tools.drawtools.HyperbolicDrawing.get_circle_arcpath">get_circle_arcpath</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.get_polygon_arcpath" href="#geometry_tools.drawtools.HyperbolicDrawing.get_polygon_arcpath">get_polygon_arcpath</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.get_straight_arcpath" href="#geometry_tools.drawtools.HyperbolicDrawing.get_straight_arcpath">get_straight_arcpath</a></code></li>
+<li><code><a title="geometry_tools.drawtools.HyperbolicDrawing.get_vertical_segment" href="#geometry_tools.drawtools.HyperbolicDrawing.get_vertical_segment">get_vertical_segment</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="geometry_tools.drawtools.ProjectiveDrawing" href="#geometry_tools.drawtools.ProjectiveDrawing">ProjectiveDrawing</a></code></h4>
+<ul class="">
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.add_transform" href="#geometry_tools.drawtools.ProjectiveDrawing.add_transform">add_transform</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.draw_nonaff_polygon" href="#geometry_tools.drawtools.ProjectiveDrawing.draw_nonaff_polygon">draw_nonaff_polygon</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.draw_point" href="#geometry_tools.drawtools.ProjectiveDrawing.draw_point">draw_point</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.draw_polygon" href="#geometry_tools.drawtools.ProjectiveDrawing.draw_polygon">draw_polygon</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.draw_proj_segment" href="#geometry_tools.drawtools.ProjectiveDrawing.draw_proj_segment">draw_proj_segment</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.precompose_transform" href="#geometry_tools.drawtools.ProjectiveDrawing.precompose_transform">precompose_transform</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.set_transform" href="#geometry_tools.drawtools.ProjectiveDrawing.set_transform">set_transform</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.show" href="#geometry_tools.drawtools.ProjectiveDrawing.show">show</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.view_ctr" href="#geometry_tools.drawtools.ProjectiveDrawing.view_ctr">view_ctr</a></code></li>
+<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.view_diam" href="#geometry_tools.drawtools.ProjectiveDrawing.view_diam">view_diam</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,57 @@
+.table-container table {
+	
+	
+}
+.table-title {
+	text-align: center;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+h5 {
+	font-size: 110%;
+	text-align: center;
+	font-weight: bold;
+	margin:10px;
+}
+
+.center-title {
+	text-align: center;
+	font-weight: bold;
+	font-size: 130%;
+}
+
+.table-container {
+	text-align: center;
+}
+
+.table-container table {
+	font-size: 120%;
+	text-align: center;
+	border-collapse: collapse;
+	display: inline-block;
+	padding: 5px;
+}
+
+.table-container td {
+	padding: 15px;
+}
+.table-container th {
+	padding: 5px; 
+}
+.table-container thead {
+	border-bottom: 1px solid black;
+}
+
+.table-container tbody tr:nth-child(2n+1) {
+	background-color: #f0f0f0;
+}
+
+.table-container caption {
+	font-size: 100%;
+	padding-bottom: 10px;
+}
+
+.hidden {
+	display: none;
+}

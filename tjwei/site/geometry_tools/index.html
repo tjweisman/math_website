@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>geometry_tools API documentation</title>
+<meta name="description" content="`geometry_tools` is a Python package meant to help you work with and visualize group actions on hyperbolic space and projective space …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>geometry_tools</code></h1>
+</header>
+<section id="section-intro">
+<p><code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code> is a Python package meant to help you work with and visualize group actions on hyperbolic space and projective space.</p>
+<p>The package is mostly built on top of <a href="https://numpy.org/">numpy</a> and <a href="https://matplotlib.org/">matplotlib</a>, and provides modules to:</p>
+<ul>
+<li>
+<p>perform numerical computations with objects in hyperbolic space, in multiple models (namely the Klein, hyperboloid, projective, Poincare, and half-space models)</p>
+</li>
+<li>
+<p>work (again, numerically) with representations of finitely generated groups into <span><span class="MathJax_Preview">\textrm{O}(d, 1)</span><script type="math/tex">\textrm{O}(d, 1)</script></span> and <span><span class="MathJax_Preview">\textrm{GL}(d, \mathbb{R})</span><script type="math/tex">\textrm{GL}(d, \mathbb{R})</script></span></p>
+</li>
+<li>
+<p>use finite-state automata to do some simple computations in word-hyperbolic groups </p>
+</li>
+<li>
+<p>draw nice pictures in the hyperbolic plane</p>
+</li>
+</ul>
+<p>None of the functionality of this package is (mathematically) very deep.
+Mostly, the package just wraps more sophisticated tools in a way intended to
+make it easy to quickly draw good pictures in <span><span class="MathJax_Preview">\mathbb{H}^2</span><script type="math/tex">\mathbb{H}^2</script></span>, <span><span class="MathJax_Preview">\mathbb
+{H}^3</span><script type="math/tex">\mathbb
+{H}^3</script></span>, and <span><span class="MathJax_Preview">\mathbb{R}P^2</span><script type="math/tex">\mathbb{R}P^2</script></span>.</p>
+<h2 id="a-quick-example">A quick example</h2>
+<p>To draw a picture of a right-angled pentagon in the hyperbolic plane:</p>
+<pre><code class="python">from geometry_tools import hyperbolic, drawtools
+from numpy import pi
+
+# make a right-angled pentagon
+pentagon = hyperbolic.regular_polygon(5, angle=pi/2)
+
+# draw the pentagon
+figure = drawtools.HyperbolicDrawing()
+figure.draw_plane()
+figure.draw_polygon(pentagon, facecolor=&quot;lightblue&quot;)
+
+figure.show()
+
+</code></pre>
+<p>This code produces:</p>
+<p><img alt="A right-angled pentagon in the Poincare disc model for the hyperbolic plane" src="right_angled_pentagon.png"></p>
+<h1 id="installation">Installation</h1>
+<p>Right now, the easiest way to install <code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code> is to download or clone the project from the <a href="https://github.com/tjweisman/geometry_tools">git repository</a>, and run</p>
+<pre><code class="shell">python setup.py install
+</code></pre>
+<p>from the directory where you've downloaded it.</p>
+<p>At some point in the (very near) future, I hope to upload the package to PyPI so you can install it via <code>pip</code>.</p>
+<h1 id="drawing-hyperbolic-group-actions">Drawing hyperbolic group actions</h1>
+<p>The <code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code> package is handy for drawing pictures of tilings in <span><span class="MathJax_Preview">\mathbb{H}^2</span><script type="math/tex">\mathbb{H}^2</script></span>. Here we will work with visualizing a (2,3,7) triangular tiling:</p>
+<p><img alt="png" src="output_15_0.png"></p>
+<p>You can also <a href="triangular_tiling.ipynb">download this example as a Jupyter notebook</a> or a <a href="triangular_tiling.py">python file</a>.</p>
+<p>To get started, first instantiate the <code><a title="geometry_tools.coxeter.TriangleGroup" href="coxeter.html#geometry_tools.coxeter.TriangleGroup">TriangleGroup</a></code> class to get a (2,3,7) triangle group, and compute its geometric representation into the isometries of the hyperbolic plane:</p>
+<pre><code class="python"># get a representation for a triangle group.
+# (these are built in to the program)
+from geometry_tools import hyperbolic, coxeter, drawtools
+
+triangle_rep = coxeter.TriangleGroup((2,3,7)).hyperbolic_rep()
+</code></pre>
+<p>We can draw the reflection walls for the group using the <code><a title="geometry_tools.drawtools" href="drawtools.html">geometry_tools.drawtools</a></code> subpackage:</p>
+<pre><code class="python"># find the fixed points at infinity for the generating reflections
+
+reflections = triangle_rep.isometries([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;])
+walls = hyperbolic.Hyperplane.from_reflection(reflections)
+
+wall_a, wall_b, wall_c = walls
+
+fig = drawtools.HyperbolicDrawing(model=&quot;poincare&quot;)
+fig.draw_plane()
+
+fig.draw_geodesic(wall_a, color=&quot;green&quot;)
+fig.draw_geodesic(wall_b, color=&quot;blue&quot;)
+fig.draw_geodesic(wall_c, color=&quot;red&quot;)
+
+</code></pre>
+<p><img alt="png" src="output_3_0.png"></p>
+<p>We can find a fundamental domain for the triangle group by taking the triangle whose vertices are the fixed points of length-2 elements of the group.</p>
+<pre><code class="python">triangle_vertices = triangle_rep.isometries([&quot;ab&quot;, &quot;bc&quot;, &quot;ac&quot;]).fixed_point()
+
+fund_triangle = hyperbolic.Polygon(triangle_vertices)
+
+fig = drawtools.HyperbolicDrawing(model=&quot;poincare&quot;)
+
+fig.draw_plane()
+fig.draw_polygon(fund_triangle, facecolor=&quot;lightgreen&quot;)
+</code></pre>
+<p><img alt="png" src="output_5_0.png"></p>
+<p>If we want to start visualizing the tiling of <span><span class="MathJax_Preview">\mathbb{H}^2</span><script type="math/tex">\mathbb{H}^2</script></span> we get from this triangle group, we can start drawing translates of this fundamental domain. The easy (but less efficient and appealing) way to do this is to just draw copies of the fundamental domain translated by the images of freely reduced words in the group.</p>
+<pre><code class="python">words = triangle_rep.free_words_less_than(5)
+isometries = triangle_rep.isometries(words)
+
+tiles = isometries @ fund_triangle
+
+fig = drawtools.HyperbolicDrawing(model=&quot;poincare&quot;)
+fig.draw_plane()
+
+fig.draw_polygon(tiles, facecolor=&quot;lightgreen&quot;)
+</code></pre>
+<p><img alt="png" src="output_7_0.png"></p>
+<h3 id="speeding-things-up-with-finite-state-automata">Speeding things up with finite-state automata</h3>
+<p>Drawing copies of the triangle translated by images of all freely reduced words is a little slow. And, we end up drawing the same triangle on top of itself many times. We can speed up the process by picking a <em>unique</em> word for each element of the group, using a <em>finite-state automaton.</em></p>
+<p>The <code><a title="geometry_tools.automata" href="automata/index.html">geometry_tools.automata</a></code> subpackage provides a handful of tools for working with finite-state automata. It can load and manipulate the automata generated by the <a href="https://gap-packages.github.io/kbmag/">kbmag</a> program. While <code>kbmag</code> is not included with <code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code>, the package does provide precomputed automata for a number of word-hyperbolic groups.</p>
+<p>To get the list of precomputed automata, run:</p>
+<pre><code class="python">from geometry_tools.automata import fsa
+
+fsa.list_builtins()
+</code></pre>
+<pre><code>['cox237.wa',
+ 'pentagon_ra.wa',
+ 'cox535.geowa',
+ 'cox3334.geowa',
+ 'genus2_surf_alt.wa',
+ 'cox535.wa',
+ 'genus3_surface.wa',
+ 'cox237.geowa',
+ 'f2.geowa',
+ 'cox334.wa',
+ 'genus2_surface.wa',
+ 'cone_torus.wa',
+ 'genus3_surface.geowa',
+ 'cox3334.wa',
+ 'f2.wa',
+ 'genus2_surface.geowa',
+ 'cox334.geowa']
+</code></pre>
+<p>The ".wa" files represent <em>word-acceptor</em> automata. These automata accept a unique (shortlex geodesic) word for each element of an automatic group. This gives us a practical way to get a unique representative for all group elements of at most a given length.</p>
+<pre><code class="python"># load the built-in (2,3,7) automaton
+triangle_fsa = fsa.load_builtin(&quot;cox237.wa&quot;)
+
+# get a unique word for each group element of length &lt; 25.
+# (we convert to a list since enumerate_words returns a generator)
+words = list(triangle_fsa.enumerate_words(30))
+
+free_words = list(triangle_rep.free_words_less_than(9))
+
+# compare unique words of length &lt;30 to freely reduced words of length &lt;9.
+# when we don't consider the relation, we get many redundant words!
+len(words), len(free_words)
+</code></pre>
+<pre><code>(5951, 585937)
+</code></pre>
+<p>To draw a nice picture, we can filter out all the words of odd length so that for our triangle reflection group, we only consider orientation-preserving isometries.</p>
+<pre><code class="python">even_words = [word for word in words if len(word) % 2 == 0]
+pos_isometries = triangle_rep.isometries(even_words)
+
+tiles = pos_isometries @ fund_triangle
+
+fig = drawtools.HyperbolicDrawing()
+fig.draw_plane()
+fig.draw_polygon(tiles, facecolor=&quot;royalblue&quot;, edgecolor=&quot;none&quot;)
+</code></pre>
+<p><img alt="png" src="output_13_0.png"></p>
+<p>To recap, here's all the code we need to produce the above picture:</p>
+<pre><code class="python">from geometry_tools import hyperbolic, coxeter, drawtools
+from geometry_tools.automata import fsa
+
+# make the triangle group representation and load a finite-state automaton
+triangle_group = coxeter.TriangleGroup((2,3,7))
+triangle_rep = triangle_group.hyperbolic_rep()
+triangle_fsa = fsa.load_builtin(&quot;cox237.wa&quot;)
+
+
+# find a fundamental domain for the action by finding 
+# fixed points of length-2 elements
+vertices = triangle_rep.isometries([&quot;ab&quot;, &quot;bc&quot;, &quot;ca&quot;]).fixed_point()
+fund_triangle = hyperbolic.Polygon(vertices)
+
+# find all orientation-preserving isometries of length at most 30
+words = triangle_fsa.enumerate_words(30)
+even_words = [word for word in words if len(word) % 2 == 0]
+pos_isometries = triangle_rep.isometries(even_words)
+
+# draw the translated triangles
+fig = drawtools.HyperbolicDrawing(model=&quot;poincare&quot;)
+fig.draw_plane()
+fig.draw_polygon(pos_isometries @ fund_triangle, 
+                 facecolor=&quot;royalblue&quot;, edgecolor=&quot;none&quot;)
+
+fig.show()
+</code></pre>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">r&#34;&#34;&#34;
+`geometry_tools` is a Python package meant to help you work with and visualize group actions on hyperbolic space and projective space.
+
+The package is mostly built on top of [numpy](https://numpy.org/) and [matplotlib](https://matplotlib.org/), and provides modules to:
+
+- perform numerical computations with objects in hyperbolic space, in multiple models (namely the Klein, hyperboloid, projective, Poincare, and half-space models)
+
+- work (again, numerically) with representations of finitely generated groups into \(\textrm{O}(d, 1)\) and \(\textrm{GL}(d, \mathbb{R})\)
+
+- use finite-state automata to do some simple computations in word-hyperbolic groups 
+
+- draw nice pictures in the hyperbolic plane
+
+None of the functionality of this package is (mathematically) very deep.
+Mostly, the package just wraps more sophisticated tools in a way intended to
+make it easy to quickly draw good pictures in \(\mathbb{H}^2\), \(\mathbb
+{H}^3\), and \(\mathbb{R}P^2\).
+
+## A quick example
+
+To draw a picture of a right-angled pentagon in the hyperbolic plane:
+
+```python
+from geometry_tools import hyperbolic, drawtools
+from numpy import pi
+
+# make a right-angled pentagon
+pentagon = hyperbolic.regular_polygon(5, angle=pi/2)
+
+# draw the pentagon
+figure = drawtools.HyperbolicDrawing()
+figure.draw_plane()
+figure.draw_polygon(pentagon, facecolor=&#34;lightblue&#34;)
+
+figure.show()
+
+```
+
+This code produces:
+
+![A right-angled pentagon in the Poincare disc model for the hyperbolic plane](right_angled_pentagon.png)
+
+# Installation
+
+Right now, the easiest way to install `geometry_tools` is to download or clone the project from the [git repository](https://github.com/tjweisman/geometry_tools), and run
+
+```shell
+python setup.py install
+```
+from the directory where you&#39;ve downloaded it.
+
+At some point in the (very near) future, I hope to upload the package to PyPI so you can install it via `pip`.
+
+# Drawing hyperbolic group actions
+
+The `geometry_tools` package is handy for drawing pictures of tilings in \(\mathbb{H}^2\). Here we will work with visualizing a (2,3,7) triangular tiling:
+
+![png](output_15_0.png)
+
+You can also [download this example as a Jupyter notebook](triangular_tiling.ipynb) or a [python file](triangular_tiling.py).
+
+To get started, first instantiate the `coxeter.TriangleGroup` class to get a (2,3,7) triangle group, and compute its geometric representation into the isometries of the hyperbolic plane:
+
+
+```python
+# get a representation for a triangle group.
+# (these are built in to the program)
+from geometry_tools import hyperbolic, coxeter, drawtools
+
+triangle_rep = coxeter.TriangleGroup((2,3,7)).hyperbolic_rep()
+```
+
+We can draw the reflection walls for the group using the `drawtools` subpackage:
+
+```python
+# find the fixed points at infinity for the generating reflections
+
+reflections = triangle_rep.isometries([&#34;a&#34;, &#34;b&#34;, &#34;c&#34;])
+walls = hyperbolic.Hyperplane.from_reflection(reflections)
+
+wall_a, wall_b, wall_c = walls
+
+fig = drawtools.HyperbolicDrawing(model=&#34;poincare&#34;)
+fig.draw_plane()
+
+fig.draw_geodesic(wall_a, color=&#34;green&#34;)
+fig.draw_geodesic(wall_b, color=&#34;blue&#34;)
+fig.draw_geodesic(wall_c, color=&#34;red&#34;)
+
+```
+
+
+![png](output_3_0.png)
+
+
+We can find a fundamental domain for the triangle group by taking the triangle whose vertices are the fixed points of length-2 elements of the group.
+
+
+```python
+triangle_vertices = triangle_rep.isometries([&#34;ab&#34;, &#34;bc&#34;, &#34;ac&#34;]).fixed_point()
+
+fund_triangle = hyperbolic.Polygon(triangle_vertices)
+
+fig = drawtools.HyperbolicDrawing(model=&#34;poincare&#34;)
+
+fig.draw_plane()
+fig.draw_polygon(fund_triangle, facecolor=&#34;lightgreen&#34;)
+```
+
+
+![png](output_5_0.png)
+
+
+If we want to start visualizing the tiling of \(\mathbb{H}^2\) we get from this triangle group, we can start drawing translates of this fundamental domain. The easy (but less efficient and appealing) way to do this is to just draw copies of the fundamental domain translated by the images of freely reduced words in the group.
+
+
+```python
+words = triangle_rep.free_words_less_than(5)
+isometries = triangle_rep.isometries(words)
+
+tiles = isometries @ fund_triangle
+
+fig = drawtools.HyperbolicDrawing(model=&#34;poincare&#34;)
+fig.draw_plane()
+
+fig.draw_polygon(tiles, facecolor=&#34;lightgreen&#34;)
+```
+
+
+![png](output_7_0.png)
+
+
+### Speeding things up with finite-state automata
+
+Drawing copies of the triangle translated by images of all freely reduced words is a little slow. And, we end up drawing the same triangle on top of itself many times. We can speed up the process by picking a *unique* word for each element of the group, using a *finite-state automaton.*
+
+The `geometry_tools.automata` subpackage provides a handful of tools for working with finite-state automata. It can load and manipulate the automata generated by the [kbmag](https://gap-packages.github.io/kbmag/) program. While `kbmag` is not included with `geometry_tools`, the package does provide precomputed automata for a number of word-hyperbolic groups.
+
+To get the list of precomputed automata, run:
+
+
+```python
+from geometry_tools.automata import fsa
+
+fsa.list_builtins()
+```
+
+
+
+
+    [&#39;cox237.wa&#39;,
+     &#39;pentagon_ra.wa&#39;,
+     &#39;cox535.geowa&#39;,
+     &#39;cox3334.geowa&#39;,
+     &#39;genus2_surf_alt.wa&#39;,
+     &#39;cox535.wa&#39;,
+     &#39;genus3_surface.wa&#39;,
+     &#39;cox237.geowa&#39;,
+     &#39;f2.geowa&#39;,
+     &#39;cox334.wa&#39;,
+     &#39;genus2_surface.wa&#39;,
+     &#39;cone_torus.wa&#39;,
+     &#39;genus3_surface.geowa&#39;,
+     &#39;cox3334.wa&#39;,
+     &#39;f2.wa&#39;,
+     &#39;genus2_surface.geowa&#39;,
+     &#39;cox334.geowa&#39;]
+
+
+
+The &#34;.wa&#34; files represent *word-acceptor* automata. These automata accept a unique (shortlex geodesic) word for each element of an automatic group. This gives us a practical way to get a unique representative for all group elements of at most a given length.
+
+
+
+
+```python
+# load the built-in (2,3,7) automaton
+triangle_fsa = fsa.load_builtin(&#34;cox237.wa&#34;)
+
+# get a unique word for each group element of length &lt; 25.
+# (we convert to a list since enumerate_words returns a generator)
+words = list(triangle_fsa.enumerate_words(30))
+
+free_words = list(triangle_rep.free_words_less_than(9))
+
+# compare unique words of length &lt;30 to freely reduced words of length &lt;9.
+# when we don&#39;t consider the relation, we get many redundant words!
+len(words), len(free_words)
+```
+
+
+
+
+    (5951, 585937)
+
+
+
+To draw a nice picture, we can filter out all the words of odd length so that for our triangle reflection group, we only consider orientation-preserving isometries.
+
+
+```python
+even_words = [word for word in words if len(word) % 2 == 0]
+pos_isometries = triangle_rep.isometries(even_words)
+
+tiles = pos_isometries @ fund_triangle
+
+fig = drawtools.HyperbolicDrawing()
+fig.draw_plane()
+fig.draw_polygon(tiles, facecolor=&#34;royalblue&#34;, edgecolor=&#34;none&#34;)
+```
+
+
+![png](output_13_0.png)
+
+
+To recap, here&#39;s all the code we need to produce the above picture:
+
+
+```python
+from geometry_tools import hyperbolic, coxeter, drawtools
+from geometry_tools.automata import fsa
+
+# make the triangle group representation and load a finite-state automaton
+triangle_group = coxeter.TriangleGroup((2,3,7))
+triangle_rep = triangle_group.hyperbolic_rep()
+triangle_fsa = fsa.load_builtin(&#34;cox237.wa&#34;)
+
+
+# find a fundamental domain for the action by finding 
+# fixed points of length-2 elements
+vertices = triangle_rep.isometries([&#34;ab&#34;, &#34;bc&#34;, &#34;ca&#34;]).fixed_point()
+fund_triangle = hyperbolic.Polygon(vertices)
+
+# find all orientation-preserving isometries of length at most 30
+words = triangle_fsa.enumerate_words(30)
+even_words = [word for word in words if len(word) % 2 == 0]
+pos_isometries = triangle_rep.isometries(even_words)
+
+# draw the translated triangles
+fig = drawtools.HyperbolicDrawing(model=&#34;poincare&#34;)
+fig.draw_plane()
+fig.draw_polygon(pos_isometries @ fund_triangle, 
+                 facecolor=&#34;royalblue&#34;, edgecolor=&#34;none&#34;)
+
+fig.show()
+```
+
+&#34;&#34;&#34;</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="geometry_tools.automata" href="automata/index.html">geometry_tools.automata</a></code></dt>
+<dd>
+<div class="desc"><p>Work with finite-state automata …</p></div>
+</dd>
+<dt><code class="name"><a title="geometry_tools.coxeter" href="coxeter.html">geometry_tools.coxeter</a></code></dt>
+<dd>
+<div class="desc"><p>Work with Coxeter groups and their representations …</p></div>
+</dd>
+<dt><code class="name"><a title="geometry_tools.drawtools" href="drawtools.html">geometry_tools.drawtools</a></code></dt>
+<dd>
+<div class="desc"><p>This submodule provides an interface between the
+<code><a title="geometry_tools.projective" href="projective.html">geometry_tools.projective</a></code> and <code><a title="geometry_tools.hyperbolic" href="hyperbolic.html">geometry_tools.hyperbolic</a></code> submodules
+and …</p></div>
+</dd>
+<dt><code class="name"><a title="geometry_tools.hyperbolic" href="hyperbolic.html">geometry_tools.hyperbolic</a></code></dt>
+<dd>
+<div class="desc"><p>Model objects in hyperbolic space with numerical coordinates …</p></div>
+</dd>
+<dt><code class="name"><a title="geometry_tools.projective" href="projective.html">geometry_tools.projective</a></code></dt>
+<dd>
+<div class="desc"><p>Work with projective space in numerical coordinates …</p></div>
+</dd>
+<dt><code class="name"><a title="geometry_tools.representation" href="representation.html">geometry_tools.representation</a></code></dt>
+<dd>
+<div class="desc"><p>Work with group representations into finite-dimensional vector
+spaces, using numerical matrices …</p></div>
+</dd>
+<dt><code class="name"><a title="geometry_tools.utils" href="utils.html">geometry_tools.utils</a></code></dt>
+<dd>
+<div class="desc"><p>Provide utility functions used by the various geometry tools in
+this package.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#a-quick-example">A quick example</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#drawing-hyperbolic-group-actions">Drawing hyperbolic group actions</a><ul>
+<li><a href="#speeding-things-up-with-finite-state-automata">Speeding things up with finite-state automata</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="geometry_tools.automata" href="automata/index.html">geometry_tools.automata</a></code></li>
+<li><code><a title="geometry_tools.coxeter" href="coxeter.html">geometry_tools.coxeter</a></code></li>
+<li><code><a title="geometry_tools.drawtools" href="drawtools.html">geometry_tools.drawtools</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic" href="hyperbolic.html">geometry_tools.hyperbolic</a></code></li>
+<li><code><a title="geometry_tools.projective" href="projective.html">geometry_tools.projective</a></code></li>
+<li><code><a title="geometry_tools.representation" href="representation.html">geometry_tools.representation</a></code></li>
+<li><code><a title="geometry_tools.utils" href="utils.html">geometry_tools.utils</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
