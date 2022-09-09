@@ -49,7 +49,7 @@ def rotation_matrix(angle):
 
     Returns
     --------
-    ndarray :
+    ndarray
         numpy array of shape (2,2) of the form
         \(\begin{pmatrix}\cos \theta &amp; -\sin \theta\\\sin\theta &amp; \cos \theta
         \end{pmatrix}\)
@@ -69,7 +69,7 @@ def permutation_matrix(permutation):
 
     Returns
     ---------
-    ndarray:
+    ndarray
         square 2-dimensional array, giving a permutation matrix.
 
     &#34;&#34;&#34;
@@ -107,7 +107,7 @@ def diagonalize_form(bilinear_form, order_eigenvalues=&#34;signed&#34;, reverse=
 
     Returns
     -------
-    ndarray:
+    ndarray
         numpy array of shape (n, n), representing a coordinate change
         taking the given bilinear form to a diagonal form. If \(B\) is
         the matrix given by `bilinear_form`, and \(D\) is a diagonal
@@ -165,7 +165,7 @@ def circle_angles(center, coords):
 
     Returns
     --------
-    ndarray:
+    ndarray
         angles (relative to x-axis) of each of the pair of points
         specified by `coords.`
 
@@ -189,7 +189,7 @@ def apply_bilinear(v1, v2, bilinear_form=None):
 
     Returns
     -------
-    ndarray:
+    ndarray
         ndarray representing the result of pairing the vectors in `v1`
         with `v2`.
 
@@ -221,7 +221,7 @@ def normalize(vectors, bilinear_form=None):
 
     Returns
     -------
-    ndarray:
+    ndarray
         ndarray with the same shape as `vectors`. Each vector in this
         array has norm either +1 or -1, depending on whether the
         original vector had positive or negative square-norm (with
@@ -243,7 +243,7 @@ def short_arc(thetas):
 
     Returns
     --------
-    ndarray:
+    ndarray
         numpy array with the same shape as `thetas`. The ordered pairs
         in this array are arranged so that for each pair `(a, b)`, the
         counterclockwise arc from `a` to `b` is shorter than the
@@ -270,7 +270,7 @@ def right_to_left(thetas):
 
     Returns
     --------
-    ndarray:
+    ndarray
         numpy array with the same shape as `thetas`. The ordered pairs
         in this array are arranged so that for each pair `(a, b)`, the
         cosine of `b` is at most the cosine of `a`.
@@ -288,16 +288,19 @@ def arc_include(thetas, reference_theta):
     &#34;&#34;&#34;Reorder angles so that the counterclockwise arc between them always
     includes some reference point on the circle.
 
-    Parameters:
-    --------------
-    thetas: ndarray of pairs of angles in the range (-2pi, 2pi)
+    Parameters
+    ----------
+    thetas : ndarray(float)
+        pairs of angles in the range (-2pi, 2pi).
+    reference_theta: ndarray(float)
+         angles in the range (-2pi, 2pi)
 
-    reference_theta: ndarray of angles in the range (-2pi, 2pi)
-
-    Return:
-    -------------
-    ndarray theta_p of pairs of angles, so that reference_theta lies
-    in the counterclockwise angle between theta_p[0] and theta_p[1].
+    Returns
+    --------
+    theta_p : ndarray(float)
+        pairs of angles of the same shape as `thetas`, so that
+        `reference_theta` lies in the counterclockwise angle between
+        `theta_p[..., 0]` and `theta_p[..., 1]`.
 
     &#34;&#34;&#34;
 
@@ -315,18 +318,74 @@ def arc_include(thetas, reference_theta):
     return s_thetas
 
 def sphere_inversion(points):
+    r&#34;&#34;&#34;Apply unit sphere inversion to points in R^n.
+
+    This realizes the map \(v \mapsto v / ||v||^2\).
+
+    Parameters
+    ----------
+    points : ndarray
+        Array of shape `(..., n)` giving a set of points in R^n
+
+    Returns
+    --------
+    ndarray
+        The image of the `points` array under sphere inversion.
+
+    &#34;&#34;&#34;
     with np.errstate(divide=&#34;ignore&#34;, invalid=&#34;ignore&#34;):
         return (points.T / (normsq(points)).T).T
 
 def swap_matrix(i, j, n):
+    &#34;&#34;&#34;Return a permutation matrix representing a single transposition.
+
+    Parameters
+    ----------
+    i, j : int
+        Indices swapped by a transposition.
+    n : int
+        dimension of the permutation matrix.
+
+    Returns
+    --------
+    ndarray
+        Array of shape `(n, n)` giving a transposition matrix.
+
+    &#34;&#34;&#34;
     permutation = list(range(n))
     permutation[i] = j
     permutation[j] = i
     return permutation_matrix(permutation)
 
 def projection(v1, v2, bilinear_form):
-    &#34;&#34;&#34;project v1 onto v2, with respect to a (hopefully nondegenerate)
-    bilinear form&#34;&#34;&#34;
+    r&#34;&#34;&#34;Return the projection of `v1` onto `v2` with respect to some
+    bilinear form.
+
+    The returned vector `w` is parallel to `v2`, and `v1 - w` is
+    orthogonal to `v2` with respect to the given bilinear form.
+    `w` is determined by the formula
+    \[
+    v_2 \cdot \langle v_1, v_2 \rangle / \langle v_2, v_2 \rangle,
+    \]
+    where \(\langle \cdot, \cdot \rangle\) is the pairing determined by
+    `bilinear_form`.
+
+    Parameters
+    ----------
+    v1 : ndarray
+        vector in R^n to project
+    v2 : ndarray
+        vector in R^n to project onto
+    bilinear_form : ndarray
+        array of shape `(n, n)` giving a bilinear form to use for the
+        projection.
+
+    Returns
+    --------
+    w : ndarray
+        vector in R^n giving the projection of `v1` onto `v2`.
+
+    &#34;&#34;&#34;
 
     return (v2.T *
             apply_bilinear(v1, v2, bilinear_form).T /
@@ -527,7 +586,13 @@ def find_positive_functional(positive_points):
 def invert_gen(generator):
     if generator.lower() == generator:
         return generator.upper()
-    return generator.lower()</code></pre>
+    return generator.lower()
+
+def first_sign_switch(array):
+    signs = np.sign(array)
+    row_i, col_i = np.nonzero(signs != np.expand_dims(signs[..., 0], axis=-1))
+    _, init_inds = np.unique(row_i, return_index=True)
+    return col_i[init_inds]</code></pre>
 </details>
 </section>
 <section>
@@ -553,7 +618,7 @@ symmetric bilinear form to use to pair <code>v1</code> and <code>v2</code>. If
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>ndarray representing the result of pairing the vectors in <code>v1</code>
 with <code>v2</code>.</dd>
 </dl></div>
@@ -575,7 +640,7 @@ with <code>v2</code>.</dd>
 
     Returns
     -------
-    ndarray:
+    ndarray
         ndarray representing the result of pairing the vectors in `v1`
         with `v2`.
 
@@ -593,12 +658,20 @@ with <code>v2</code>.</dd>
 <dd>
 <div class="desc"><p>Reorder angles so that the counterclockwise arc between them always
 includes some reference point on the circle.</p>
-<h2 id="parameters">Parameters:</h2>
-<p>thetas: ndarray of pairs of angles in the range (-2pi, 2pi)</p>
-<p>reference_theta: ndarray of angles in the range (-2pi, 2pi)</p>
-<h2 id="return">Return:</h2>
-<p>ndarray theta_p of pairs of angles, so that reference_theta lies
-in the counterclockwise angle between theta_p[0] and theta_p[1].</p></div>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>thetas</code></strong> :&ensp;<code>ndarray(float)</code></dt>
+<dd>pairs of angles in the range (-2pi, 2pi).</dd>
+<dt><strong><code>reference_theta</code></strong> :&ensp;<code>ndarray(float)</code></dt>
+<dd>angles in the range (-2pi, 2pi)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>theta_p</code></strong> :&ensp;<code>ndarray(float)</code></dt>
+<dd>pairs of angles of the same shape as <code>thetas</code>, so that
+<code>reference_theta</code> lies in the counterclockwise angle between
+<code>theta_p[&hellip;, 0]</code> and <code>theta_p[&hellip;, 1]</code>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -607,16 +680,19 @@ in the counterclockwise angle between theta_p[0] and theta_p[1].</p></div>
     &#34;&#34;&#34;Reorder angles so that the counterclockwise arc between them always
     includes some reference point on the circle.
 
-    Parameters:
-    --------------
-    thetas: ndarray of pairs of angles in the range (-2pi, 2pi)
+    Parameters
+    ----------
+    thetas : ndarray(float)
+        pairs of angles in the range (-2pi, 2pi).
+    reference_theta: ndarray(float)
+         angles in the range (-2pi, 2pi)
 
-    reference_theta: ndarray of angles in the range (-2pi, 2pi)
-
-    Return:
-    -------------
-    ndarray theta_p of pairs of angles, so that reference_theta lies
-    in the counterclockwise angle between theta_p[0] and theta_p[1].
+    Returns
+    --------
+    theta_p : ndarray(float)
+        pairs of angles of the same shape as `thetas`, so that
+        `reference_theta` lies in the counterclockwise angle between
+        `theta_p[..., 0]` and `theta_p[..., 1]`.
 
     &#34;&#34;&#34;
 
@@ -650,7 +726,7 @@ of some points.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>angles (relative to x-axis) of each of the pair of points
 specified by <code>coords.</code></dd>
 </dl></div>
@@ -672,7 +748,7 @@ specified by <code>coords.</code></dd>
 
     Returns
     --------
-    ndarray:
+    ndarray
         angles (relative to x-axis) of each of the pair of points
         specified by `coords.`
 
@@ -713,7 +789,7 @@ diagonal bilinear form (from the order specified by
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>numpy array of shape (n, n), representing a coordinate change
 taking the given bilinear form to a diagonal form. If <span><span class="MathJax_Preview">B</span><script type="math/tex">B</script></span> is
 the matrix given by <code>bilinear_form</code>, and <span><span class="MathJax_Preview">D</span><script type="math/tex">D</script></span> is a diagonal
@@ -751,7 +827,7 @@ returns a matrix <span><span class="MathJax_Preview">M</span><script type="math/
 
     Returns
     -------
-    ndarray:
+    ndarray
         numpy array of shape (n, n), representing a coordinate change
         taking the given bilinear form to a diagonal form. If \(B\) is
         the matrix given by `bilinear_form`, and \(D\) is a diagonal
@@ -961,6 +1037,22 @@ result.</p></div>
     return normalize(functionals)</code></pre>
 </details>
 </dd>
+<dt id="geometry_tools.utils.first_sign_switch"><code class="name flex">
+<span>def <span class="ident">first_sign_switch</span></span>(<span>array)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def first_sign_switch(array):
+    signs = np.sign(array)
+    row_i, col_i = np.nonzero(signs != np.expand_dims(signs[..., 0], axis=-1))
+    _, init_inds = np.unique(row_i, return_index=True)
+    return col_i[init_inds]</code></pre>
+</details>
+</dd>
 <dt id="geometry_tools.utils.indefinite_orthogonalize"><code class="name flex">
 <span>def <span class="ident">indefinite_orthogonalize</span></span>(<span>form, matrices)</span>
 </code></dt>
@@ -1097,7 +1189,7 @@ ndarrays of ndarrays with ndim unit_axis1 and unit_axis2.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>ndarray with the same shape as <code>vectors</code>. Each vector in this
 array has norm either +1 or -1, depending on whether the
 original vector had positive or negative square-norm (with
@@ -1120,7 +1212,7 @@ respect to the given bilinear form).</dd>
 
     Returns
     -------
-    ndarray:
+    ndarray
         ndarray with the same shape as `vectors`. Each vector in this
         array has norm either +1 or -1, depending on whether the
         original vector had positive or negative square-norm (with
@@ -1162,7 +1254,7 @@ respect to the given bilinear form).</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>square 2-dimensional array, giving a permutation matrix.</dd>
 </dl></div>
 <details class="source">
@@ -1180,7 +1272,7 @@ respect to the given bilinear form).</dd>
 
     Returns
     ---------
-    ndarray:
+    ndarray
         square 2-dimensional array, giving a permutation matrix.
 
     &#34;&#34;&#34;
@@ -1196,15 +1288,66 @@ respect to the given bilinear form).</dd>
 <span>def <span class="ident">projection</span></span>(<span>v1, v2, bilinear_form)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>project v1 onto v2, with respect to a (hopefully nondegenerate)
-bilinear form</p></div>
+<div class="desc"><p>Return the projection of <code>v1</code> onto <code>v2</code> with respect to some
+bilinear form.</p>
+<p>The returned vector <code>w</code> is parallel to <code>v2</code>, and <code>v1 - w</code> is
+orthogonal to <code>v2</code> with respect to the given bilinear form.
+<code>w</code> is determined by the formula
+<span><span class="MathJax_Preview">
+v_2 \cdot \langle v_1, v_2 \rangle / \langle v_2, v_2 \rangle,
+</span><script type="math/tex; mode=display">
+v_2 \cdot \langle v_1, v_2 \rangle / \langle v_2, v_2 \rangle,
+</script></span>
+where <span><span class="MathJax_Preview">\langle \cdot, \cdot \rangle</span><script type="math/tex">\langle \cdot, \cdot \rangle</script></span> is the pairing determined by
+<code>bilinear_form</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>v1</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>vector in R^n to project</dd>
+<dt><strong><code>v2</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>vector in R^n to project onto</dd>
+<dt><strong><code>bilinear_form</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>array of shape <code>(n, n)</code> giving a bilinear form to use for the
+projection.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>w</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>vector in R^n giving the projection of <code>v1</code> onto <code>v2</code>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def projection(v1, v2, bilinear_form):
-    &#34;&#34;&#34;project v1 onto v2, with respect to a (hopefully nondegenerate)
-    bilinear form&#34;&#34;&#34;
+    r&#34;&#34;&#34;Return the projection of `v1` onto `v2` with respect to some
+    bilinear form.
+
+    The returned vector `w` is parallel to `v2`, and `v1 - w` is
+    orthogonal to `v2` with respect to the given bilinear form.
+    `w` is determined by the formula
+    \[
+    v_2 \cdot \langle v_1, v_2 \rangle / \langle v_2, v_2 \rangle,
+    \]
+    where \(\langle \cdot, \cdot \rangle\) is the pairing determined by
+    `bilinear_form`.
+
+    Parameters
+    ----------
+    v1 : ndarray
+        vector in R^n to project
+    v2 : ndarray
+        vector in R^n to project onto
+    bilinear_form : ndarray
+        array of shape `(n, n)` giving a bilinear form to use for the
+        projection.
+
+    Returns
+    --------
+    w : ndarray
+        vector in R^n giving the projection of `v1` onto `v2`.
+
+    &#34;&#34;&#34;
 
     return (v2.T *
             apply_bilinear(v1, v2, bilinear_form).T /
@@ -1223,7 +1366,7 @@ bilinear form</p></div>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>numpy array with the same shape as <code>thetas</code>. The ordered pairs
 in this array are arranged so that for each pair <code>(a, b)</code>, the
 cosine of <code>b</code> is at most the cosine of <code>a</code>.</dd>
@@ -1242,7 +1385,7 @@ cosine of <code>b</code> is at most the cosine of <code>a</code>.</dd>
 
     Returns
     --------
-    ndarray:
+    ndarray
         numpy array with the same shape as `thetas`. The ordered pairs
         in this array are arranged so that for each pair `(a, b)`, the
         cosine of `b` is at most the cosine of `a`.
@@ -1269,7 +1412,7 @@ specified angle.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray :</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>numpy array of shape (2,2) of the form
 <span><span class="MathJax_Preview">\begin{pmatrix}\cos \theta &amp; -\sin \theta\\\sin\theta &amp; \cos \theta
 \end{pmatrix}</span><script type="math/tex">\begin{pmatrix}\cos \theta & -\sin \theta\\\sin\theta & \cos \theta
@@ -1290,7 +1433,7 @@ specified angle.</p>
 
     Returns
     --------
-    ndarray :
+    ndarray
         numpy array of shape (2,2) of the form
         \(\begin{pmatrix}\cos \theta &amp; -\sin \theta\\\sin\theta &amp; \cos \theta
         \end{pmatrix}\)
@@ -1314,7 +1457,7 @@ in the range (-2pi, 2pi)</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>numpy array with the same shape as <code>thetas</code>. The ordered pairs
 in this array are arranged so that for each pair <code>(a, b)</code>, the
 counterclockwise arc from <code>a</code> to <code>b</code> is shorter than the
@@ -1336,7 +1479,7 @@ counterclockwise arc from <code>b</code> to <code>a</code>.</dd>
 
     Returns
     --------
-    ndarray:
+    ndarray
         numpy array with the same shape as `thetas`. The ordered pairs
         in this array are arranged so that for each pair `(a, b)`, the
         counterclockwise arc from `a` to `b` is shorter than the
@@ -1358,12 +1501,38 @@ counterclockwise arc from <code>b</code> to <code>a</code>.</dd>
 <span>def <span class="ident">sphere_inversion</span></span>(<span>points)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Apply unit sphere inversion to points in R^n.</p>
+<p>This realizes the map <span><span class="MathJax_Preview">v \mapsto v / ||v||^2</span><script type="math/tex">v \mapsto v / ||v||^2</script></span>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>points</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>Array of shape <code>(&hellip;, n)</code> giving a set of points in R^n</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ndarray</code></dt>
+<dd>The image of the <code>points</code> array under sphere inversion.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def sphere_inversion(points):
+    r&#34;&#34;&#34;Apply unit sphere inversion to points in R^n.
+
+    This realizes the map \(v \mapsto v / ||v||^2\).
+
+    Parameters
+    ----------
+    points : ndarray
+        Array of shape `(..., n)` giving a set of points in R^n
+
+    Returns
+    --------
+    ndarray
+        The image of the `points` array under sphere inversion.
+
+    &#34;&#34;&#34;
     with np.errstate(divide=&#34;ignore&#34;, invalid=&#34;ignore&#34;):
         return (points.T / (normsq(points)).T).T</code></pre>
 </details>
@@ -1405,12 +1574,39 @@ array by squeezing out all the 1's in [excess axes].</p></div>
 <span>def <span class="ident">swap_matrix</span></span>(<span>i, j, n)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Return a permutation matrix representing a single transposition.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>i</code></strong>, <strong><code>j</code></strong> :&ensp;<code>int</code></dt>
+<dd>Indices swapped by a transposition.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>dimension of the permutation matrix.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ndarray</code></dt>
+<dd>Array of shape <code>(n, n)</code> giving a transposition matrix.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def swap_matrix(i, j, n):
+    &#34;&#34;&#34;Return a permutation matrix representing a single transposition.
+
+    Parameters
+    ----------
+    i, j : int
+        Indices swapped by a transposition.
+    n : int
+        dimension of the permutation matrix.
+
+    Returns
+    --------
+    ndarray
+        Array of shape `(n, n)` giving a transposition matrix.
+
+    &#34;&#34;&#34;
     permutation = list(range(n))
     permutation[i] = j
     permutation[j] = i
@@ -1443,6 +1639,7 @@ array by squeezing out all the 1's in [excess axes].</p></div>
 <li><code><a title="geometry_tools.utils.find_definite_isometry" href="#geometry_tools.utils.find_definite_isometry">find_definite_isometry</a></code></li>
 <li><code><a title="geometry_tools.utils.find_isometry" href="#geometry_tools.utils.find_isometry">find_isometry</a></code></li>
 <li><code><a title="geometry_tools.utils.find_positive_functional" href="#geometry_tools.utils.find_positive_functional">find_positive_functional</a></code></li>
+<li><code><a title="geometry_tools.utils.first_sign_switch" href="#geometry_tools.utils.first_sign_switch">first_sign_switch</a></code></li>
 <li><code><a title="geometry_tools.utils.indefinite_orthogonalize" href="#geometry_tools.utils.indefinite_orthogonalize">indefinite_orthogonalize</a></code></li>
 <li><code><a title="geometry_tools.utils.invert_gen" href="#geometry_tools.utils.invert_gen">invert_gen</a></code></li>
 <li><code><a title="geometry_tools.utils.make_orientation_preserving" href="#geometry_tools.utils.make_orientation_preserving">make_orientation_preserving</a></code></li>

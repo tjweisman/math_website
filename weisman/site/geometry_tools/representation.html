@@ -336,9 +336,6 @@ def semi_gens(generators):
         if re.match(&#34;[a-z]&#34;, gen):
             yield gen
 
-class RepresentationException(Exception):
-    pass
-
 class Representation:
     &#34;&#34;&#34;Model a representation for a finitely generated group
     representation into GL(n).
@@ -481,6 +478,7 @@ class Representation:
                              &#34;can be specified&#34;)
 
         as_start = True
+        state = None
 
         if start_state is not None:
             state = start_state
@@ -494,7 +492,7 @@ class Representation:
                                         maxlen=maxlen,
                                         with_words=with_words,
                                         state=state,
-                                        as_start=True,
+                                        as_start=as_start,
                                         precomputed=precomputed)
 
 
@@ -656,9 +654,11 @@ class Representation:
         if self._dim is None:
             self._dim = shape[0]
         if shape[0] != shape[1]:
-            raise RepresentationException(&#34;use square matrices&#34;)
+            raise ValueError(&#34;Matrices representing group elements must be square&#34;)
         if shape[0] != self._dim:
-            raise RepresentationException(&#34;use matrices of matching dimensions&#34;)
+            raise ValueError(
+                &#34;Every matrix in the representation must have the same shape&#34;
+            )
 
         self.generators[generator] = matrix
         self.generators[utils.invert_gen(generator)] = np.linalg.inv(matrix)
@@ -673,7 +673,7 @@ class Representation:
 
         Raises
         ------
-        RepresentationException
+        ValueError
             Raised if `self` and `rep` have differing generating sets.
 
         Returns
@@ -683,7 +683,7 @@ class Representation:
 
         &#34;&#34;&#34;
         if set(rep.generators) != set(self.generators):
-            raise RepresentationException(
+            raise ValueError(
                 &#34;Cannot take a tensor product of a representation of groups with &#34;
                 &#34;different presentations&#34;
             )
@@ -716,41 +716,58 @@ class Representation:
 
 
 def sym_index(i, j, n):
-    if i &gt; j:
-        i, j = j, i
-    return int((n - i) * (n - i  - 1) / 2 + (j - i))
+    r&#34;&#34;&#34;Return coordinate indices for an isomorphism
+    \(\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^{\binom{n}{2} + n}\).
 
-def tensor_pos(i, n):
-    return int(i / n), i % n
+    If \(\{e_1, \ldots, e_n\}\) is the standard basis for \(\mathbb{R}^n\),
+    the isomorphism is realized by giving \(\mathrm{Sym}^2(\mathbb{R}^n)\)
+    the ordered basis
+    \[
+        \{e_ne_n, e_{n-1}e_{n-1}, e_{n-1}e_n,
+        e_{n-1}e_{n-1}, e_{n-1}e_{n-2}, e_{n-1}e_{n-3}, \ldots \}.
+    \]
+    Schematically this is given by the symmetric matrix
 
-def tensor_index(i,j,n):
-    return i * n + j
-
-def symmetric_inclusion(n):
-    r&#34;&#34;&#34;Return a matrix representing the linear inclusion
-    \(\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^n \otimes
-    \mathbb{R}^n\).
-
-    If \(\mathbb{R}^n\) is given the standard basis \(\{e_1, \ldots,
-    e_n\}\), then \(\mathrm{Sym^2}(\mathbb{R}^n)\) has the ordered
-    basis \[\{e_ne_n, e_{n-1}e_{n-1}, e_{n-1}e_n, e_{n-1}e_{n-1},
-    e_{n-1}e_{n-2}, e_{n-1}e_{n-3}, \ldots \}.\] This is represented
-    schematically by the symmetric matrix:
-
-    \[\begin{pmatrix}
-    \ddots \\
-    &amp; 3 &amp; 4 &amp; 5\\
-    &amp; &amp; 1 &amp; 2\\
+    \[\begin{pmatrix} \ddots \\
+    &amp; 3 &amp; 4 &amp; 5 \\
+    &amp; &amp; 1 &amp; 2 \\
     &amp; &amp; &amp; 0
     \end{pmatrix},
     \]
     where the (i,j) entry of the matrix gives the index of basis
     element \(e_ie_j\).
 
-    The tensor product \(\mathbb{R}^n \otimes \mathbb{R}^n\) has the
-    ordered basis
+    Parameters
+    ----------
+    i : int
+        index of one of the terms in the basis monomial \(e_ie_j\) for the
+        symmetric square
+    j : int
+        index of the other term in the basis monomial \(e_ie_j\) for the
+        symmetric square
+    n : int
+        dimension of the underlying vector space \(\mathbb{R}^n\).
+
+    Returns
+    --------
+    int
+        index of the corresponding basis vector in
+        \(\mathbb{R}^{\binom{n}{2} + n}\).
+
+    &#34;&#34;&#34;
+    if i &gt; j:
+        i, j = j, i
+    return int((n - i) * (n - i  - 1) / 2 + (j - i))
+
+def tensor_pos(i, n):
+    r&#34;&#34;&#34;Return coordinate indices for an isomorphism
+    \(\mathbb{R}^{n^2} \to \mathbb{R}^n \otimes \mathbb{R}^n\).
+
+    If \(\{e_1, \ldots, e_n\}\) is the standard basis for
+    \(\mathbb{R}^n\), the isomorphism is realized by giving
+    \(\mathbb{R}^n \otimes \mathbb{R}^n\) the ordered basis
     \[
-        \{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
+    \{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
     \]
     represented schematically by the matrix
     \[
@@ -763,9 +780,80 @@ def symmetric_inclusion(n):
     Here the (i, j) entry of the matrix gives the index of the basis
     element \(e_i \otimes e_j\).
 
-    The returned matrix gives the linear map taking \(e_ie_j\) to
-    \(\frac{1}{2}(e_i \otimes e_j + e_j \otimes e_i)\), with respect
-    to the bases specified above.
+    The inverse of this isomorphism is given by `tensor_index`.
+
+    Parameters
+    ----------
+    i : int
+        index of a basis vector in \(\mathbb{R}^{n^2}\)
+    n : int
+        dimension of the underlying vector space \(\mathbb{R}^n\)
+
+    Returns
+    --------
+    tuple
+        tuple `(j, k)` determining the monomial \(e_j \otimes e_k\)
+        mapped to by given the basis vector in \(\mathbb{R}^{n^2}\).
+
+    &#34;&#34;&#34;
+    return int(i / n), i % n
+
+def tensor_index(i,j,n):
+    r&#34;&#34;&#34;Return coordinate indices for an isomorphism
+    \(\mathbb{R}^n \otimes \mathbb{R}^n \to \mathbb{R}^{n^2}\).
+
+    If \(\{e_1, \ldots, e_n\}\) is the standard basis for
+    \(\mathbb{R}^n\), the isomorphism is realized by giving
+    \(\mathbb{R}^n \otimes \mathbb{R}^n\) the ordered basis
+    \[
+    \{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
+    \]
+    represented schematically by the matrix
+    \[
+        \begin{pmatrix}
+            0 &amp; 1 &amp; \ldots \\
+            n &amp; n + 1 &amp; \ldots\\
+            \vdots
+        \end{pmatrix}.
+    \]
+    Here the (i, j) entry of the matrix gives the index of the basis
+    element \(e_i \otimes e_j\).
+
+    The inverse of this isomorphism is given by `tensor_pos`.
+
+    Parameters
+    ----------
+    i : int
+        index of one of the terms in a basis vector \(e_i \otimes e_j\).
+    j : int
+        index of the other term in a basis vector \(e_i \times e_j\).
+    n : int
+        dimension of the underlying vector space \(\mathbb{R}^n\)
+
+    Returns
+    --------
+    int
+        index of a basis vector in \(\mathbb{R}^{n^2}\) mapped to by
+        \(e_i \otimes e_j\).
+    &#34;&#34;&#34;
+    return i * n + j
+
+def symmetric_inclusion(n):
+    r&#34;&#34;&#34;Return a matrix representing the linear inclusion
+    \(\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^n \otimes
+    \mathbb{R}^n\).
+
+    \(\mathrm{Sym}^2(\mathbb{R}^n)\) and
+    \(\mathbb{R}^n \otimes \mathbb{R}^n\)
+    are respectively identified with
+    \(\mathbb{R}^{\binom{n}{2} + n}\) and \(\mathbb{R}^{n^2}\) via the
+    isomorphisms described in `sym_index`, `tensor_index`, and
+    `tensor_pos`.
+
+    If \(\{e_1, \ldots, e_n\}\) is the standard basis for
+    \(\mathbb{R}^n\), the returned matrix gives the linear map taking
+    \(e_ie_j\) to \(\frac{1}{2}(e_i \otimes e_j + e_j \otimes e_i)\),
+    with respect to the bases specified above.
 
     Parameters
     ----------
@@ -775,7 +863,7 @@ def symmetric_inclusion(n):
     Returns
     --------
     matrix : ndarray
-        \(n^2 \times \binom{n}{2}\) array defining this linear map.
+        \(n^2 \times \binom{n}{2} + n\) array defining this linear map.
 
     &#34;&#34;&#34;
     incl_matrix = np.zeros((n * n, int(n * (n + 1) / 2)))
@@ -788,6 +876,28 @@ def symmetric_inclusion(n):
     return np.matrix(incl_matrix)
 
 def symmetric_projection(n):
+    r&#34;&#34;&#34;Return a matrix representing the linear surjection
+    \(\mathbb{R}^n \otimes \mathbb{R}^n \to \mathrm{Sym}^2(\mathbb{R}^n)\).
+
+    If \(\mathbb{R}^n\) is given the standard basis \(\{e_1, \ldots,
+    e_n\}\), then this matrix represents the linear map determined by
+    \(e_i \otimes e_j \mapsto e_ie_j\). The spaces
+    \(\mathbb{R}^n \otimes \mathbb{R}^n\) and \(\mathrm{Sym}^2(\mathbb{R}^n)\)
+    are given the ordered bases determined by the functions
+    `sym_index`, `tensor_index`, and `tensor_pos`.
+
+    Parameters
+    ----------
+    n : int
+        Dimension of the underlying vector space \(\mathbb{R}^n\)
+
+    Returns
+    --------
+    ndarray
+        \(\binom{n}{2} + n \times n\) matrix representing the linear map
+        in the given bases.
+
+    &#34;&#34;&#34;
     proj_matrix = np.zeros((int(n * (n + 1) / 2), n * n))
     for i in range(n * n):
         u, v = tensor_pos(i,n)
@@ -828,7 +938,7 @@ def sl2_irrep(A, n):
     d = A[..., 1, 1]
 
     im = np.zeros(A.shape[:-2] +(n, n))
-    r = dim - 1
+    r = n - 1
     for k in range(n):
         for j in range(n):
             for i in range(max(0, j - r + k), min(j+1, k+1)):
@@ -1135,7 +1245,7 @@ matrices) to represent.</dd>
     d = A[..., 1, 1]
 
     im = np.zeros(A.shape[:-2] +(n, n))
-    r = dim - 1
+    r = n - 1
     for k in range(n):
         for j in range(n):
             for i in range(max(0, j - r + k), min(j+1, k+1)):
@@ -1213,12 +1323,93 @@ representation.</dd>
 <span>def <span class="ident">sym_index</span></span>(<span>i, j, n)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Return coordinate indices for an isomorphism
+<span><span class="MathJax_Preview">\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^{\binom{n}{2} + n}</span><script type="math/tex">\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^{\binom{n}{2} + n}</script></span>.</p>
+<p>If <span><span class="MathJax_Preview">\{e_1, \ldots, e_n\}</span><script type="math/tex">\{e_1, \ldots, e_n\}</script></span> is the standard basis for <span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span>,
+the isomorphism is realized by giving <span><span class="MathJax_Preview">\mathrm{Sym}^2(\mathbb{R}^n)</span><script type="math/tex">\mathrm{Sym}^2(\mathbb{R}^n)</script></span>
+the ordered basis
+<span><span class="MathJax_Preview">
+\{e_ne_n, e_{n-1}e_{n-1}, e_{n-1}e_n,
+e_{n-1}e_{n-1}, e_{n-1}e_{n-2}, e_{n-1}e_{n-3}, \ldots \}.
+</span><script type="math/tex; mode=display">
+\{e_ne_n, e_{n-1}e_{n-1}, e_{n-1}e_n,
+e_{n-1}e_{n-1}, e_{n-1}e_{n-2}, e_{n-1}e_{n-3}, \ldots \}.
+</script></span>
+Schematically this is given by the symmetric matrix</p>
+<p><span><span class="MathJax_Preview">\begin{pmatrix} \ddots \\
+&amp; 3 &amp; 4 &amp; 5 \\
+&amp; &amp; 1 &amp; 2 \\
+&amp; &amp; &amp; 0
+\end{pmatrix},
+</span><script type="math/tex; mode=display">\begin{pmatrix} \ddots \\
+& 3 & 4 & 5 \\
+& & 1 & 2 \\
+& & & 0
+\end{pmatrix},
+</script></span>
+where the (i,j) entry of the matrix gives the index of basis
+element <span><span class="MathJax_Preview">e_ie_j</span><script type="math/tex">e_ie_j</script></span>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>i</code></strong> :&ensp;<code>int</code></dt>
+<dd>index of one of the terms in the basis monomial <span><span class="MathJax_Preview">e_ie_j</span><script type="math/tex">e_ie_j</script></span> for the
+symmetric square</dd>
+<dt><strong><code>j</code></strong> :&ensp;<code>int</code></dt>
+<dd>index of the other term in the basis monomial <span><span class="MathJax_Preview">e_ie_j</span><script type="math/tex">e_ie_j</script></span> for the
+symmetric square</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>dimension of the underlying vector space <span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span>.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>index of the corresponding basis vector in
+<span><span class="MathJax_Preview">\mathbb{R}^{\binom{n}{2} + n}</span><script type="math/tex">\mathbb{R}^{\binom{n}{2} + n}</script></span>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def sym_index(i, j, n):
+    r&#34;&#34;&#34;Return coordinate indices for an isomorphism
+    \(\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^{\binom{n}{2} + n}\).
+
+    If \(\{e_1, \ldots, e_n\}\) is the standard basis for \(\mathbb{R}^n\),
+    the isomorphism is realized by giving \(\mathrm{Sym}^2(\mathbb{R}^n)\)
+    the ordered basis
+    \[
+        \{e_ne_n, e_{n-1}e_{n-1}, e_{n-1}e_n,
+        e_{n-1}e_{n-1}, e_{n-1}e_{n-2}, e_{n-1}e_{n-3}, \ldots \}.
+    \]
+    Schematically this is given by the symmetric matrix
+
+    \[\begin{pmatrix} \ddots \\
+    &amp; 3 &amp; 4 &amp; 5 \\
+    &amp; &amp; 1 &amp; 2 \\
+    &amp; &amp; &amp; 0
+    \end{pmatrix},
+    \]
+    where the (i,j) entry of the matrix gives the index of basis
+    element \(e_ie_j\).
+
+    Parameters
+    ----------
+    i : int
+        index of one of the terms in the basis monomial \(e_ie_j\) for the
+        symmetric square
+    j : int
+        index of the other term in the basis monomial \(e_ie_j\) for the
+        symmetric square
+    n : int
+        dimension of the underlying vector space \(\mathbb{R}^n\).
+
+    Returns
+    --------
+    int
+        index of the corresponding basis vector in
+        \(\mathbb{R}^{\binom{n}{2} + n}\).
+
+    &#34;&#34;&#34;
     if i &gt; j:
         i, j = j, i
     return int((n - i) * (n - i  - 1) / 2 + (j - i))</code></pre>
@@ -1232,30 +1423,136 @@ representation.</dd>
 <span><span class="MathJax_Preview">\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^n \otimes
 \mathbb{R}^n</span><script type="math/tex">\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^n \otimes
 \mathbb{R}^n</script></span>.</p>
+<p><span><span class="MathJax_Preview">\mathrm{Sym}^2(\mathbb{R}^n)</span><script type="math/tex">\mathrm{Sym}^2(\mathbb{R}^n)</script></span> and
+<span><span class="MathJax_Preview">\mathbb{R}^n \otimes \mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n \otimes \mathbb{R}^n</script></span>
+are respectively identified with
+<span><span class="MathJax_Preview">\mathbb{R}^{\binom{n}{2} + n}</span><script type="math/tex">\mathbb{R}^{\binom{n}{2} + n}</script></span> and <span><span class="MathJax_Preview">\mathbb{R}^{n^2}</span><script type="math/tex">\mathbb{R}^{n^2}</script></span> via the
+isomorphisms described in <code><a title="geometry_tools.representation.sym_index" href="#geometry_tools.representation.sym_index">sym_index()</a></code>, <code><a title="geometry_tools.representation.tensor_index" href="#geometry_tools.representation.tensor_index">tensor_index()</a></code>, and
+<code><a title="geometry_tools.representation.tensor_pos" href="#geometry_tools.representation.tensor_pos">tensor_pos()</a></code>.</p>
+<p>If <span><span class="MathJax_Preview">\{e_1, \ldots, e_n\}</span><script type="math/tex">\{e_1, \ldots, e_n\}</script></span> is the standard basis for
+<span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span>, the returned matrix gives the linear map taking
+<span><span class="MathJax_Preview">e_ie_j</span><script type="math/tex">e_ie_j</script></span> to <span><span class="MathJax_Preview">\frac{1}{2}(e_i \otimes e_j + e_j \otimes e_i)</span><script type="math/tex">\frac{1}{2}(e_i \otimes e_j + e_j \otimes e_i)</script></span>,
+with respect to the bases specified above.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Dimension of the underlying vector space <span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span>.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>matrix</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd><span><span class="MathJax_Preview">n^2 \times \binom{n}{2} + n</span><script type="math/tex">n^2 \times \binom{n}{2} + n</script></span> array defining this linear map.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symmetric_inclusion(n):
+    r&#34;&#34;&#34;Return a matrix representing the linear inclusion
+    \(\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^n \otimes
+    \mathbb{R}^n\).
+
+    \(\mathrm{Sym}^2(\mathbb{R}^n)\) and
+    \(\mathbb{R}^n \otimes \mathbb{R}^n\)
+    are respectively identified with
+    \(\mathbb{R}^{\binom{n}{2} + n}\) and \(\mathbb{R}^{n^2}\) via the
+    isomorphisms described in `sym_index`, `tensor_index`, and
+    `tensor_pos`.
+
+    If \(\{e_1, \ldots, e_n\}\) is the standard basis for
+    \(\mathbb{R}^n\), the returned matrix gives the linear map taking
+    \(e_ie_j\) to \(\frac{1}{2}(e_i \otimes e_j + e_j \otimes e_i)\),
+    with respect to the bases specified above.
+
+    Parameters
+    ----------
+    n : int
+        Dimension of the underlying vector space \(\mathbb{R}^n\).
+
+    Returns
+    --------
+    matrix : ndarray
+        \(n^2 \times \binom{n}{2} + n\) array defining this linear map.
+
+    &#34;&#34;&#34;
+    incl_matrix = np.zeros((n * n, int(n * (n + 1) / 2)))
+    for i in range(n):
+        for j in range(n):
+            si = sym_index(i, j, n)
+            ti = tensor_index(i, j, n)
+            incl_matrix[ti][si] = 1/2 + (i == j) * 1/2
+
+    return np.matrix(incl_matrix)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.representation.symmetric_projection"><code class="name flex">
+<span>def <span class="ident">symmetric_projection</span></span>(<span>n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a matrix representing the linear surjection
+<span><span class="MathJax_Preview">\mathbb{R}^n \otimes \mathbb{R}^n \to \mathrm{Sym}^2(\mathbb{R}^n)</span><script type="math/tex">\mathbb{R}^n \otimes \mathbb{R}^n \to \mathrm{Sym}^2(\mathbb{R}^n)</script></span>.</p>
 <p>If <span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span> is given the standard basis <span><span class="MathJax_Preview">\{e_1, \ldots,
 e_n\}</span><script type="math/tex">\{e_1, \ldots,
-e_n\}</script></span>, then <span><span class="MathJax_Preview">\mathrm{Sym^2}(\mathbb{R}^n)</span><script type="math/tex">\mathrm{Sym^2}(\mathbb{R}^n)</script></span> has the ordered
-basis <span><span class="MathJax_Preview">\{e_ne_n, e_{n-1}e_{n-1}, e_{n-1}e_n, e_{n-1}e_{n-1},
-e_{n-1}e_{n-2}, e_{n-1}e_{n-3}, \ldots \}.</span><script type="math/tex; mode=display">\{e_ne_n, e_{n-1}e_{n-1}, e_{n-1}e_n, e_{n-1}e_{n-1},
-e_{n-1}e_{n-2}, e_{n-1}e_{n-3}, \ldots \}.</script></span> This is represented
-schematically by the symmetric matrix:</p>
-<p><span><span class="MathJax_Preview">\begin{pmatrix}
-\ddots \\
-&amp; 3 &amp; 4 &amp; 5\\
-&amp; &amp; 1 &amp; 2\\
-&amp; &amp; &amp; 0
-\end{pmatrix},
-</span><script type="math/tex; mode=display">\begin{pmatrix}
-\ddots \\
-& 3 & 4 & 5\\
-& & 1 & 2\\
-& & & 0
-\end{pmatrix},
-</script></span>
-where the (i,j) entry of the matrix gives the index of basis
-element <span><span class="MathJax_Preview">e_ie_j</span><script type="math/tex">e_ie_j</script></span>.</p>
-<p>The tensor product <span><span class="MathJax_Preview">\mathbb{R}^n \otimes \mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n \otimes \mathbb{R}^n</script></span> has the
-ordered basis
+e_n\}</script></span>, then this matrix represents the linear map determined by
+<span><span class="MathJax_Preview">e_i \otimes e_j \mapsto e_ie_j</span><script type="math/tex">e_i \otimes e_j \mapsto e_ie_j</script></span>. The spaces
+<span><span class="MathJax_Preview">\mathbb{R}^n \otimes \mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n \otimes \mathbb{R}^n</script></span> and <span><span class="MathJax_Preview">\mathrm{Sym}^2(\mathbb{R}^n)</span><script type="math/tex">\mathrm{Sym}^2(\mathbb{R}^n)</script></span>
+are given the ordered bases determined by the functions
+<code><a title="geometry_tools.representation.sym_index" href="#geometry_tools.representation.sym_index">sym_index()</a></code>, <code><a title="geometry_tools.representation.tensor_index" href="#geometry_tools.representation.tensor_index">tensor_index()</a></code>, and <code><a title="geometry_tools.representation.tensor_pos" href="#geometry_tools.representation.tensor_pos">tensor_pos()</a></code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Dimension of the underlying vector space <span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ndarray</code></dt>
+<dd><span><span class="MathJax_Preview">\binom{n}{2} + n \times n</span><script type="math/tex">\binom{n}{2} + n \times n</script></span> matrix representing the linear map
+in the given bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symmetric_projection(n):
+    r&#34;&#34;&#34;Return a matrix representing the linear surjection
+    \(\mathbb{R}^n \otimes \mathbb{R}^n \to \mathrm{Sym}^2(\mathbb{R}^n)\).
+
+    If \(\mathbb{R}^n\) is given the standard basis \(\{e_1, \ldots,
+    e_n\}\), then this matrix represents the linear map determined by
+    \(e_i \otimes e_j \mapsto e_ie_j\). The spaces
+    \(\mathbb{R}^n \otimes \mathbb{R}^n\) and \(\mathrm{Sym}^2(\mathbb{R}^n)\)
+    are given the ordered bases determined by the functions
+    `sym_index`, `tensor_index`, and `tensor_pos`.
+
+    Parameters
+    ----------
+    n : int
+        Dimension of the underlying vector space \(\mathbb{R}^n\)
+
+    Returns
+    --------
+    ndarray
+        \(\binom{n}{2} + n \times n\) matrix representing the linear map
+        in the given bases.
+
+    &#34;&#34;&#34;
+    proj_matrix = np.zeros((int(n * (n + 1) / 2), n * n))
+    for i in range(n * n):
+        u, v = tensor_pos(i,n)
+        proj_matrix[_sym_index(u, v, n)][i] = 1
+
+    return np.matrix(proj_matrix)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.representation.tensor_index"><code class="name flex">
+<span>def <span class="ident">tensor_index</span></span>(<span>i, j, n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return coordinate indices for an isomorphism
+<span><span class="MathJax_Preview">\mathbb{R}^n \otimes \mathbb{R}^n \to \mathbb{R}^{n^2}</span><script type="math/tex">\mathbb{R}^n \otimes \mathbb{R}^n \to \mathbb{R}^{n^2}</script></span>.</p>
+<p>If <span><span class="MathJax_Preview">\{e_1, \ldots, e_n\}</span><script type="math/tex">\{e_1, \ldots, e_n\}</script></span> is the standard basis for
+<span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span>, the isomorphism is realized by giving
+<span><span class="MathJax_Preview">\mathbb{R}^n \otimes \mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n \otimes \mathbb{R}^n</script></span> the ordered basis
 <span><span class="MathJax_Preview">
 \{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
 </span><script type="math/tex; mode=display">
@@ -1277,48 +1574,35 @@ n & n + 1 & \ldots\\
 </script></span>
 Here the (i, j) entry of the matrix gives the index of the basis
 element <span><span class="MathJax_Preview">e_i \otimes e_j</span><script type="math/tex">e_i \otimes e_j</script></span>.</p>
-<p>The returned matrix gives the linear map taking <span><span class="MathJax_Preview">e_ie_j</span><script type="math/tex">e_ie_j</script></span> to
-<span><span class="MathJax_Preview">\frac{1}{2}(e_i \otimes e_j + e_j \otimes e_i)</span><script type="math/tex">\frac{1}{2}(e_i \otimes e_j + e_j \otimes e_i)</script></span>, with respect
-to the bases specified above.</p>
+<p>The inverse of this isomorphism is given by <code><a title="geometry_tools.representation.tensor_pos" href="#geometry_tools.representation.tensor_pos">tensor_pos()</a></code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
+<dt><strong><code>i</code></strong> :&ensp;<code>int</code></dt>
+<dd>index of one of the terms in a basis vector <span><span class="MathJax_Preview">e_i \otimes e_j</span><script type="math/tex">e_i \otimes e_j</script></span>.</dd>
+<dt><strong><code>j</code></strong> :&ensp;<code>int</code></dt>
+<dd>index of the other term in a basis vector <span><span class="MathJax_Preview">e_i \times e_j</span><script type="math/tex">e_i \times e_j</script></span>.</dd>
 <dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
-<dd>Dimension of the underlying vector space <span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span>.</dd>
+<dd>dimension of the underlying vector space <span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span></dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>matrix</code></strong> :&ensp;<code>ndarray</code></dt>
-<dd><span><span class="MathJax_Preview">n^2 \times \binom{n}{2}</span><script type="math/tex">n^2 \times \binom{n}{2}</script></span> array defining this linear map.</dd>
+<dt><code>int</code></dt>
+<dd>index of a basis vector in <span><span class="MathJax_Preview">\mathbb{R}^{n^2}</span><script type="math/tex">\mathbb{R}^{n^2}</script></span> mapped to by
+<span><span class="MathJax_Preview">e_i \otimes e_j</span><script type="math/tex">e_i \otimes e_j</script></span>.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def symmetric_inclusion(n):
-    r&#34;&#34;&#34;Return a matrix representing the linear inclusion
-    \(\mathrm{Sym}^2(\mathbb{R}^n) \to \mathbb{R}^n \otimes
-    \mathbb{R}^n\).
+<pre><code class="python">def tensor_index(i,j,n):
+    r&#34;&#34;&#34;Return coordinate indices for an isomorphism
+    \(\mathbb{R}^n \otimes \mathbb{R}^n \to \mathbb{R}^{n^2}\).
 
-    If \(\mathbb{R}^n\) is given the standard basis \(\{e_1, \ldots,
-    e_n\}\), then \(\mathrm{Sym^2}(\mathbb{R}^n)\) has the ordered
-    basis \[\{e_ne_n, e_{n-1}e_{n-1}, e_{n-1}e_n, e_{n-1}e_{n-1},
-    e_{n-1}e_{n-2}, e_{n-1}e_{n-3}, \ldots \}.\] This is represented
-    schematically by the symmetric matrix:
-
-    \[\begin{pmatrix}
-    \ddots \\
-    &amp; 3 &amp; 4 &amp; 5\\
-    &amp; &amp; 1 &amp; 2\\
-    &amp; &amp; &amp; 0
-    \end{pmatrix},
-    \]
-    where the (i,j) entry of the matrix gives the index of basis
-    element \(e_ie_j\).
-
-    The tensor product \(\mathbb{R}^n \otimes \mathbb{R}^n\) has the
-    ordered basis
+    If \(\{e_1, \ldots, e_n\}\) is the standard basis for
+    \(\mathbb{R}^n\), the isomorphism is realized by giving
+    \(\mathbb{R}^n \otimes \mathbb{R}^n\) the ordered basis
     \[
-        \{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
+    \{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
     \]
     represented schematically by the matrix
     \[
@@ -1331,59 +1615,23 @@ to the bases specified above.</p>
     Here the (i, j) entry of the matrix gives the index of the basis
     element \(e_i \otimes e_j\).
 
-    The returned matrix gives the linear map taking \(e_ie_j\) to
-    \(\frac{1}{2}(e_i \otimes e_j + e_j \otimes e_i)\), with respect
-    to the bases specified above.
+    The inverse of this isomorphism is given by `tensor_pos`.
 
     Parameters
     ----------
+    i : int
+        index of one of the terms in a basis vector \(e_i \otimes e_j\).
+    j : int
+        index of the other term in a basis vector \(e_i \times e_j\).
     n : int
-        Dimension of the underlying vector space \(\mathbb{R}^n\).
+        dimension of the underlying vector space \(\mathbb{R}^n\)
 
     Returns
     --------
-    matrix : ndarray
-        \(n^2 \times \binom{n}{2}\) array defining this linear map.
-
+    int
+        index of a basis vector in \(\mathbb{R}^{n^2}\) mapped to by
+        \(e_i \otimes e_j\).
     &#34;&#34;&#34;
-    incl_matrix = np.zeros((n * n, int(n * (n + 1) / 2)))
-    for i in range(n):
-        for j in range(n):
-            si = sym_index(i, j, n)
-            ti = tensor_index(i, j, n)
-            incl_matrix[ti][si] = 1/2 + (i == j) * 1/2
-
-    return np.matrix(incl_matrix)</code></pre>
-</details>
-</dd>
-<dt id="geometry_tools.representation.symmetric_projection"><code class="name flex">
-<span>def <span class="ident">symmetric_projection</span></span>(<span>n)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def symmetric_projection(n):
-    proj_matrix = np.zeros((int(n * (n + 1) / 2), n * n))
-    for i in range(n * n):
-        u, v = tensor_pos(i,n)
-        proj_matrix[_sym_index(u, v, n)][i] = 1
-
-    return np.matrix(proj_matrix)</code></pre>
-</details>
-</dd>
-<dt id="geometry_tools.representation.tensor_index"><code class="name flex">
-<span>def <span class="ident">tensor_index</span></span>(<span>i, j, n)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def tensor_index(i,j,n):
     return i * n + j</code></pre>
 </details>
 </dd>
@@ -1391,12 +1639,87 @@ to the bases specified above.</p>
 <span>def <span class="ident">tensor_pos</span></span>(<span>i, n)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Return coordinate indices for an isomorphism
+<span><span class="MathJax_Preview">\mathbb{R}^{n^2} \to \mathbb{R}^n \otimes \mathbb{R}^n</span><script type="math/tex">\mathbb{R}^{n^2} \to \mathbb{R}^n \otimes \mathbb{R}^n</script></span>.</p>
+<p>If <span><span class="MathJax_Preview">\{e_1, \ldots, e_n\}</span><script type="math/tex">\{e_1, \ldots, e_n\}</script></span> is the standard basis for
+<span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span>, the isomorphism is realized by giving
+<span><span class="MathJax_Preview">\mathbb{R}^n \otimes \mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n \otimes \mathbb{R}^n</script></span> the ordered basis
+<span><span class="MathJax_Preview">
+\{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
+</span><script type="math/tex; mode=display">
+\{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
+</script></span>
+represented schematically by the matrix
+<span><span class="MathJax_Preview">
+\begin{pmatrix}
+0 &amp; 1 &amp; \ldots \\
+n &amp; n + 1 &amp; \ldots\\
+\vdots
+\end{pmatrix}.
+</span><script type="math/tex; mode=display">
+\begin{pmatrix}
+0 & 1 & \ldots \\
+n & n + 1 & \ldots\\
+\vdots
+\end{pmatrix}.
+</script></span>
+Here the (i, j) entry of the matrix gives the index of the basis
+element <span><span class="MathJax_Preview">e_i \otimes e_j</span><script type="math/tex">e_i \otimes e_j</script></span>.</p>
+<p>The inverse of this isomorphism is given by <code><a title="geometry_tools.representation.tensor_index" href="#geometry_tools.representation.tensor_index">tensor_index()</a></code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>i</code></strong> :&ensp;<code>int</code></dt>
+<dd>index of a basis vector in <span><span class="MathJax_Preview">\mathbb{R}^{n^2}</span><script type="math/tex">\mathbb{R}^{n^2}</script></span></dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>dimension of the underlying vector space <span><span class="MathJax_Preview">\mathbb{R}^n</span><script type="math/tex">\mathbb{R}^n</script></span></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>tuple <code>(j, k)</code> determining the monomial <span><span class="MathJax_Preview">e_j \otimes e_k</span><script type="math/tex">e_j \otimes e_k</script></span>
+mapped to by given the basis vector in <span><span class="MathJax_Preview">\mathbb{R}^{n^2}</span><script type="math/tex">\mathbb{R}^{n^2}</script></span>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def tensor_pos(i, n):
+    r&#34;&#34;&#34;Return coordinate indices for an isomorphism
+    \(\mathbb{R}^{n^2} \to \mathbb{R}^n \otimes \mathbb{R}^n\).
+
+    If \(\{e_1, \ldots, e_n\}\) is the standard basis for
+    \(\mathbb{R}^n\), the isomorphism is realized by giving
+    \(\mathbb{R}^n \otimes \mathbb{R}^n\) the ordered basis
+    \[
+    \{e_1 \otimes e_1, e_1 \otimes e_2, \ldots, e_1 \otimes e_n, e_2 \otimes e_1, \ldots, \}
+    \]
+    represented schematically by the matrix
+    \[
+        \begin{pmatrix}
+            0 &amp; 1 &amp; \ldots \\
+            n &amp; n + 1 &amp; \ldots\\
+            \vdots
+        \end{pmatrix}.
+    \]
+    Here the (i, j) entry of the matrix gives the index of the basis
+    element \(e_i \otimes e_j\).
+
+    The inverse of this isomorphism is given by `tensor_index`.
+
+    Parameters
+    ----------
+    i : int
+        index of a basis vector in \(\mathbb{R}^{n^2}\)
+    n : int
+        dimension of the underlying vector space \(\mathbb{R}^n\)
+
+    Returns
+    --------
+    tuple
+        tuple `(j, k)` determining the monomial \(e_j \otimes e_k\)
+        mapped to by given the basis vector in \(\mathbb{R}^{n^2}\).
+
+    &#34;&#34;&#34;
     return int(i / n), i % n</code></pre>
 </details>
 </dd>
@@ -1566,6 +1889,7 @@ as arrays later to use the representation properly.</dd>
                              &#34;can be specified&#34;)
 
         as_start = True
+        state = None
 
         if start_state is not None:
             state = start_state
@@ -1579,7 +1903,7 @@ as arrays later to use the representation properly.</dd>
                                         maxlen=maxlen,
                                         with_words=with_words,
                                         state=state,
-                                        as_start=True,
+                                        as_start=as_start,
                                         precomputed=precomputed)
 
 
@@ -1741,9 +2065,11 @@ as arrays later to use the representation properly.</dd>
         if self._dim is None:
             self._dim = shape[0]
         if shape[0] != shape[1]:
-            raise RepresentationException(&#34;use square matrices&#34;)
+            raise ValueError(&#34;Matrices representing group elements must be square&#34;)
         if shape[0] != self._dim:
-            raise RepresentationException(&#34;use matrices of matching dimensions&#34;)
+            raise ValueError(
+                &#34;Every matrix in the representation must have the same shape&#34;
+            )
 
         self.generators[generator] = matrix
         self.generators[utils.invert_gen(generator)] = np.linalg.inv(matrix)
@@ -1758,7 +2084,7 @@ as arrays later to use the representation properly.</dd>
 
         Raises
         ------
-        RepresentationException
+        ValueError
             Raised if `self` and `rep` have differing generating sets.
 
         Returns
@@ -1768,7 +2094,7 @@ as arrays later to use the representation properly.</dd>
 
         &#34;&#34;&#34;
         if set(rep.generators) != set(self.generators):
-            raise RepresentationException(
+            raise ValueError(
                 &#34;Cannot take a tensor product of a representation of groups with &#34;
                 &#34;different presentations&#34;
             )
@@ -1926,6 +2252,7 @@ strings containing the corresponding words. If
                          &#34;can be specified&#34;)
 
     as_start = True
+    state = None
 
     if start_state is not None:
         state = start_state
@@ -1939,7 +2266,7 @@ strings containing the corresponding words. If
                                     maxlen=maxlen,
                                     with_words=with_words,
                                     state=state,
-                                    as_start=True,
+                                    as_start=as_start,
                                     precomputed=precomputed)</code></pre>
 </details>
 </dd>
@@ -2175,7 +2502,7 @@ semigroup generators (upper and lowercase letters).</p>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
-<dt><code><a title="geometry_tools.representation.RepresentationException" href="#geometry_tools.representation.RepresentationException">RepresentationException</a></code></dt>
+<dt><code>ValueError</code></dt>
 <dd>Raised if <code>self</code> and <code>rep</code> have differing generating sets.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -2197,7 +2524,7 @@ semigroup generators (upper and lowercase letters).</p>
 
     Raises
     ------
-    RepresentationException
+    ValueError
         Raised if `self` and `rep` have differing generating sets.
 
     Returns
@@ -2207,7 +2534,7 @@ semigroup generators (upper and lowercase letters).</p>
 
     &#34;&#34;&#34;
     if set(rep.generators) != set(self.generators):
-        raise RepresentationException(
+        raise ValueError(
             &#34;Cannot take a tensor product of a representation of groups with &#34;
             &#34;different presentations&#34;
         )
@@ -2221,25 +2548,6 @@ semigroup generators (upper and lowercase letters).</p>
 </details>
 </dd>
 </dl>
-</dd>
-<dt id="geometry_tools.representation.RepresentationException"><code class="flex name class">
-<span>class <span class="ident">RepresentationException</span></span>
-<span>(</span><span>*args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class RepresentationException(Exception):
-    pass</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
-</ul>
 </dd>
 </dl>
 </section>
@@ -2282,9 +2590,6 @@ semigroup generators (upper and lowercase letters).</p>
 <li><code><a title="geometry_tools.representation.Representation.symmetric_square" href="#geometry_tools.representation.Representation.symmetric_square">symmetric_square</a></code></li>
 <li><code><a title="geometry_tools.representation.Representation.tensor_product" href="#geometry_tools.representation.Representation.tensor_product">tensor_product</a></code></li>
 </ul>
-</li>
-<li>
-<h4><code><a title="geometry_tools.representation.RepresentationException" href="#geometry_tools.representation.RepresentationException">RepresentationException</a></code></h4>
 </li>
 </ul>
 </li>

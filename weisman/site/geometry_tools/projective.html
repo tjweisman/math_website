@@ -306,7 +306,7 @@ class ProjectiveObject:
 
         Returns
         -------
-        ndarray :
+        ndarray
             affine coordinates of this Point, in the specified
             standard affine chart.
 
@@ -428,7 +428,7 @@ class PointPair(Point):
 
         Returns
         --------
-        Point :
+        Point
             A composite Point object representing the endpoints of
             this (possibly composite) PointPair
 
@@ -440,7 +440,7 @@ class PointPair(Point):
 
         Returns
         -----------
-        tuple :
+        tuple
             Tuple of the form `(endpoint1, endpoint2)`, where
             `endpoint1` and `endpoint2` are (possibly composite)
             `Point` objects representing the endpoints of this pair
@@ -459,7 +459,7 @@ class PointPair(Point):
 
         Returns
         --------
-        ndarray:
+        ndarray
             Affine coordinates of the endpoints of this pair of
             points.
 
@@ -471,7 +471,7 @@ class PointPair(Point):
 
         Returns
         --------
-        ndarray:
+        ndarray
             Projective coordinates of the endpoints of this pair of
             points.
 
@@ -498,6 +498,10 @@ class Polygon(Point):
         ProjectiveObject.__init__(self, vertices, aux_data,
                                   unit_ndims=2, aux_ndims=3)
 
+    def in_standard_chart(self):
+        coord_signs = np.sign(self.projective_coords()[..., 0])
+        return np.all(coord_signs == 1, axis=-1) | np.all(coord_signs == -1, axis=-1)
+
     def set(self, proj_data, aux_data=None, dual_data=None):
         ProjectiveObject.set(self, proj_data, aux_data)
         self.vertices = self.proj_data
@@ -512,7 +516,7 @@ class Polygon(Point):
 
         Returns
         --------
-        PointPair :
+        PointPair
             Edges of this polygon, as a composite PointPair object.
 
         &#34;&#34;&#34;
@@ -523,11 +527,11 @@ class Polygon(Point):
 
         Returns
         --------
-        Point :
+        Point
             Vertices of this polygon, as a composite Point object.
 
         &#34;&#34;&#34;
-        return (self.proj_data)
+        return Point(self.proj_data)
 
 class ConvexPolygon(Polygon):
     &#34;&#34;&#34;A finite-sided convex polygon in projective space.
@@ -587,7 +591,7 @@ class ConvexPolygon(Polygon):
 
         Returns
         --------
-        ConvexPolygon :
+        ConvexPolygon
             if `in_place` is `False`, return a modified ConvexPolygon
             object with the new points added.
 
@@ -707,7 +711,7 @@ class Transformation(ProjectiveObject):
 
         Returns
         -------
-        ProjectiveObject :
+        ProjectiveObject
             Transformed (possibly composite) projective object. The
             type of this object is the same type as the original
             (untransformed) object. If the original object was
@@ -755,7 +759,7 @@ class Transformation(ProjectiveObject):
 
         Returns
         --------
-        ProjectiveTransformation :
+        ProjectiveTransformation
             Inverse of this transformation.
         &#34;&#34;&#34;
         return self.__class__(np.linalg.inv(self.matrix))
@@ -788,7 +792,7 @@ class ProjectiveRepresentation(representation.Representation):
 
         Returns
         --------
-        Transformation :
+        Transformation
             Composite transformation object containing one
             transformation for each word in `words`.
 
@@ -836,7 +840,7 @@ def hyperplane_coordinate_transform(normal):
 
     Returns
     --------
-    Transformation :
+    Transformation
         Projective transformation (orthogonal in the standard inner
         product on R^n) taking the desired affine chart to the
         standard chart with index 0.
@@ -866,7 +870,7 @@ def affine_coords(points, chart_index=None, column_vectors=False):
 
     Returns
     --------
-    ndarray:
+    ndarray
         If chart_index is specified, return an array of points in
         affine coordinates in that chart. Otherwise, return a tuple
         `(affine, chart_index)`, where `chart_index` is the affine
@@ -932,7 +936,7 @@ def projective_coords(points, chart_index=0, column_vectors=False):
 
     Returns
     --------
-    ndarray:
+    ndarray
         Projective coordinates of the given points. The last dimension
         of the array is the dimension of the underlying vector space
         (or the second-to-last dimension, if `column_vectors` is
@@ -966,7 +970,7 @@ def identity(dimension):
 
     Returns
     --------
-    Transformation :
+    Transformation
         The identity map on RP^n, where n = `dimension`.
 
     &#34;&#34;&#34;
@@ -994,7 +998,7 @@ def affine_linear_map(linear_map, chart_index=0, column_vectors=True):
 
     Returns
     --------
-    Transformation :
+    Transformation
         Projective transformation preserving a standard affine chart
         and acting by a linear map on that affine space (i.e. fixing a
         point in that affine space).
@@ -1023,7 +1027,7 @@ def affine_translation(translation, chart_index=0):
 
     Returns
     --------
-    Transformation :
+    Transformation
         Projective transformation preserving a standard affine chart
         and acting by an affine translation in that affine space.
 
@@ -1063,7 +1067,7 @@ of the underlying vector space.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>
 <p>If chart_index is specified, return an array of points in
 affine coordinates in that chart. Otherwise, return a tuple
@@ -1100,7 +1104,7 @@ affine space.</p>
 
     Returns
     --------
-    ndarray:
+    ndarray
         If chart_index is specified, return an array of points in
         affine coordinates in that chart. Otherwise, return a tuple
         `(affine, chart_index)`, where `chart_index` is the affine
@@ -1170,7 +1174,7 @@ vectors (on the left). Otherwise, <code>linear_map</code> acts on row
 vectors (on the right).</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Transformation :</code></dt>
+<dt><code><a title="geometry_tools.projective.Transformation" href="#geometry_tools.projective.Transformation">Transformation</a></code></dt>
 <dd>Projective transformation preserving a standard affine chart
 and acting by a linear map on that affine space (i.e. fixing a
 point in that affine space).</dd>
@@ -1200,7 +1204,7 @@ point in that affine space).</dd>
 
     Returns
     --------
-    Transformation :
+    Transformation
         Projective transformation preserving a standard affine chart
         and acting by a linear map on that affine space (i.e. fixing a
         point in that affine space).
@@ -1232,7 +1236,7 @@ point in that affine space).</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Transformation :</code></dt>
+<dt><code><a title="geometry_tools.projective.Transformation" href="#geometry_tools.projective.Transformation">Transformation</a></code></dt>
 <dd>Projective transformation preserving a standard affine chart
 and acting by an affine translation in that affine space.</dd>
 </dl></div>
@@ -1252,7 +1256,7 @@ and acting by an affine translation in that affine space.</dd>
 
     Returns
     --------
-    Transformation :
+    Transformation
         Projective transformation preserving a standard affine chart
         and acting by an affine translation in that affine space.
 
@@ -1279,7 +1283,7 @@ and acting by an affine translation in that affine space.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Transformation :</code></dt>
+<dt><code><a title="geometry_tools.projective.Transformation" href="#geometry_tools.projective.Transformation">Transformation</a></code></dt>
 <dd>Projective transformation (orthogonal in the standard inner
 product on R^n) taking the desired affine chart to the
 standard chart with index 0.</dd>
@@ -1300,7 +1304,7 @@ standard chart with index 0.</dd>
 
     Returns
     --------
-    Transformation :
+    Transformation
         Projective transformation (orthogonal in the standard inner
         product on R^n) taking the desired affine chart to the
         standard chart with index 0.
@@ -1322,7 +1326,7 @@ standard chart with index 0.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Transformation :</code></dt>
+<dt><code><a title="geometry_tools.projective.Transformation" href="#geometry_tools.projective.Transformation">Transformation</a></code></dt>
 <dd>The identity map on RP^n, where n = <code>dimension</code>.</dd>
 </dl></div>
 <details class="source">
@@ -1339,7 +1343,7 @@ standard chart with index 0.</dd>
 
     Returns
     --------
-    Transformation :
+    Transformation
         The identity map on RP^n, where n = `dimension`.
 
     &#34;&#34;&#34;
@@ -1365,7 +1369,7 @@ of affine space.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>Projective coordinates of the given points. The last dimension
 of the array is the dimension of the underlying vector space
 (or the second-to-last dimension, if <code>column_vectors</code> is
@@ -1393,7 +1397,7 @@ of the array is the dimension of the underlying vector space
 
     Returns
     --------
-    ndarray:
+    ndarray
         Projective coordinates of the given points. The last dimension
         of the array is the dimension of the underlying vector space
         (or the second-to-last dimension, if `column_vectors` is
@@ -1521,7 +1525,7 @@ dual vector using lifts of the vertex data.</dd>
 
         Returns
         --------
-        ConvexPolygon :
+        ConvexPolygon
             if `in_place` is `False`, return a modified ConvexPolygon
             object with the new points added.
 
@@ -1600,7 +1604,7 @@ instead of returning a new one.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ConvexPolygon :</code></dt>
+<dt><code><a title="geometry_tools.projective.ConvexPolygon" href="#geometry_tools.projective.ConvexPolygon">ConvexPolygon</a></code></dt>
 <dd>if <code>in_place</code> is <code>False</code>, return a modified ConvexPolygon
 object with the new points added.</dd>
 </dl></div>
@@ -1629,7 +1633,7 @@ object with the new points added.</dd>
 
     Returns
     --------
-    ConvexPolygon :
+    ConvexPolygon
         if `in_place` is `False`, return a modified ConvexPolygon
         object with the new points added.
 
@@ -1881,7 +1885,7 @@ endpoints for this pair of points.</p>
 
         Returns
         --------
-        Point :
+        Point
             A composite Point object representing the endpoints of
             this (possibly composite) PointPair
 
@@ -1893,7 +1897,7 @@ endpoints for this pair of points.</p>
 
         Returns
         -----------
-        tuple :
+        tuple
             Tuple of the form `(endpoint1, endpoint2)`, where
             `endpoint1` and `endpoint2` are (possibly composite)
             `Point` objects representing the endpoints of this pair
@@ -1912,7 +1916,7 @@ endpoints for this pair of points.</p>
 
         Returns
         --------
-        ndarray:
+        ndarray
             Affine coordinates of the endpoints of this pair of
             points.
 
@@ -1924,7 +1928,7 @@ endpoints for this pair of points.</p>
 
         Returns
         --------
-        ndarray:
+        ndarray
             Projective coordinates of the endpoints of this pair of
             points.
 
@@ -1954,7 +1958,7 @@ endpoints for this pair of points.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>Affine coordinates of the endpoints of this pair of
 points.</dd>
 </dl></div>
@@ -1972,7 +1976,7 @@ points.</dd>
 
     Returns
     --------
-    ndarray:
+    ndarray
         Affine coordinates of the endpoints of this pair of
         points.
 
@@ -1987,7 +1991,7 @@ points.</dd>
 <div class="desc"><p>Get endpoints of this segment in projective coordinates.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray:</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>Projective coordinates of the endpoints of this pair of
 points.</dd>
 </dl></div>
@@ -2000,7 +2004,7 @@ points.</dd>
 
     Returns
     --------
-    ndarray:
+    ndarray
         Projective coordinates of the endpoints of this pair of
         points.
 
@@ -2015,7 +2019,7 @@ points.</dd>
 <div class="desc"><p>Return a pair of point objects, one for each endpoint</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>tuple :</code></dt>
+<dt><code>tuple</code></dt>
 <dd>Tuple of the form <code>(endpoint1, endpoint2)</code>, where
 <code>endpoint1</code> and <code>endpoint2</code> are (possibly composite)
 <code><a title="geometry_tools.projective.Point" href="#geometry_tools.projective.Point">Point</a></code> objects representing the endpoints of this pair</dd>
@@ -2029,7 +2033,7 @@ points.</dd>
 
     Returns
     -----------
-    tuple :
+    tuple
         Tuple of the form `(endpoint1, endpoint2)`, where
         `endpoint1` and `endpoint2` are (possibly composite)
         `Point` objects representing the endpoints of this pair
@@ -2046,7 +2050,7 @@ points.</dd>
 <div class="desc"><p>Get a Point representing the endpoints of this pair</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Point :</code></dt>
+<dt><code><a title="geometry_tools.projective.Point" href="#geometry_tools.projective.Point">Point</a></code></dt>
 <dd>A composite Point object representing the endpoints of
 this (possibly composite) PointPair</dd>
 </dl></div>
@@ -2059,7 +2063,7 @@ this (possibly composite) PointPair</dd>
 
     Returns
     --------
-    Point :
+    Point
         A composite Point object representing the endpoints of
         this (possibly composite) PointPair
 
@@ -2166,6 +2170,10 @@ this polygon).</dd>
         ProjectiveObject.__init__(self, vertices, aux_data,
                                   unit_ndims=2, aux_ndims=3)
 
+    def in_standard_chart(self):
+        coord_signs = np.sign(self.projective_coords()[..., 0])
+        return np.all(coord_signs == 1, axis=-1) | np.all(coord_signs == -1, axis=-1)
+
     def set(self, proj_data, aux_data=None, dual_data=None):
         ProjectiveObject.set(self, proj_data, aux_data)
         self.vertices = self.proj_data
@@ -2180,7 +2188,7 @@ this polygon).</dd>
 
         Returns
         --------
-        PointPair :
+        PointPair
             Edges of this polygon, as a composite PointPair object.
 
         &#34;&#34;&#34;
@@ -2191,11 +2199,11 @@ this polygon).</dd>
 
         Returns
         --------
-        Point :
+        Point
             Vertices of this polygon, as a composite Point object.
 
         &#34;&#34;&#34;
-        return (self.proj_data)</code></pre>
+        return Point(self.proj_data)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2216,7 +2224,7 @@ this polygon).</dd>
 <div class="desc"><p>Get the edges of this polygon</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>PointPair :</code></dt>
+<dt><code><a title="geometry_tools.projective.PointPair" href="#geometry_tools.projective.PointPair">PointPair</a></code></dt>
 <dd>Edges of this polygon, as a composite PointPair object.</dd>
 </dl></div>
 <details class="source">
@@ -2228,7 +2236,7 @@ this polygon).</dd>
 
     Returns
     --------
-    PointPair :
+    PointPair
         Edges of this polygon, as a composite PointPair object.
 
     &#34;&#34;&#34;
@@ -2242,7 +2250,7 @@ this polygon).</dd>
 <div class="desc"><p>Get the vertices of the polygon.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Point :</code></dt>
+<dt><code><a title="geometry_tools.projective.Point" href="#geometry_tools.projective.Point">Point</a></code></dt>
 <dd>Vertices of this polygon, as a composite Point object.</dd>
 </dl></div>
 <details class="source">
@@ -2254,11 +2262,25 @@ this polygon).</dd>
 
     Returns
     --------
-    Point :
+    Point
         Vertices of this polygon, as a composite Point object.
 
     &#34;&#34;&#34;
-    return (self.proj_data)</code></pre>
+    return Point(self.proj_data)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.projective.Polygon.in_standard_chart"><code class="name flex">
+<span>def <span class="ident">in_standard_chart</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def in_standard_chart(self):
+    coord_signs = np.sign(self.projective_coords()[..., 0])
+    return np.all(coord_signs == 1, axis=-1) | np.all(coord_signs == -1, axis=-1)</code></pre>
 </details>
 </dd>
 </dl>
@@ -2571,7 +2593,7 @@ equal to 2.</dd>
 
         Returns
         -------
-        ndarray :
+        ndarray
             affine coordinates of this Point, in the specified
             standard affine chart.
 
@@ -2620,7 +2642,7 @@ chart.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ndarray :</code></dt>
+<dt><code>ndarray</code></dt>
 <dd>affine coordinates of this Point, in the specified
 standard affine chart.</dd>
 </dl></div>
@@ -2642,7 +2664,7 @@ standard affine chart.</dd>
 
     Returns
     -------
-    ndarray :
+    ndarray
         affine coordinates of this Point, in the specified
         standard affine chart.
 
@@ -2884,7 +2906,7 @@ as arrays later to use the representation properly.</dd>
 
         Returns
         --------
-        Transformation :
+        Transformation
             Composite transformation object containing one
             transformation for each word in `words`.
 
@@ -2942,7 +2964,7 @@ the generators for this representation.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Transformation :</code></dt>
+<dt><code><a title="geometry_tools.projective.Transformation" href="#geometry_tools.projective.Transformation">Transformation</a></code></dt>
 <dd>Composite transformation object containing one
 transformation for each word in <code>words</code>.</dd>
 </dl></div>
@@ -2961,7 +2983,7 @@ transformation for each word in <code>words</code>.</dd>
 
     Returns
     --------
-    Transformation :
+    Transformation
         Composite transformation object containing one
         transformation for each word in `words`.
 
@@ -3084,7 +3106,7 @@ on the left. Otherwise proj_data gives a <em>row matrix</em>.</dd>
 
         Returns
         -------
-        ProjectiveObject :
+        ProjectiveObject
             Transformed (possibly composite) projective object. The
             type of this object is the same type as the original
             (untransformed) object. If the original object was
@@ -3132,7 +3154,7 @@ on the left. Otherwise proj_data gives a <em>row matrix</em>.</dd>
 
         Returns
         --------
-        ProjectiveTransformation :
+        ProjectiveTransformation
             Inverse of this transformation.
         &#34;&#34;&#34;
         return self.__class__(np.linalg.inv(self.matrix))
@@ -3171,7 +3193,7 @@ of the target object (i.e. take an outer product).</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ProjectiveObject :</code></dt>
+<dt><code><a title="geometry_tools.projective.ProjectiveObject" href="#geometry_tools.projective.ProjectiveObject">ProjectiveObject</a></code></dt>
 <dd>Transformed (possibly composite) projective object. The
 type of this object is the same type as the original
 (untransformed) object. If the original object was
@@ -3201,7 +3223,7 @@ ProjectiveObject.</dd>
 
     Returns
     -------
-    ProjectiveObject :
+    ProjectiveObject
         Transformed (possibly composite) projective object. The
         type of this object is the same type as the original
         (untransformed) object. If the original object was
@@ -3249,7 +3271,7 @@ ProjectiveObject.</dd>
 <div class="desc"><p>Get the inverse of this transformation.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>ProjectiveTransformation :</code></dt>
+<dt><code>ProjectiveTransformation</code></dt>
 <dd>Inverse of this transformation.</dd>
 </dl></div>
 <details class="source">
@@ -3261,7 +3283,7 @@ ProjectiveObject.</dd>
 
     Returns
     --------
-    ProjectiveTransformation :
+    ProjectiveTransformation
         Inverse of this transformation.
     &#34;&#34;&#34;
     return self.__class__(np.linalg.inv(self.matrix))</code></pre>
@@ -3334,6 +3356,7 @@ ProjectiveObject.</dd>
 <ul class="">
 <li><code><a title="geometry_tools.projective.Polygon.get_edges" href="#geometry_tools.projective.Polygon.get_edges">get_edges</a></code></li>
 <li><code><a title="geometry_tools.projective.Polygon.get_vertices" href="#geometry_tools.projective.Polygon.get_vertices">get_vertices</a></code></li>
+<li><code><a title="geometry_tools.projective.Polygon.in_standard_chart" href="#geometry_tools.projective.Polygon.in_standard_chart">in_standard_chart</a></code></li>
 </ul>
 </li>
 <li>

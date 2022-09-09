@@ -5,18 +5,22 @@ Research
 
 My research is about the interaction between geometric structures on manifolds, geometric group theory, and dynamics of discrete subgroups of Lie groups. The relationship between these three areas is quite strong in the classical context of *convex cocompact* and *geometrically finite* representations. These are representations of word-hyperbolic (or relatively hyperbolic) groups into rank-one Lie groups (such as PSL(2, R) and PSL(2, C)) which behave well with respect to both the coarse geometry of the represented group and the smooth geometry of the target group.
 
-I am mainly interested in the geometry and dynamics of higher-rank generalizations of convex cocompactness and geometrical finiteness, including (but not limited to!) Anosov representations. Many of the examples I work with come from convex projective structures on manifolds, and are often inspired by hyperbolic geometry.
+I am particularly interested in the geometry and dynamics of higher-rank generalizations of convex cocompactness and geometrical finiteness, including (but not limited to) Anosov representations. Many of the examples I work with come from convex projective structures on manifolds, and are often inspired by hyperbolic geometry.
 
 <img src="resources/quasifuchsian.png" alt="A quasifuchsian representation in H^3" width=210px />
 <div class="caption">The limit set of a convex cocompact representation in hyperbolic space (specifically, a quasifuchsian representation produced by bending). See an <a href="resources/bending2.gif">animated version</a>.</div>
 
 ## Recent publications and preprints
 
-1. *An extended definition of Anosov representation for relatively hyperbolic groups*. arXiv:2205.07183, 2022.
+1. (with K. Mann and J. Manning) *Stability of hyperbolic groups acting on their boundaries.* arXiv:2206.14914, 2022.
+
+	[most recent version](https://pi.math.cornell.edu/~jfmanning/research/stable93.pdf) | [arXiv](https://arxiv.org/abs/2206.14914)
+
+2. *An extended definition of Anosov representation for relatively hyperbolic groups*. arXiv:2205.07183, 2022. Submitted.
 
 	[most recent version](papers/extended_relative_anosov.pdf) | [arXiv](https://arxiv.org/abs/2205.07183)
 
-2. *Dynamical properties of convex cocompact actions in projective space*. arXiv:2009.10994, 2020. Submitted.
+3. *Dynamical properties of convex cocompact actions in projective space*. arXiv:2009.10994, 2020. Submitted.
 
 	[most recent version](papers/convex_cocompact_dynamics.pdf) | [arXiv](https://arxiv.org/abs/2009.10994)
 
@@ -27,17 +31,14 @@ I am mainly interested in the geometry and dynamics of higher-rank generalizatio
 
 ## Talks
 
-#### Upcoming talks
 
 1. July 2022, AMS-SMF-EMS Joint International Meeting: special session on deformation spaces of geometric structures. *Extended geometrically finite representations.*
 
-#### Past talks
+2. March 2022, Spring Topology and Dynamical Systems Conference: Special Session on Geometric Topology. *Extended geometrically finite representations.* [Slides](resources/talks/stdc2022_handout.pdf)
 
-1. March 2022, Spring Topology and Dynamical Systems Conference: Special Session on Geometric Topology. *Extended geometrically finite representations.* [Slides](resources/talks/stdc2022_handout.pdf)
+3. February 15 2022, University of Virginia geometry seminar. *Relative Anosov representations and convex projective structures.*
 
-1. February 15 2022, University of Virginia geometry seminar. *Relative Anosov representations and convex projective structures.*
-
-2. February 8 2022, NUS topology and geometry seminar. *Extended convergence dynamics and relative Anosov representations*.
+4. February 8 2022, NUS topology and geometry seminar. *Extended convergence dynamics and relative Anosov representations*.
 
 3. December 9 2021, Heidelberg University differential geometry seminar. *Extended convergence dynamics and relative Anosov representations*. [Slides](resources/talks/rel_anosov_heidelberg.pdf)
 

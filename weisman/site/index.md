@@ -4,9 +4,9 @@
 About me
 ===========
 
-I'm Teddy, a sixth-year mathematics PhD student at the University of Texas at Austin. Currently my research interests are in geometric structures on manifolds, discrete subgroups of Lie groups, and geometric group theory. My advisor is [Jeff Danciger](https://web.ma.utexas.edu/users/jdanciger/index.html).
+I'm Teddy, an NSF Postdoctoral Fellow in mathematics at the University of Michigan. Currently my research interests are in geometric structures on manifolds, discrete subgroups of Lie groups, and geometric group theory. My postdoctoral mentor at Michigan is [Ralf Spatzier](https://dept.math.lsa.umich.edu/~spatzier/).
 
-Starting in Fall 2022, I will be an NSF Postdoctoral Fellow at the University of Michigan, where my postdoctoral mentor will be [Ralf Spatzier](https://dept.math.lsa.umich.edu/~spatzier/).
+I completed my PhD in 2022 at the University of Texas at Austin, where my advisor was [Jeff Danciger](https://web.ma.utexas.edu/users/jdanciger/index.html).
 
 *************************************
 
@@ -15,14 +15,8 @@ Starting in Fall 2022, I will be an NSF Postdoctoral Fellow at the University of
 
 Pronouns: he/him
 
-Email: weisman@math.utexas.edu
-
-Office: PMA 9.116
+Email: [tjwei@umich.edu](mailto:tjwei@umich.edu) (please use this instead of my math.utexas.edu email address)
 
 *************************************
 
 If you are interested in drawing nice pictures of the hyperbolic plane, check out my [geometry_tools](geometry_tools) Python package!
-
-**************************************
-
-[How can I connect to the UT math network remotely and update my website?](network_access.html)

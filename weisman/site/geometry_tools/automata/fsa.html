@@ -139,8 +139,8 @@ class FSA:
     }
     ```
 
-    That is, vertex1 is connected to neighbor_a by an edge with label
-    label_a, etc.
+    That is, `vertex1` is connected to `neighbor_a` by an edge with
+    label `label_a`, etc.
 
     The automaton can be constructed by passing it a dictionary of
     this form, or by adding vertices/edges individually through the
@@ -159,7 +159,7 @@ class FSA:
 
         start_vertices : list
             list of vertices which are valid start states
-            for this automaton. Currently, the FSA class will not
+            for this automaton. Currently, the `FSA` class will not
             correctly handle lists of length &gt; 1.
 
         graph_dict : bool
@@ -258,8 +258,8 @@ class FSA:
         if len(self._out_dict[tail][head]) == 1:
             return self._out_dict[tail][head][0]
         else:
-            raise FSAException(&#34;ambiguous: there is not exactly&#34;
-                            &#34; one edge between these vertices!&#34; )
+            raise ValueError(&#34;ambiguous edge removal: there is not exactly&#34;
+                            f&#34; one edge between {tail} and {head}&#34; )
 
     def edge_labels(self, tail, head):
         &#34;&#34;&#34;Get the list of labels associated to all the edges between `tail`
@@ -340,6 +340,7 @@ class FSA:
 
         Yields
         --------
+        tuple
             An ordered pair of the form `(tail, head)` for each edge
             in the automaton
 
@@ -386,11 +387,11 @@ class FSA:
                           return_distances=False):
         &#34;&#34;&#34;Find a version of the automaton which does not backtrack.
 
-        This function is the opposite of make_recurrent: it finds a
+        This function is the opposite of `make_recurrent`: it finds a
         subgraph of the automaton which is the union of
         shortest-length paths from the root vertex to each node. This
         will be a directed acyclic graph (in fact, a tree if
-        edge_ties is false).
+        `edge_ties` is false).
 
         It is mostly useful for visualizing the structure of the
         automaton.
@@ -400,7 +401,8 @@ class FSA:
         edge_ties : bool
             if `True`, if two edges give rise to paths of the
             same length, include both of them in the new graph.
-        &#34;&#34;&#34;
+
+    &#34;&#34;&#34;
         H = FSA({})
         H.add_vertices(self.vertices())
 
@@ -447,7 +449,7 @@ class FSA:
 
         Returns
         -------
-        object :
+        object
             The state of the automaton when it accepts `word`
 
         &#34;&#34;&#34;
@@ -621,7 +623,7 @@ def free_automaton(generating_set):
 
     Returns
     --------
-    FSA:
+    FSA
         Automaton accepting freely reduced words in the generators
         (and their inverses)
 
@@ -657,9 +659,11 @@ generators</p>
 <dd>Names of the generators for this free group</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<h2 id="fsa">Fsa</h2>
-<p>Automaton accepting freely reduced words in the generators
-(and their inverses)</p></div>
+<dl>
+<dt><code><a title="geometry_tools.automata.fsa.FSA" href="#geometry_tools.automata.fsa.FSA">FSA</a></code></dt>
+<dd>Automaton accepting freely reduced words in the generators
+(and their inverses)</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -675,7 +679,7 @@ generators</p>
 
     Returns
     --------
-    FSA:
+    FSA
         Automaton accepting freely reduced words in the generators
         (and their inverses)
 
@@ -809,8 +813,8 @@ python dictionary of the form:</p>
   vertex2: ....,
 }
 </code></pre>
-<p>That is, vertex1 is connected to neighbor_a by an edge with label
-label_a, etc.</p>
+<p>That is, <code>vertex1</code> is connected to <code>neighbor_a</code> by an edge with
+label <code>label_a</code>, etc.</p>
 <p>The automaton can be constructed by passing it a dictionary of
 this form, or by adding vertices/edges individually through the
 built-in methods.</p>
@@ -822,7 +826,7 @@ default, this dictionary should have the format specified
 above.</dd>
 <dt><strong><code>start_vertices</code></strong> :&ensp;<code>list</code></dt>
 <dd>list of vertices which are valid start states
-for this automaton. Currently, the FSA class will not
+for this automaton. Currently, the <code><a title="geometry_tools.automata.fsa.FSA" href="#geometry_tools.automata.fsa.FSA">FSA</a></code> class will not
 correctly handle lists of length &gt; 1.</dd>
 <dt><strong><code>graph_dict</code></strong> :&ensp;<code>bool</code></dt>
 <dd>
@@ -852,8 +856,8 @@ vertex2: ....,
     }
     ```
 
-    That is, vertex1 is connected to neighbor_a by an edge with label
-    label_a, etc.
+    That is, `vertex1` is connected to `neighbor_a` by an edge with
+    label `label_a`, etc.
 
     The automaton can be constructed by passing it a dictionary of
     this form, or by adding vertices/edges individually through the
@@ -872,7 +876,7 @@ vertex2: ....,
 
         start_vertices : list
             list of vertices which are valid start states
-            for this automaton. Currently, the FSA class will not
+            for this automaton. Currently, the `FSA` class will not
             correctly handle lists of length &gt; 1.
 
         graph_dict : bool
@@ -971,8 +975,8 @@ vertex2: ....,
         if len(self._out_dict[tail][head]) == 1:
             return self._out_dict[tail][head][0]
         else:
-            raise FSAException(&#34;ambiguous: there is not exactly&#34;
-                            &#34; one edge between these vertices!&#34; )
+            raise ValueError(&#34;ambiguous edge removal: there is not exactly&#34;
+                            f&#34; one edge between {tail} and {head}&#34; )
 
     def edge_labels(self, tail, head):
         &#34;&#34;&#34;Get the list of labels associated to all the edges between `tail`
@@ -1053,6 +1057,7 @@ vertex2: ....,
 
         Yields
         --------
+        tuple
             An ordered pair of the form `(tail, head)` for each edge
             in the automaton
 
@@ -1099,11 +1104,11 @@ vertex2: ....,
                           return_distances=False):
         &#34;&#34;&#34;Find a version of the automaton which does not backtrack.
 
-        This function is the opposite of make_recurrent: it finds a
+        This function is the opposite of `make_recurrent`: it finds a
         subgraph of the automaton which is the union of
         shortest-length paths from the root vertex to each node. This
         will be a directed acyclic graph (in fact, a tree if
-        edge_ties is false).
+        `edge_ties` is false).
 
         It is mostly useful for visualizing the structure of the
         automaton.
@@ -1113,7 +1118,8 @@ vertex2: ....,
         edge_ties : bool
             if `True`, if two edges give rise to paths of the
             same length, include both of them in the new graph.
-        &#34;&#34;&#34;
+
+    &#34;&#34;&#34;
         H = FSA({})
         H.add_vertices(self.vertices())
 
@@ -1160,7 +1166,7 @@ vertex2: ....,
 
         Returns
         -------
-        object :
+        object
             The state of the automaton when it accepts `word`
 
         &#34;&#34;&#34;
@@ -1422,8 +1428,8 @@ edge between <code>tail</code> and <code>head</code>.</p></div>
     if len(self._out_dict[tail][head]) == 1:
         return self._out_dict[tail][head][0]
     else:
-        raise FSAException(&#34;ambiguous: there is not exactly&#34;
-                        &#34; one edge between these vertices!&#34; )</code></pre>
+        raise ValueError(&#34;ambiguous edge removal: there is not exactly&#34;
+                        f&#34; one edge between {tail} and {head}&#34; )</code></pre>
 </details>
 </dd>
 <dt id="geometry_tools.automata.fsa.FSA.edge_labels"><code class="name flex">
@@ -1450,9 +1456,11 @@ and <code>head</code>.</p></div>
 <dd>
 <div class="desc"><p>Get all of the edges of this FSA</p>
 <h2 id="yields">Yields</h2>
-<pre><code>An ordered pair of the form &lt;code&gt;(tail, head)&lt;/code&gt; for each edge
-in the automaton
-</code></pre></div>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>An ordered pair of the form <code>(tail, head)</code> for each edge
+in the automaton</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1462,6 +1470,7 @@ in the automaton
 
     Yields
     --------
+    tuple
         An ordered pair of the form `(tail, head)` for each edge
         in the automaton
 
@@ -1650,7 +1659,7 @@ default), use the automaton's default start state.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>object :</code></dt>
+<dt><code>object</code></dt>
 <dd>The state of the automaton when it accepts <code>word</code></dd>
 </dl></div>
 <details class="source">
@@ -1671,7 +1680,7 @@ default), use the automaton's default start state.</dd>
 
     Returns
     -------
-    object :
+    object
         The state of the automaton when it accepts `word`
 
     &#34;&#34;&#34;
@@ -1776,11 +1785,11 @@ return a recurrent copy.</dd>
 </code></dt>
 <dd>
 <div class="desc"><p>Find a version of the automaton which does not backtrack.</p>
-<p>This function is the opposite of make_recurrent: it finds a
+<p>This function is the opposite of <code>make_recurrent</code>: it finds a
 subgraph of the automaton which is the union of
 shortest-length paths from the root vertex to each node. This
 will be a directed acyclic graph (in fact, a tree if
-edge_ties is false).</p>
+<code>edge_ties</code> is false).</p>
 <p>It is mostly useful for visualizing the structure of the
 automaton.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1797,11 +1806,11 @@ same length, include both of them in the new graph.</dd>
                       return_distances=False):
     &#34;&#34;&#34;Find a version of the automaton which does not backtrack.
 
-    This function is the opposite of make_recurrent: it finds a
+    This function is the opposite of `make_recurrent`: it finds a
     subgraph of the automaton which is the union of
     shortest-length paths from the root vertex to each node. This
     will be a directed acyclic graph (in fact, a tree if
-    edge_ties is false).
+    `edge_ties` is false).
 
     It is mostly useful for visualizing the structure of the
     automaton.
@@ -1811,7 +1820,8 @@ same length, include both of them in the new graph.</dd>
     edge_ties : bool
         if `True`, if two edges give rise to paths of the
         same length, include both of them in the new graph.
-    &#34;&#34;&#34;
+
+&#34;&#34;&#34;
     H = FSA({})
     H.add_vertices(self.vertices())
 
