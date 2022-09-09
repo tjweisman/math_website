@@ -1,0 +1,13 @@
+#!/bin/bash
+
+UMICH_SERVER=tjwei@sftp.itd.umich.edu
+
+WEBPAGE_DIR=/home/teddy/math/web/personal/tjwei
+
+EXCLUDE_MKVS="--exclude=*.mkv"
+if [[ "$1" == "--mkv" ]]; then
+    echo "Not excluding mkvs"
+    EXCLUDE_MKVS=""
+fi
+
+rsync -r --copy-unsafe-links -F --delete-after $EXCLUDE_MKVS $WEBPAGE_DIR/public_html/ $UMICH_SERVER:~/Public/html

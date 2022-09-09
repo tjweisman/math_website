@@ -17,7 +17,7 @@ from ruamel.yaml import YAML
 SCRIPT_DIR = "/home/teddy/math/web/personal"
 SITES_LIST = "sites.yaml"
 
-DEFAULT_SITE = "weisman"
+DEFAULT_SITE = "tjwei"
 
 TEMPLATE_DIR = "templates"
 SITE_DATA = "site_data.yaml"
@@ -92,11 +92,12 @@ class SiteBuilder:
                                             page_data=page_data))
 
     def process_html_file(self, filename):
-        self.mkoputdir(filename)
-        template = self.lookup_dirs.get_template(filename)
-        with open(os.path.join(self.site_dir, OUTPUT_DIR, filename), "w",
-                  encoding='utf-8') as html_oput:
-            html_oput.write(template.render(site_data=self.site_data))
+        self.process_other_file(filename)
+        #self.mkoputdir(filename)
+        #template = self.lookup_dirs.get_template(filename)
+        #with open(os.path.join(self.site_dir, OUTPUT_DIR, filename), "w",
+        #          encoding='utf-8') as html_oput:
+        #    html_oput.write(template.render(site_data=self.site_data))
 
     def process_other_file(self, filename):
         self.mkoputdir(filename)
@@ -144,7 +145,7 @@ def get_mdfile_data(abspath, extensions=[]):
         title = None
         template_file = DEFAULT_MARKDOWN_TEMPLATE
         while line:
-            match = re.match("%\s*(.*)", line)
+            match = re.match(r"%\s*(.*)", line)
             if match:
                 if not title:
                     title = match.group(1).strip()
