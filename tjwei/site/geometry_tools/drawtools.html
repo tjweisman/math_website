@@ -79,13 +79,13 @@ import copy
 import numpy as np
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle, Arc, PathPatch, Rectangle, Polygon
+from matplotlib.patches import Circle, Arc, PathPatch, Rectangle, Polygon, Annulus
 from matplotlib.collections import LineCollection, PolyCollection, EllipseCollection
 
 from matplotlib.transforms import Affine2D
 from matplotlib.path import Path
 
-from geometry_tools import hyperbolic, utils, projective
+from geometry_tools import hyperbolic, utils, projective, complex_projective
 from geometry_tools.hyperbolic import Model
 
 #I played around with this a bit, but it&#39;s an eyeball test
@@ -121,13 +121,13 @@ class DrawingError(Exception):
     &#34;&#34;&#34;
     pass
 
-class ProjectiveDrawing:
+class Drawing:
     def __init__(self, figsize=8,
                  ax=None,
                  fig=None,
                  xlim=(-5., 5.),
                  ylim=(-5., 5.),
-                 transform=None):
+                 axis=&#34;off&#34;):
 
         if ax is None or fig is None:
             fig, ax = plt.subplots(figsize=(figsize, figsize))
@@ -140,10 +140,34 @@ class ProjectiveDrawing:
         self.ax, self.fig = ax, fig
 
         plt.tight_layout()
-        self.ax.axis(&#34;off&#34;)
+        self.ax.axis(axis)
         self.ax.set_aspect(&#34;equal&#34;)
         self.ax.set_xlim(self.xlim)
         self.ax.set_ylim(self.ylim)
+
+    def view_diam(self):
+        return np.sqrt(self.width * self.width + self.height * self.height)
+
+    def view_ctr(self):
+        return np.array([(self.xlim[0] + self.xlim[1])/2,
+                         (self.ylim[0] + self.ylim[1])/2])
+
+    def set_transform(self, transform):
+        self.transform = transform
+
+    def add_transform(self, transform):
+        self.transform = transform @ self.transform
+
+    def precompose_transform(self, transform):
+        self.transform = self.transform @ transform
+
+    def show(self):
+        plt.show()
+
+
+class ProjectiveDrawing(Drawing):
+    def __init__(self, transform=None, **kwargs):
+        Drawing.__init__(self, **kwargs)
 
         self.transform = projective.identity(2)
         if transform is not None:
@@ -175,12 +199,7 @@ class ProjectiveDrawing:
                                **default_kwargs)
         self.ax.add_collection(lines)
 
-    def view_diam(self):
-        return np.sqrt(self.width * self.width + self.height * self.height)
 
-    def view_ctr(self):
-        return np.array([(self.xlim[0] + self.xlim[1])/2,
-                         (self.ylim[0] + self.ylim[1])/2])
 
     def draw_nonaff_polygon(self, polygon, **kwargs):
         if len(polygon.proj_data) == 0:
@@ -223,17 +242,21 @@ class ProjectiveDrawing:
         # compute dummy vertex coordinates for segments which cross infinity.
         # this could be DRYer.
         dummy_p1v1 = s1_v2 + (
-            n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v2, axis=-1))[:, np.newaxis]
+            n_disp_1 * (self.view_diam() +
+                        np.linalg.norm(s1_v2 - self.view_ctr(), axis=-1))[:, np.newaxis]
         )
         dummy_p2v1 = s1_v1 - (
-            n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v1, axis=-1))[:, np.newaxis]
+            n_disp_1 * (self.view_diam() +
+                        np.linalg.norm(s1_v1 - self.view_ctr(), axis=-1))[:, np.newaxis]
         )
 
         dummy_p1v2 = s2_v1 - (
-            n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v1, axis=-1))[:, np.newaxis]
+            n_disp_2 * (self.view_diam() +
+                        np.linalg.norm(s2_v1 - self.view_ctr(), axis=-1))[:, np.newaxis]
         )
         dummy_p2v2 = s2_v2 + (
-            n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v2, axis=-1))[:, np.newaxis]
+            n_disp_2 * (self.view_diam() +
+                        np.linalg.norm(s2_v2 - self.view_ctr(), axis=-1))[:, np.newaxis]
         )
 
         dummy_coords_1 = np.stack([dummy_p1v2, dummy_p1v1], axis=-2)
@@ -275,19 +298,9 @@ class ProjectiveDrawing:
 
         self.draw_nonaff_polygon(polylist[~in_chart], **default_kwargs)
 
-    def set_transform(self, transform):
-        self.transform = transform
 
-    def add_transform(self, transform):
-        self.transform = transform @ self.transform
 
-    def precompose_transform(self, transform):
-        self.transform = self.transform @ transform
-
-    def show(self):
-        plt.show()
-
-class HyperbolicDrawing(ProjectiveDrawing):
+class HyperbolicDrawing(Drawing):
     def __init__(self, figsize=8,
                  ax=None,
                  fig=None,
@@ -297,7 +310,8 @@ class HyperbolicDrawing(ProjectiveDrawing):
                  model=Model.POINCARE,
                  xlim=None,
                  ylim=None,
-                 transform=None):
+                 transform=None,
+                 axis=&#34;off&#34;):
 
         if ax is None or fig is None:
             fig, ax = plt.subplots(figsize=(figsize, figsize))
@@ -323,7 +337,7 @@ class HyperbolicDrawing(ProjectiveDrawing):
         self.ax, self.fig = ax, fig
 
         plt.tight_layout()
-        self.ax.axis(&#34;off&#34;)
+        self.ax.axis(axis)
         self.ax.set_aspect(&#34;equal&#34;)
         self.ax.set_xlim(self.xlim)
         self.ax.set_ylim(self.ylim)
@@ -338,8 +352,6 @@ class HyperbolicDrawing(ProjectiveDrawing):
 
         if transform is not None:
             self.transform = transform
-
-
 
     def draw_plane(self, **kwargs):
         default_kwargs = {
@@ -644,7 +656,67 @@ class HyperbolicDrawing(ProjectiveDrawing):
             raise DrawingError(
                 &#34;Drawing boundary arcs in model &#39;{}&#39; is not implemented.&#34;.format(
                     self.model)
-            )</code></pre>
+            )
+
+class CP1Drawing(Drawing):
+    def __init__(self, transform=None, **kwargs):
+        Drawing.__init__(self, **kwargs)
+
+        self.transform = projective.identity(1)
+        if transform is not None:
+            self.transform = transform
+
+
+    def draw_disk(self, disks, draw_nonaffine=True,
+                  **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        disklist = self.transform @ disks.flatten_to_unit()
+
+        nonaff_in_collection = (draw_nonaffine and
+                                default_kwargs[&#34;facecolor&#34;].lower() == &#34;none&#34;)
+
+        if nonaff_in_collection:
+            collection_disks = disklist
+        else:
+            aff_disks = disklist.center_inside()
+            collection_disks = disklist[aff_disks]
+            extra_disks = disklist[~aff_disks]
+
+        center, radius = collection_disks.circle_parameters()
+        circles = EllipseCollection(radius * 2, radius * 2,
+                                    0, units=&#34;xy&#34;, offsets=center,
+                                    transOffset=self.ax.transData,
+                                    **default_kwargs)
+
+        self.ax.add_collection(circles)
+
+        if draw_nonaffine and not nonaff_in_collection:
+            ext_center, ext_radius = extra_disks.circle_parameters()
+            ann_outer_rad = np.linalg.norm(ext_center - self.view_ctr(),
+                                           axis=-1) + self.view_diam()
+
+            for center, inrad, outrad in zip(ext_center, ext_radius, ann_outer_rad):
+                annulus = Annulus(center, outrad, outrad - inrad, **default_kwargs)
+                self.ax.add_patch(annulus)
+
+    def draw_point(self, point, **kwargs):
+        pointlist = self.transform @ point.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34; : &#34;black&#34;,
+            &#34;marker&#34;: &#34;o&#34;,
+            &#34;linestyle&#34;:&#34;none&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        x, y = pointlist.real_affine_coords().T
+        plt.plot(x, y, **default_kwargs)</code></pre>
 </details>
 </section>
 <section>
@@ -678,6 +750,297 @@ class HyperbolicDrawing(ProjectiveDrawing):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="geometry_tools.drawtools.CP1Drawing"><code class="flex name class">
+<span>class <span class="ident">CP1Drawing</span></span>
+<span>(</span><span>transform=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CP1Drawing(Drawing):
+    def __init__(self, transform=None, **kwargs):
+        Drawing.__init__(self, **kwargs)
+
+        self.transform = projective.identity(1)
+        if transform is not None:
+            self.transform = transform
+
+
+    def draw_disk(self, disks, draw_nonaffine=True,
+                  **kwargs):
+        default_kwargs = {
+            &#34;facecolor&#34;: &#34;none&#34;,
+            &#34;edgecolor&#34;: &#34;black&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        disklist = self.transform @ disks.flatten_to_unit()
+
+        nonaff_in_collection = (draw_nonaffine and
+                                default_kwargs[&#34;facecolor&#34;].lower() == &#34;none&#34;)
+
+        if nonaff_in_collection:
+            collection_disks = disklist
+        else:
+            aff_disks = disklist.center_inside()
+            collection_disks = disklist[aff_disks]
+            extra_disks = disklist[~aff_disks]
+
+        center, radius = collection_disks.circle_parameters()
+        circles = EllipseCollection(radius * 2, radius * 2,
+                                    0, units=&#34;xy&#34;, offsets=center,
+                                    transOffset=self.ax.transData,
+                                    **default_kwargs)
+
+        self.ax.add_collection(circles)
+
+        if draw_nonaffine and not nonaff_in_collection:
+            ext_center, ext_radius = extra_disks.circle_parameters()
+            ann_outer_rad = np.linalg.norm(ext_center - self.view_ctr(),
+                                           axis=-1) + self.view_diam()
+
+            for center, inrad, outrad in zip(ext_center, ext_radius, ann_outer_rad):
+                annulus = Annulus(center, outrad, outrad - inrad, **default_kwargs)
+                self.ax.add_patch(annulus)
+
+    def draw_point(self, point, **kwargs):
+        pointlist = self.transform @ point.flatten_to_unit()
+        default_kwargs = {
+            &#34;color&#34; : &#34;black&#34;,
+            &#34;marker&#34;: &#34;o&#34;,
+            &#34;linestyle&#34;:&#34;none&#34;
+        }
+        for key, value in kwargs.items():
+            default_kwargs[key] = value
+
+        x, y = pointlist.real_affine_coords().T
+        plt.plot(x, y, **default_kwargs)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="geometry_tools.drawtools.Drawing" href="#geometry_tools.drawtools.Drawing">Drawing</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="geometry_tools.drawtools.CP1Drawing.draw_disk"><code class="name flex">
+<span>def <span class="ident">draw_disk</span></span>(<span>self, disks, draw_nonaffine=True, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_disk(self, disks, draw_nonaffine=True,
+              **kwargs):
+    default_kwargs = {
+        &#34;facecolor&#34;: &#34;none&#34;,
+        &#34;edgecolor&#34;: &#34;black&#34;
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    disklist = self.transform @ disks.flatten_to_unit()
+
+    nonaff_in_collection = (draw_nonaffine and
+                            default_kwargs[&#34;facecolor&#34;].lower() == &#34;none&#34;)
+
+    if nonaff_in_collection:
+        collection_disks = disklist
+    else:
+        aff_disks = disklist.center_inside()
+        collection_disks = disklist[aff_disks]
+        extra_disks = disklist[~aff_disks]
+
+    center, radius = collection_disks.circle_parameters()
+    circles = EllipseCollection(radius * 2, radius * 2,
+                                0, units=&#34;xy&#34;, offsets=center,
+                                transOffset=self.ax.transData,
+                                **default_kwargs)
+
+    self.ax.add_collection(circles)
+
+    if draw_nonaffine and not nonaff_in_collection:
+        ext_center, ext_radius = extra_disks.circle_parameters()
+        ann_outer_rad = np.linalg.norm(ext_center - self.view_ctr(),
+                                       axis=-1) + self.view_diam()
+
+        for center, inrad, outrad in zip(ext_center, ext_radius, ann_outer_rad):
+            annulus = Annulus(center, outrad, outrad - inrad, **default_kwargs)
+            self.ax.add_patch(annulus)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.CP1Drawing.draw_point"><code class="name flex">
+<span>def <span class="ident">draw_point</span></span>(<span>self, point, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw_point(self, point, **kwargs):
+    pointlist = self.transform @ point.flatten_to_unit()
+    default_kwargs = {
+        &#34;color&#34; : &#34;black&#34;,
+        &#34;marker&#34;: &#34;o&#34;,
+        &#34;linestyle&#34;:&#34;none&#34;
+    }
+    for key, value in kwargs.items():
+        default_kwargs[key] = value
+
+    x, y = pointlist.real_affine_coords().T
+    plt.plot(x, y, **default_kwargs)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="geometry_tools.drawtools.Drawing"><code class="flex name class">
+<span>class <span class="ident">Drawing</span></span>
+<span>(</span><span>figsize=8, ax=None, fig=None, xlim=(-5.0, 5.0), ylim=(-5.0, 5.0), axis='off')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Drawing:
+    def __init__(self, figsize=8,
+                 ax=None,
+                 fig=None,
+                 xlim=(-5., 5.),
+                 ylim=(-5., 5.),
+                 axis=&#34;off&#34;):
+
+        if ax is None or fig is None:
+            fig, ax = plt.subplots(figsize=(figsize, figsize))
+
+        self.xlim, self.ylim = xlim, ylim
+
+        self.width = self.xlim[1] - self.xlim[0]
+        self.height = self.ylim[1] - self.ylim[0]
+
+        self.ax, self.fig = ax, fig
+
+        plt.tight_layout()
+        self.ax.axis(axis)
+        self.ax.set_aspect(&#34;equal&#34;)
+        self.ax.set_xlim(self.xlim)
+        self.ax.set_ylim(self.ylim)
+
+    def view_diam(self):
+        return np.sqrt(self.width * self.width + self.height * self.height)
+
+    def view_ctr(self):
+        return np.array([(self.xlim[0] + self.xlim[1])/2,
+                         (self.ylim[0] + self.ylim[1])/2])
+
+    def set_transform(self, transform):
+        self.transform = transform
+
+    def add_transform(self, transform):
+        self.transform = transform @ self.transform
+
+    def precompose_transform(self, transform):
+        self.transform = self.transform @ transform
+
+    def show(self):
+        plt.show()</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="geometry_tools.drawtools.CP1Drawing" href="#geometry_tools.drawtools.CP1Drawing">CP1Drawing</a></li>
+<li><a title="geometry_tools.drawtools.HyperbolicDrawing" href="#geometry_tools.drawtools.HyperbolicDrawing">HyperbolicDrawing</a></li>
+<li><a title="geometry_tools.drawtools.ProjectiveDrawing" href="#geometry_tools.drawtools.ProjectiveDrawing">ProjectiveDrawing</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="geometry_tools.drawtools.Drawing.add_transform"><code class="name flex">
+<span>def <span class="ident">add_transform</span></span>(<span>self, transform)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_transform(self, transform):
+    self.transform = transform @ self.transform</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.Drawing.precompose_transform"><code class="name flex">
+<span>def <span class="ident">precompose_transform</span></span>(<span>self, transform)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def precompose_transform(self, transform):
+    self.transform = self.transform @ transform</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.Drawing.set_transform"><code class="name flex">
+<span>def <span class="ident">set_transform</span></span>(<span>self, transform)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_transform(self, transform):
+    self.transform = transform</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.Drawing.show"><code class="name flex">
+<span>def <span class="ident">show</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show(self):
+    plt.show()</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.Drawing.view_ctr"><code class="name flex">
+<span>def <span class="ident">view_ctr</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def view_ctr(self):
+    return np.array([(self.xlim[0] + self.xlim[1])/2,
+                     (self.ylim[0] + self.ylim[1])/2])</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.drawtools.Drawing.view_diam"><code class="name flex">
+<span>def <span class="ident">view_diam</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def view_diam(self):
+    return np.sqrt(self.width * self.width + self.height * self.height)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="geometry_tools.drawtools.DrawingError"><code class="flex name class">
 <span>class <span class="ident">DrawingError</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -704,7 +1067,7 @@ implemented yet.</p></div>
 </dd>
 <dt id="geometry_tools.drawtools.HyperbolicDrawing"><code class="flex name class">
 <span>class <span class="ident">HyperbolicDrawing</span></span>
-<span>(</span><span>figsize=8, ax=None, fig=None, facecolor='aliceblue', edgecolor='lightgray', linewidth=1, model=Model.POINCARE, xlim=None, ylim=None, transform=None)</span>
+<span>(</span><span>figsize=8, ax=None, fig=None, facecolor='aliceblue', edgecolor='lightgray', linewidth=1, model=Model.POINCARE, xlim=None, ylim=None, transform=None, axis='off')</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -712,7 +1075,7 @@ implemented yet.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class HyperbolicDrawing(ProjectiveDrawing):
+<pre><code class="python">class HyperbolicDrawing(Drawing):
     def __init__(self, figsize=8,
                  ax=None,
                  fig=None,
@@ -722,7 +1085,8 @@ implemented yet.</p></div>
                  model=Model.POINCARE,
                  xlim=None,
                  ylim=None,
-                 transform=None):
+                 transform=None,
+                 axis=&#34;off&#34;):
 
         if ax is None or fig is None:
             fig, ax = plt.subplots(figsize=(figsize, figsize))
@@ -748,7 +1112,7 @@ implemented yet.</p></div>
         self.ax, self.fig = ax, fig
 
         plt.tight_layout()
-        self.ax.axis(&#34;off&#34;)
+        self.ax.axis(axis)
         self.ax.set_aspect(&#34;equal&#34;)
         self.ax.set_xlim(self.xlim)
         self.ax.set_ylim(self.ylim)
@@ -763,8 +1127,6 @@ implemented yet.</p></div>
 
         if transform is not None:
             self.transform = transform
-
-
 
     def draw_plane(self, **kwargs):
         default_kwargs = {
@@ -1073,7 +1435,7 @@ implemented yet.</p></div>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="geometry_tools.drawtools.ProjectiveDrawing" href="#geometry_tools.drawtools.ProjectiveDrawing">ProjectiveDrawing</a></li>
+<li><a title="geometry_tools.drawtools.Drawing" href="#geometry_tools.drawtools.Drawing">Drawing</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -1494,7 +1856,7 @@ geometric object.</p></div>
 </dd>
 <dt id="geometry_tools.drawtools.ProjectiveDrawing"><code class="flex name class">
 <span>class <span class="ident">ProjectiveDrawing</span></span>
-<span>(</span><span>figsize=8, ax=None, fig=None, xlim=(-5.0, 5.0), ylim=(-5.0, 5.0), transform=None)</span>
+<span>(</span><span>transform=None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1502,29 +1864,9 @@ geometric object.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ProjectiveDrawing:
-    def __init__(self, figsize=8,
-                 ax=None,
-                 fig=None,
-                 xlim=(-5., 5.),
-                 ylim=(-5., 5.),
-                 transform=None):
-
-        if ax is None or fig is None:
-            fig, ax = plt.subplots(figsize=(figsize, figsize))
-
-        self.xlim, self.ylim = xlim, ylim
-
-        self.width = self.xlim[1] - self.xlim[0]
-        self.height = self.ylim[1] - self.ylim[0]
-
-        self.ax, self.fig = ax, fig
-
-        plt.tight_layout()
-        self.ax.axis(&#34;off&#34;)
-        self.ax.set_aspect(&#34;equal&#34;)
-        self.ax.set_xlim(self.xlim)
-        self.ax.set_ylim(self.ylim)
+<pre><code class="python">class ProjectiveDrawing(Drawing):
+    def __init__(self, transform=None, **kwargs):
+        Drawing.__init__(self, **kwargs)
 
         self.transform = projective.identity(2)
         if transform is not None:
@@ -1556,12 +1898,7 @@ geometric object.</p></div>
                                **default_kwargs)
         self.ax.add_collection(lines)
 
-    def view_diam(self):
-        return np.sqrt(self.width * self.width + self.height * self.height)
 
-    def view_ctr(self):
-        return np.array([(self.xlim[0] + self.xlim[1])/2,
-                         (self.ylim[0] + self.ylim[1])/2])
 
     def draw_nonaff_polygon(self, polygon, **kwargs):
         if len(polygon.proj_data) == 0:
@@ -1604,17 +1941,21 @@ geometric object.</p></div>
         # compute dummy vertex coordinates for segments which cross infinity.
         # this could be DRYer.
         dummy_p1v1 = s1_v2 + (
-            n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v2, axis=-1))[:, np.newaxis]
+            n_disp_1 * (self.view_diam() +
+                        np.linalg.norm(s1_v2 - self.view_ctr(), axis=-1))[:, np.newaxis]
         )
         dummy_p2v1 = s1_v1 - (
-            n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v1, axis=-1))[:, np.newaxis]
+            n_disp_1 * (self.view_diam() +
+                        np.linalg.norm(s1_v1 - self.view_ctr(), axis=-1))[:, np.newaxis]
         )
 
         dummy_p1v2 = s2_v1 - (
-            n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v1, axis=-1))[:, np.newaxis]
+            n_disp_2 * (self.view_diam() +
+                        np.linalg.norm(s2_v1 - self.view_ctr(), axis=-1))[:, np.newaxis]
         )
         dummy_p2v2 = s2_v2 + (
-            n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v2, axis=-1))[:, np.newaxis]
+            n_disp_2 * (self.view_diam() +
+                        np.linalg.norm(s2_v2 - self.view_ctr(), axis=-1))[:, np.newaxis]
         )
 
         dummy_coords_1 = np.stack([dummy_p1v2, dummy_p1v1], axis=-2)
@@ -1654,39 +1995,14 @@ geometric object.</p></div>
                                       **default_kwargs)
         self.ax.add_collection(affine_polys)
 
-        self.draw_nonaff_polygon(polylist[~in_chart], **default_kwargs)
-
-    def set_transform(self, transform):
-        self.transform = transform
-
-    def add_transform(self, transform):
-        self.transform = transform @ self.transform
-
-    def precompose_transform(self, transform):
-        self.transform = self.transform @ transform
-
-    def show(self):
-        plt.show()</code></pre>
+        self.draw_nonaff_polygon(polylist[~in_chart], **default_kwargs)</code></pre>
 </details>
-<h3>Subclasses</h3>
+<h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="geometry_tools.drawtools.HyperbolicDrawing" href="#geometry_tools.drawtools.HyperbolicDrawing">HyperbolicDrawing</a></li>
+<li><a title="geometry_tools.drawtools.Drawing" href="#geometry_tools.drawtools.Drawing">Drawing</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="geometry_tools.drawtools.ProjectiveDrawing.add_transform"><code class="name flex">
-<span>def <span class="ident">add_transform</span></span>(<span>self, transform)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_transform(self, transform):
-    self.transform = transform @ self.transform</code></pre>
-</details>
-</dd>
 <dt id="geometry_tools.drawtools.ProjectiveDrawing.draw_nonaff_polygon"><code class="name flex">
 <span>def <span class="ident">draw_nonaff_polygon</span></span>(<span>self, polygon, **kwargs)</span>
 </code></dt>
@@ -1737,17 +2053,21 @@ geometric object.</p></div>
     # compute dummy vertex coordinates for segments which cross infinity.
     # this could be DRYer.
     dummy_p1v1 = s1_v2 + (
-        n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v2, axis=-1))[:, np.newaxis]
+        n_disp_1 * (self.view_diam() +
+                    np.linalg.norm(s1_v2 - self.view_ctr(), axis=-1))[:, np.newaxis]
     )
     dummy_p2v1 = s1_v1 - (
-        n_disp_1 * (self.view_diam() + np.linalg.norm(s1_v1, axis=-1))[:, np.newaxis]
+        n_disp_1 * (self.view_diam() +
+                    np.linalg.norm(s1_v1 - self.view_ctr(), axis=-1))[:, np.newaxis]
     )
 
     dummy_p1v2 = s2_v1 - (
-        n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v1, axis=-1))[:, np.newaxis]
+        n_disp_2 * (self.view_diam() +
+                    np.linalg.norm(s2_v1 - self.view_ctr(), axis=-1))[:, np.newaxis]
     )
     dummy_p2v2 = s2_v2 + (
-        n_disp_2 * (self.view_diam() + np.linalg.norm(s2_v2, axis=-1))[:, np.newaxis]
+        n_disp_2 * (self.view_diam() +
+                    np.linalg.norm(s2_v2 - self.view_ctr(), axis=-1))[:, np.newaxis]
     )
 
     dummy_coords_1 = np.stack([dummy_p1v2, dummy_p1v1], axis=-2)
@@ -1844,72 +2164,6 @@ geometric object.</p></div>
     self.ax.add_collection(lines)</code></pre>
 </details>
 </dd>
-<dt id="geometry_tools.drawtools.ProjectiveDrawing.precompose_transform"><code class="name flex">
-<span>def <span class="ident">precompose_transform</span></span>(<span>self, transform)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def precompose_transform(self, transform):
-    self.transform = self.transform @ transform</code></pre>
-</details>
-</dd>
-<dt id="geometry_tools.drawtools.ProjectiveDrawing.set_transform"><code class="name flex">
-<span>def <span class="ident">set_transform</span></span>(<span>self, transform)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_transform(self, transform):
-    self.transform = transform</code></pre>
-</details>
-</dd>
-<dt id="geometry_tools.drawtools.ProjectiveDrawing.show"><code class="name flex">
-<span>def <span class="ident">show</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def show(self):
-    plt.show()</code></pre>
-</details>
-</dd>
-<dt id="geometry_tools.drawtools.ProjectiveDrawing.view_ctr"><code class="name flex">
-<span>def <span class="ident">view_ctr</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def view_ctr(self):
-    return np.array([(self.xlim[0] + self.xlim[1])/2,
-                     (self.ylim[0] + self.ylim[1])/2])</code></pre>
-</details>
-</dd>
-<dt id="geometry_tools.drawtools.ProjectiveDrawing.view_diam"><code class="name flex">
-<span>def <span class="ident">view_diam</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def view_diam(self):
-    return np.sqrt(self.width * self.width + self.height * self.height)</code></pre>
-</details>
-</dd>
 </dl>
 </dd>
 </dl>
@@ -1934,6 +2188,24 @@ geometric object.</p></div>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="geometry_tools.drawtools.CP1Drawing" href="#geometry_tools.drawtools.CP1Drawing">CP1Drawing</a></code></h4>
+<ul class="">
+<li><code><a title="geometry_tools.drawtools.CP1Drawing.draw_disk" href="#geometry_tools.drawtools.CP1Drawing.draw_disk">draw_disk</a></code></li>
+<li><code><a title="geometry_tools.drawtools.CP1Drawing.draw_point" href="#geometry_tools.drawtools.CP1Drawing.draw_point">draw_point</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="geometry_tools.drawtools.Drawing" href="#geometry_tools.drawtools.Drawing">Drawing</a></code></h4>
+<ul class="">
+<li><code><a title="geometry_tools.drawtools.Drawing.add_transform" href="#geometry_tools.drawtools.Drawing.add_transform">add_transform</a></code></li>
+<li><code><a title="geometry_tools.drawtools.Drawing.precompose_transform" href="#geometry_tools.drawtools.Drawing.precompose_transform">precompose_transform</a></code></li>
+<li><code><a title="geometry_tools.drawtools.Drawing.set_transform" href="#geometry_tools.drawtools.Drawing.set_transform">set_transform</a></code></li>
+<li><code><a title="geometry_tools.drawtools.Drawing.show" href="#geometry_tools.drawtools.Drawing.show">show</a></code></li>
+<li><code><a title="geometry_tools.drawtools.Drawing.view_ctr" href="#geometry_tools.drawtools.Drawing.view_ctr">view_ctr</a></code></li>
+<li><code><a title="geometry_tools.drawtools.Drawing.view_diam" href="#geometry_tools.drawtools.Drawing.view_diam">view_diam</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="geometry_tools.drawtools.DrawingError" href="#geometry_tools.drawtools.DrawingError">DrawingError</a></code></h4>
 </li>
 <li>
@@ -1955,16 +2227,10 @@ geometric object.</p></div>
 <li>
 <h4><code><a title="geometry_tools.drawtools.ProjectiveDrawing" href="#geometry_tools.drawtools.ProjectiveDrawing">ProjectiveDrawing</a></code></h4>
 <ul class="">
-<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.add_transform" href="#geometry_tools.drawtools.ProjectiveDrawing.add_transform">add_transform</a></code></li>
 <li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.draw_nonaff_polygon" href="#geometry_tools.drawtools.ProjectiveDrawing.draw_nonaff_polygon">draw_nonaff_polygon</a></code></li>
 <li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.draw_point" href="#geometry_tools.drawtools.ProjectiveDrawing.draw_point">draw_point</a></code></li>
 <li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.draw_polygon" href="#geometry_tools.drawtools.ProjectiveDrawing.draw_polygon">draw_polygon</a></code></li>
 <li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.draw_proj_segment" href="#geometry_tools.drawtools.ProjectiveDrawing.draw_proj_segment">draw_proj_segment</a></code></li>
-<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.precompose_transform" href="#geometry_tools.drawtools.ProjectiveDrawing.precompose_transform">precompose_transform</a></code></li>
-<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.set_transform" href="#geometry_tools.drawtools.ProjectiveDrawing.set_transform">set_transform</a></code></li>
-<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.show" href="#geometry_tools.drawtools.ProjectiveDrawing.show">show</a></code></li>
-<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.view_ctr" href="#geometry_tools.drawtools.ProjectiveDrawing.view_ctr">view_ctr</a></code></li>
-<li><code><a title="geometry_tools.drawtools.ProjectiveDrawing.view_diam" href="#geometry_tools.drawtools.ProjectiveDrawing.view_diam">view_diam</a></code></li>
 </ul>
 </li>
 </ul>

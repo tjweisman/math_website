@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>geometry_tools.coxeter API documentation</title>
-<meta name="description" content="Work with Coxeter groups and their representations …" />
+<meta name="description" content="Work with Coxeter groups and their representations." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -24,42 +24,72 @@
 </header>
 <section id="section-intro">
 <p>Work with Coxeter groups and their representations.</p>
-<p>Right now the only useful thing this can do is produce the canonical
-representation of a Coxeter group whose Coxeter matrix has finite
-entries, and conjugate it so that it preserves a diagonal symmetric
-bilinear form.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Work with Coxeter groups and their representations.
-
-Right now the only useful thing this can do is produce the canonical
-representation of a Coxeter group whose Coxeter matrix has finite
-entries, and conjugate it so that it preserves a diagonal symmetric
-bilinear form.
-
 &#34;&#34;&#34;
-
+import warnings
 from collections import defaultdict
 
 import numpy as np
 
 from geometry_tools.representation import Representation
+from geometry_tools.projective import GeometryError
 from geometry_tools import hyperbolic
 from geometry_tools import utils
+from geometry_tools.automata import fsa, coxeter_automaton
 
 GENERATOR_NAMES = &#34;abcdefghijklmnopqrstuvwxyz&#34;
 
 class CoxeterGroup:
-    def __init__(self, diagram):
+    def __init__(self, diagram=None, matrix=None):
         &#34;&#34;&#34;Construct a Coxeter group.
 
-        diagram is an iterable of triples of the form (generator1,
-        generator2, order). order &lt; 0 is interpreted as infinity.
+        The constructor accepts data determining a Coxeter group in
+        the form of either a Coxeter diagram (specified as an iterable
+        of tuples) or a Coxeter matrix (a symmetric array of
+        integers).
 
-        &#34;&#34;&#34;
+        Parameters
+        ----------
+        diagram: iterable of tuples
+            A Coxeter diagram, given as an iterable of triples of the
+            form `(generator1, generator2, order)`. Each generator can
+            be any hashable object (internally these will be mapped to
+            characters a-z). `order` is an integer. If it is positive,
+            then it represents the order of the product of generator1
+            and generator2. If it is zero or negative, the order of
+            this product is infinite.
 
+        matrix: ndarray of ints
+            The Coxeter matrix defining this Coxeter system. This must
+            be a symmetric matrix of integers, with 1&#39;s on the
+            diagonal.
+
+    &#34;&#34;&#34;
+        if diagram is None and matrix is None:
+            raise ValueError(&#34;Must provide data to construct a Coxeter group&#34;)
+
+        if diagram is not None and matrix is not None:
+            warnings.warn(&#34;Redundant Coxeter data specified; ignoring Coxeter matrix and&#34;
+                          &#34; constructing from diagram.&#34;)
+
+        if diagram is not None:
+            self.from_diagram(diagram)
+        elif matrix is not None:
+            self.from_coxeter_matrix(matrix)
+
+        self._compute_bilinear_form()
+
+    def _compute_bilinear_form(self):
+        adjusted_cox_matrix = np.array(self.coxeter_matrix)
+        adjusted_cox_matrix[adjusted_cox_matrix &lt;= 0] = 0.5
+
+        self.bilinear_form = -1 * np.cos(np.pi / adjusted_cox_matrix)
+
+    def from_diagram(self, diagram):
         self.generators = defaultdict(dict)
 
         for edge in diagram:
@@ -78,11 +108,47 @@ class CoxeterGroup:
             for g1 in self.ordered_gens
         ])
 
-        self.bilinear_form = -1 * np.cos(np.pi / self.coxeter_matrix)
+    def __str__(self):
+        return &#34;{} with matrix: \n{}&#34;.format(
+            self.__class__.__name__, self.coxeter_matrix
+        )
+
+
+    def from_coxeter_matrix(self, matrix):
+        if (matrix.T - matrix != 0).any():
+            raise GeometryError(&#34;Coxeter matrix must be symmetric&#34;)
+
+        if (matrix.astype(int) != matrix).any():
+            raise GeometryError(&#34;Coxeter matrix must have integer entries&#34;)
+
+        if (np.diag(matrix) != 1).any():
+            warnings.warn(&#34;Coxeter matrix should have 1&#39;s on the diagonal&#34;)
+
+        self.coxeter_matrix = matrix
+        self.generators = defaultdict(dict)
+
+        n = len(matrix)
+        self.generator_index = {
+            GENERATOR_NAMES[i]:i for i in range(n)
+        }
+        self.ordered_gens = GENERATOR_NAMES[:n]
+
+        for i, row in enumerate(matrix):
+            for j, order in enumerate(row):
+                self.generators[GENERATOR_NAMES[i]][GENERATOR_NAMES[j]] = order
 
     def canonical_representation(self):
-        &#34;&#34;&#34;Get the canonical representation of the Coxeter group (all Coxeter
-        matrix entries must be finite).
+        &#34;&#34;&#34;Get the canonical representation of the Coxeter group.
+
+        Returns
+        -------
+        representation.Representation
+            The canonical (Tits) representation for this Coxeter
+            group. This representation always preserves the symmetric
+            bilinear form determined by the cosine matrix (which is in
+            turn determined by the Coxeter matrix).
+
+            Generators are mapped to &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, etc.
 
         &#34;&#34;&#34;
         num_gens = len(self.generators)
@@ -98,10 +164,32 @@ class CoxeterGroup:
 
         return rep
 
+    def tits_vinberg_rep(self, parameters):
+        #TODO: actually compute a Tits-Vinberg representation based on
+        #some parameters
+        return self.canonical_representation()
+
+
     def diagonal_rep(self, order_eigenvalues=&#34;signed&#34;):
         &#34;&#34;&#34;Get a representation of the Coxeter group which preserves a
-        diagonal symmetric bilinear form by conjugating the canonical
-        representation.
+        diagonal symmetric bilinear form.
+
+        This function finds a conjugate of the representation returned
+        by canonical_representation so that in the standard basis on
+        R^n, the representation preserves the bilinear form given by a
+        diagonal matrix.
+
+        Parameters
+        ----------
+        order_eigenvalues: {&#39;signed&#39;, &#39;minkowski&#39;}
+            How to order the diagonal basis for the form. See the
+            documentation for utils.diagonalize_form for details.
+
+        Returns
+        -------
+        representation.Representation
+            Diagonal representation for this Coxeter group. Generators
+            are mapped to &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, etc.
 
         &#34;&#34;&#34;
         W = utils.diagonalize_form(self.bilinear_form,
@@ -114,8 +202,48 @@ class CoxeterGroup:
         return rep
 
     def hyperbolic_rep(self):
+        &#34;&#34;&#34;Get a representation of this Coxeter group in PO(d, 1).
+
+        This function assumes that the canonical representation of the
+        Coxeter group preserves a bilinear form of signature (d, 1).
+
+        Returns
+        -------
+        hyperbolic.HyperbolicRepresentation
+            Representation of the Coxeter group by isometries in
+            d-dimensional hyperbolic space, where d+1 is the number of
+            generators of the group. Generators are mapped to &#39;a&#39;,
+            &#39;b&#39;, &#39;c&#39;, etc.
+
+        &#34;&#34;&#34;
         matrix_rep = self.diagonal_rep(order_eigenvalues=&#34;signed&#34;)
         return hyperbolic.HyperbolicRepresentation(matrix_rep)
+
+    def automaton(self, shortlex=True):
+        &#34;&#34;&#34;Get a finite-state automaton accepting geodesic words in the
+        Coxeter group.
+
+        Parameters
+        ----------
+        shortlex : bool
+            If True (the default), return an automaton which only
+            accepts shortlex geodesic representatives of elements in
+            the group. If False, return an automaton which only
+            accepts geodesic words, and accepts at least one geodesic
+            word per element.
+
+        Returns
+        -------
+        fsa.FSA
+            finite-state automaton accepting geodesic words.
+
+    &#34;&#34;&#34;
+        aut = coxeter_automaton.generate_automaton_coxeter_matrix(
+            self.coxeter_matrix,
+            shortlex
+        )
+        aut.rename_generators(self.ordered_gens)
+        return aut
 
 
 class TriangleGroup(CoxeterGroup):
@@ -144,25 +272,80 @@ class TriangleGroup(CoxeterGroup):
 <dl>
 <dt id="geometry_tools.coxeter.CoxeterGroup"><code class="flex name class">
 <span>class <span class="ident">CoxeterGroup</span></span>
-<span>(</span><span>diagram)</span>
+<span>(</span><span>diagram=None, matrix=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct a Coxeter group.</p>
-<p>diagram is an iterable of triples of the form (generator1,
-generator2, order). order &lt; 0 is interpreted as infinity.</p></div>
+<p>The constructor accepts data determining a Coxeter group in
+the form of either a Coxeter diagram (specified as an iterable
+of tuples) or a Coxeter matrix (a symmetric array of
+integers).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>diagram</code></strong> :&ensp;<code>iterable</code> of <code>tuples</code></dt>
+<dd>A Coxeter diagram, given as an iterable of triples of the
+form <code>(generator1, generator2, order)</code>. Each generator can
+be any hashable object (internally these will be mapped to
+characters a-z). <code>order</code> is an integer. If it is positive,
+then it represents the order of the product of generator1
+and generator2. If it is zero or negative, the order of
+this product is infinite.</dd>
+<dt><strong><code>matrix</code></strong> :&ensp;<code>ndarray</code> of <code>ints</code></dt>
+<dd>The Coxeter matrix defining this Coxeter system. This must
+be a symmetric matrix of integers, with 1's on the
+diagonal.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class CoxeterGroup:
-    def __init__(self, diagram):
+    def __init__(self, diagram=None, matrix=None):
         &#34;&#34;&#34;Construct a Coxeter group.
 
-        diagram is an iterable of triples of the form (generator1,
-        generator2, order). order &lt; 0 is interpreted as infinity.
+        The constructor accepts data determining a Coxeter group in
+        the form of either a Coxeter diagram (specified as an iterable
+        of tuples) or a Coxeter matrix (a symmetric array of
+        integers).
 
-        &#34;&#34;&#34;
+        Parameters
+        ----------
+        diagram: iterable of tuples
+            A Coxeter diagram, given as an iterable of triples of the
+            form `(generator1, generator2, order)`. Each generator can
+            be any hashable object (internally these will be mapped to
+            characters a-z). `order` is an integer. If it is positive,
+            then it represents the order of the product of generator1
+            and generator2. If it is zero or negative, the order of
+            this product is infinite.
 
+        matrix: ndarray of ints
+            The Coxeter matrix defining this Coxeter system. This must
+            be a symmetric matrix of integers, with 1&#39;s on the
+            diagonal.
+
+    &#34;&#34;&#34;
+        if diagram is None and matrix is None:
+            raise ValueError(&#34;Must provide data to construct a Coxeter group&#34;)
+
+        if diagram is not None and matrix is not None:
+            warnings.warn(&#34;Redundant Coxeter data specified; ignoring Coxeter matrix and&#34;
+                          &#34; constructing from diagram.&#34;)
+
+        if diagram is not None:
+            self.from_diagram(diagram)
+        elif matrix is not None:
+            self.from_coxeter_matrix(matrix)
+
+        self._compute_bilinear_form()
+
+    def _compute_bilinear_form(self):
+        adjusted_cox_matrix = np.array(self.coxeter_matrix)
+        adjusted_cox_matrix[adjusted_cox_matrix &lt;= 0] = 0.5
+
+        self.bilinear_form = -1 * np.cos(np.pi / adjusted_cox_matrix)
+
+    def from_diagram(self, diagram):
         self.generators = defaultdict(dict)
 
         for edge in diagram:
@@ -181,11 +364,47 @@ generator2, order). order &lt; 0 is interpreted as infinity.</p></div>
             for g1 in self.ordered_gens
         ])
 
-        self.bilinear_form = -1 * np.cos(np.pi / self.coxeter_matrix)
+    def __str__(self):
+        return &#34;{} with matrix: \n{}&#34;.format(
+            self.__class__.__name__, self.coxeter_matrix
+        )
+
+
+    def from_coxeter_matrix(self, matrix):
+        if (matrix.T - matrix != 0).any():
+            raise GeometryError(&#34;Coxeter matrix must be symmetric&#34;)
+
+        if (matrix.astype(int) != matrix).any():
+            raise GeometryError(&#34;Coxeter matrix must have integer entries&#34;)
+
+        if (np.diag(matrix) != 1).any():
+            warnings.warn(&#34;Coxeter matrix should have 1&#39;s on the diagonal&#34;)
+
+        self.coxeter_matrix = matrix
+        self.generators = defaultdict(dict)
+
+        n = len(matrix)
+        self.generator_index = {
+            GENERATOR_NAMES[i]:i for i in range(n)
+        }
+        self.ordered_gens = GENERATOR_NAMES[:n]
+
+        for i, row in enumerate(matrix):
+            for j, order in enumerate(row):
+                self.generators[GENERATOR_NAMES[i]][GENERATOR_NAMES[j]] = order
 
     def canonical_representation(self):
-        &#34;&#34;&#34;Get the canonical representation of the Coxeter group (all Coxeter
-        matrix entries must be finite).
+        &#34;&#34;&#34;Get the canonical representation of the Coxeter group.
+
+        Returns
+        -------
+        representation.Representation
+            The canonical (Tits) representation for this Coxeter
+            group. This representation always preserves the symmetric
+            bilinear form determined by the cosine matrix (which is in
+            turn determined by the Coxeter matrix).
+
+            Generators are mapped to &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, etc.
 
         &#34;&#34;&#34;
         num_gens = len(self.generators)
@@ -201,10 +420,32 @@ generator2, order). order &lt; 0 is interpreted as infinity.</p></div>
 
         return rep
 
+    def tits_vinberg_rep(self, parameters):
+        #TODO: actually compute a Tits-Vinberg representation based on
+        #some parameters
+        return self.canonical_representation()
+
+
     def diagonal_rep(self, order_eigenvalues=&#34;signed&#34;):
         &#34;&#34;&#34;Get a representation of the Coxeter group which preserves a
-        diagonal symmetric bilinear form by conjugating the canonical
-        representation.
+        diagonal symmetric bilinear form.
+
+        This function finds a conjugate of the representation returned
+        by canonical_representation so that in the standard basis on
+        R^n, the representation preserves the bilinear form given by a
+        diagonal matrix.
+
+        Parameters
+        ----------
+        order_eigenvalues: {&#39;signed&#39;, &#39;minkowski&#39;}
+            How to order the diagonal basis for the form. See the
+            documentation for utils.diagonalize_form for details.
+
+        Returns
+        -------
+        representation.Representation
+            Diagonal representation for this Coxeter group. Generators
+            are mapped to &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, etc.
 
         &#34;&#34;&#34;
         W = utils.diagonalize_form(self.bilinear_form,
@@ -217,8 +458,48 @@ generator2, order). order &lt; 0 is interpreted as infinity.</p></div>
         return rep
 
     def hyperbolic_rep(self):
+        &#34;&#34;&#34;Get a representation of this Coxeter group in PO(d, 1).
+
+        This function assumes that the canonical representation of the
+        Coxeter group preserves a bilinear form of signature (d, 1).
+
+        Returns
+        -------
+        hyperbolic.HyperbolicRepresentation
+            Representation of the Coxeter group by isometries in
+            d-dimensional hyperbolic space, where d+1 is the number of
+            generators of the group. Generators are mapped to &#39;a&#39;,
+            &#39;b&#39;, &#39;c&#39;, etc.
+
+        &#34;&#34;&#34;
         matrix_rep = self.diagonal_rep(order_eigenvalues=&#34;signed&#34;)
-        return hyperbolic.HyperbolicRepresentation(matrix_rep)</code></pre>
+        return hyperbolic.HyperbolicRepresentation(matrix_rep)
+
+    def automaton(self, shortlex=True):
+        &#34;&#34;&#34;Get a finite-state automaton accepting geodesic words in the
+        Coxeter group.
+
+        Parameters
+        ----------
+        shortlex : bool
+            If True (the default), return an automaton which only
+            accepts shortlex geodesic representatives of elements in
+            the group. If False, return an automaton which only
+            accepts geodesic words, and accepts at least one geodesic
+            word per element.
+
+        Returns
+        -------
+        fsa.FSA
+            finite-state automaton accepting geodesic words.
+
+    &#34;&#34;&#34;
+        aut = coxeter_automaton.generate_automaton_coxeter_matrix(
+            self.coxeter_matrix,
+            shortlex
+        )
+        aut.rename_generators(self.ordered_gens)
+        return aut</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -226,19 +507,89 @@ generator2, order). order &lt; 0 is interpreted as infinity.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
+<dt id="geometry_tools.coxeter.CoxeterGroup.automaton"><code class="name flex">
+<span>def <span class="ident">automaton</span></span>(<span>self, shortlex=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a finite-state automaton accepting geodesic words in the
+Coxeter group.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>shortlex</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If True (the default), return an automaton which only
+accepts shortlex geodesic representatives of elements in
+the group. If False, return an automaton which only
+accepts geodesic words, and accepts at least one geodesic
+word per element.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>fsa.FSA</code></dt>
+<dd>finite-state automaton accepting geodesic words.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def automaton(self, shortlex=True):
+    &#34;&#34;&#34;Get a finite-state automaton accepting geodesic words in the
+    Coxeter group.
+
+    Parameters
+    ----------
+    shortlex : bool
+        If True (the default), return an automaton which only
+        accepts shortlex geodesic representatives of elements in
+        the group. If False, return an automaton which only
+        accepts geodesic words, and accepts at least one geodesic
+        word per element.
+
+    Returns
+    -------
+    fsa.FSA
+        finite-state automaton accepting geodesic words.
+
+&#34;&#34;&#34;
+    aut = coxeter_automaton.generate_automaton_coxeter_matrix(
+        self.coxeter_matrix,
+        shortlex
+    )
+    aut.rename_generators(self.ordered_gens)
+    return aut</code></pre>
+</details>
+</dd>
 <dt id="geometry_tools.coxeter.CoxeterGroup.canonical_representation"><code class="name flex">
 <span>def <span class="ident">canonical_representation</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the canonical representation of the Coxeter group (all Coxeter
-matrix entries must be finite).</p></div>
+<div class="desc"><p>Get the canonical representation of the Coxeter group.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>representation.Representation</code></dt>
+<dd>
+<p>The canonical (Tits) representation for this Coxeter
+group. This representation always preserves the symmetric
+bilinear form determined by the cosine matrix (which is in
+turn determined by the Coxeter matrix).</p>
+<p>Generators are mapped to 'a', 'b', 'c', etc.</p>
+</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def canonical_representation(self):
-    &#34;&#34;&#34;Get the canonical representation of the Coxeter group (all Coxeter
-    matrix entries must be finite).
+    &#34;&#34;&#34;Get the canonical representation of the Coxeter group.
+
+    Returns
+    -------
+    representation.Representation
+        The canonical (Tits) representation for this Coxeter
+        group. This representation always preserves the symmetric
+        bilinear form determined by the cosine matrix (which is in
+        turn determined by the Coxeter matrix).
+
+        Generators are mapped to &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, etc.
 
     &#34;&#34;&#34;
     num_gens = len(self.generators)
@@ -260,16 +611,47 @@ matrix entries must be finite).</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Get a representation of the Coxeter group which preserves a
-diagonal symmetric bilinear form by conjugating the canonical
-representation.</p></div>
+diagonal symmetric bilinear form.</p>
+<p>This function finds a conjugate of the representation returned
+by canonical_representation so that in the standard basis on
+R^n, the representation preserves the bilinear form given by a
+diagonal matrix.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>order_eigenvalues</code></strong> :&ensp;<code>{'signed', 'minkowski'}</code></dt>
+<dd>How to order the diagonal basis for the form. See the
+documentation for utils.diagonalize_form for details.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>representation.Representation</code></dt>
+<dd>Diagonal representation for this Coxeter group. Generators
+are mapped to 'a', 'b', 'c', etc.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def diagonal_rep(self, order_eigenvalues=&#34;signed&#34;):
     &#34;&#34;&#34;Get a representation of the Coxeter group which preserves a
-    diagonal symmetric bilinear form by conjugating the canonical
-    representation.
+    diagonal symmetric bilinear form.
+
+    This function finds a conjugate of the representation returned
+    by canonical_representation so that in the standard basis on
+    R^n, the representation preserves the bilinear form given by a
+    diagonal matrix.
+
+    Parameters
+    ----------
+    order_eigenvalues: {&#39;signed&#39;, &#39;minkowski&#39;}
+        How to order the diagonal basis for the form. See the
+        documentation for utils.diagonalize_form for details.
+
+    Returns
+    -------
+    representation.Representation
+        Diagonal representation for this Coxeter group. Generators
+        are mapped to &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, etc.
 
     &#34;&#34;&#34;
     W = utils.diagonalize_form(self.bilinear_form,
@@ -282,8 +664,8 @@ representation.</p></div>
     return rep</code></pre>
 </details>
 </dd>
-<dt id="geometry_tools.coxeter.CoxeterGroup.hyperbolic_rep"><code class="name flex">
-<span>def <span class="ident">hyperbolic_rep</span></span>(<span>self)</span>
+<dt id="geometry_tools.coxeter.CoxeterGroup.from_coxeter_matrix"><code class="name flex">
+<span>def <span class="ident">from_coxeter_matrix</span></span>(<span>self, matrix)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -291,9 +673,110 @@ representation.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
+<pre><code class="python">def from_coxeter_matrix(self, matrix):
+    if (matrix.T - matrix != 0).any():
+        raise GeometryError(&#34;Coxeter matrix must be symmetric&#34;)
+
+    if (matrix.astype(int) != matrix).any():
+        raise GeometryError(&#34;Coxeter matrix must have integer entries&#34;)
+
+    if (np.diag(matrix) != 1).any():
+        warnings.warn(&#34;Coxeter matrix should have 1&#39;s on the diagonal&#34;)
+
+    self.coxeter_matrix = matrix
+    self.generators = defaultdict(dict)
+
+    n = len(matrix)
+    self.generator_index = {
+        GENERATOR_NAMES[i]:i for i in range(n)
+    }
+    self.ordered_gens = GENERATOR_NAMES[:n]
+
+    for i, row in enumerate(matrix):
+        for j, order in enumerate(row):
+            self.generators[GENERATOR_NAMES[i]][GENERATOR_NAMES[j]] = order</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.coxeter.CoxeterGroup.from_diagram"><code class="name flex">
+<span>def <span class="ident">from_diagram</span></span>(<span>self, diagram)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def from_diagram(self, diagram):
+    self.generators = defaultdict(dict)
+
+    for edge in diagram:
+        g1, g2, order = edge
+        self.generators[g1][g2] = order
+        self.generators[g2][g1] = order
+
+    self.generator_index = {g:i for i, g in enumerate(self.generators)}
+    self.ordered_gens = [None] * len(self.generators)
+    for g, i in self.generator_index.items():
+        self.ordered_gens[i] = g
+        self.generators[g][g] = 1
+
+    self.coxeter_matrix = np.array([
+        [self.generators[g1][g2] for g2 in self.ordered_gens]
+        for g1 in self.ordered_gens
+    ])</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.coxeter.CoxeterGroup.hyperbolic_rep"><code class="name flex">
+<span>def <span class="ident">hyperbolic_rep</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a representation of this Coxeter group in PO(d, 1).</p>
+<p>This function assumes that the canonical representation of the
+Coxeter group preserves a bilinear form of signature (d, 1).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>hyperbolic.HyperbolicRepresentation</code></dt>
+<dd>Representation of the Coxeter group by isometries in
+d-dimensional hyperbolic space, where d+1 is the number of
+generators of the group. Generators are mapped to 'a',
+'b', 'c', etc.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def hyperbolic_rep(self):
+    &#34;&#34;&#34;Get a representation of this Coxeter group in PO(d, 1).
+
+    This function assumes that the canonical representation of the
+    Coxeter group preserves a bilinear form of signature (d, 1).
+
+    Returns
+    -------
+    hyperbolic.HyperbolicRepresentation
+        Representation of the Coxeter group by isometries in
+        d-dimensional hyperbolic space, where d+1 is the number of
+        generators of the group. Generators are mapped to &#39;a&#39;,
+        &#39;b&#39;, &#39;c&#39;, etc.
+
+    &#34;&#34;&#34;
     matrix_rep = self.diagonal_rep(order_eigenvalues=&#34;signed&#34;)
     return hyperbolic.HyperbolicRepresentation(matrix_rep)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.coxeter.CoxeterGroup.tits_vinberg_rep"><code class="name flex">
+<span>def <span class="ident">tits_vinberg_rep</span></span>(<span>self, parameters)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tits_vinberg_rep(self, parameters):
+    #TODO: actually compute a Tits-Vinberg representation based on
+    #some parameters
+    return self.canonical_representation()</code></pre>
 </details>
 </dd>
 </dl>
@@ -305,8 +788,25 @@ representation.</p></div>
 <dd>
 <div class="desc"><p>Convenience class for building a triangle group.</p>
 <p>Construct a Coxeter group.</p>
-<p>diagram is an iterable of triples of the form (generator1,
-generator2, order). order &lt; 0 is interpreted as infinity.</p></div>
+<p>The constructor accepts data determining a Coxeter group in
+the form of either a Coxeter diagram (specified as an iterable
+of tuples) or a Coxeter matrix (a symmetric array of
+integers).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>diagram</code></strong> :&ensp;<code>iterable</code> of <code>tuples</code></dt>
+<dd>A Coxeter diagram, given as an iterable of triples of the
+form <code>(generator1, generator2, order)</code>. Each generator can
+be any hashable object (internally these will be mapped to
+characters a-z). <code>order</code> is an integer. If it is positive,
+then it represents the order of the product of generator1
+and generator2. If it is zero or negative, the order of
+this product is infinite.</dd>
+<dt><strong><code>matrix</code></strong> :&ensp;<code>ndarray</code> of <code>ints</code></dt>
+<dd>The Coxeter matrix defining this Coxeter system. This must
+be a symmetric matrix of integers, with 1's on the
+diagonal.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -333,8 +833,10 @@ generator2, order). order &lt; 0 is interpreted as infinity.</p></div>
 <ul class="hlist">
 <li><code><b><a title="geometry_tools.coxeter.CoxeterGroup" href="#geometry_tools.coxeter.CoxeterGroup">CoxeterGroup</a></b></code>:
 <ul class="hlist">
+<li><code><a title="geometry_tools.coxeter.CoxeterGroup.automaton" href="#geometry_tools.coxeter.CoxeterGroup.automaton">automaton</a></code></li>
 <li><code><a title="geometry_tools.coxeter.CoxeterGroup.canonical_representation" href="#geometry_tools.coxeter.CoxeterGroup.canonical_representation">canonical_representation</a></code></li>
 <li><code><a title="geometry_tools.coxeter.CoxeterGroup.diagonal_rep" href="#geometry_tools.coxeter.CoxeterGroup.diagonal_rep">diagonal_rep</a></code></li>
+<li><code><a title="geometry_tools.coxeter.CoxeterGroup.hyperbolic_rep" href="#geometry_tools.coxeter.CoxeterGroup.hyperbolic_rep">hyperbolic_rep</a></code></li>
 </ul>
 </li>
 </ul>
@@ -358,9 +860,13 @@ generator2, order). order &lt; 0 is interpreted as infinity.</p></div>
 <li>
 <h4><code><a title="geometry_tools.coxeter.CoxeterGroup" href="#geometry_tools.coxeter.CoxeterGroup">CoxeterGroup</a></code></h4>
 <ul class="">
+<li><code><a title="geometry_tools.coxeter.CoxeterGroup.automaton" href="#geometry_tools.coxeter.CoxeterGroup.automaton">automaton</a></code></li>
 <li><code><a title="geometry_tools.coxeter.CoxeterGroup.canonical_representation" href="#geometry_tools.coxeter.CoxeterGroup.canonical_representation">canonical_representation</a></code></li>
 <li><code><a title="geometry_tools.coxeter.CoxeterGroup.diagonal_rep" href="#geometry_tools.coxeter.CoxeterGroup.diagonal_rep">diagonal_rep</a></code></li>
+<li><code><a title="geometry_tools.coxeter.CoxeterGroup.from_coxeter_matrix" href="#geometry_tools.coxeter.CoxeterGroup.from_coxeter_matrix">from_coxeter_matrix</a></code></li>
+<li><code><a title="geometry_tools.coxeter.CoxeterGroup.from_diagram" href="#geometry_tools.coxeter.CoxeterGroup.from_diagram">from_diagram</a></code></li>
 <li><code><a title="geometry_tools.coxeter.CoxeterGroup.hyperbolic_rep" href="#geometry_tools.coxeter.CoxeterGroup.hyperbolic_rep">hyperbolic_rep</a></code></li>
+<li><code><a title="geometry_tools.coxeter.CoxeterGroup.tits_vinberg_rep" href="#geometry_tools.coxeter.CoxeterGroup.tits_vinberg_rep">tits_vinberg_rep</a></code></li>
 </ul>
 </li>
 <li>

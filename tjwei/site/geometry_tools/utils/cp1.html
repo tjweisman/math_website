@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>geometry_tools.automata API documentation</title>
-<meta name="description" content="Work with finite-state automata …" />
+<title>geometry_tools.utils.cp1 API documentation</title>
+<meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -20,132 +20,72 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>geometry_tools.automata</code></h1>
+<h1 class="title">Module <code>geometry_tools.utils.cp1</code></h1>
 </header>
 <section id="section-intro">
-<p>Work with finite-state automata.</p>
-<p>The <code>automata</code> package provides tools meant to manipulate finite-state
-automata, via the <code><a title="geometry_tools.automata.fsa.FSA" href="fsa.html#geometry_tools.automata.fsa.FSA">FSA</a></code> class. Below, we manually
-construct an automaton for the group <span><span class="MathJax_Preview">(\mathbb{Z}/2) * (\mathbb
-{Z}/3) \simeq \mathrm{PSL}(2, \mathbb{Z})</span><script type="math/tex">(\mathbb{Z}/2) * (\mathbb
-{Z}/3) \simeq \mathrm{PSL}(2, \mathbb{Z})</script></span>:</p>
-<pre><code class="python">from geometry_tools.automata import fsa
-
-# make the automaton from a python dictionary
-z2_z3_aut = fsa.FSA({
-    0: {'b': 1, 'B': 2, 'a': 3},
-    1: {'a': 3},
-    2: {'a': 3},
-    3: {'b': 1, 'B':2}
-}, start_vertices=[0])
-
-
-# list accepted words 
-list(z2_z3_aut.enumerate_fixed_length_paths(3))
-</code></pre>
-<pre><code>    ['bab', 'baB', 'Bab', 'BaB', 'aba', 'aBa']
-</code></pre>
-<p>For more details, see the documentation for <code><a title="geometry_tools.automata.fsa" href="fsa.html">geometry_tools.automata.fsa</a></code>.</p>
-<p>This package also provides a handful of word-acceptor automata for various
-hyperbolic groups. You can get a list of available automata by running:</p>
-<pre><code class="python">from geometry_tools.automata import fsa
-fsa.list_builtins()
-</code></pre>
-<p>The package does <em>not</em> provide any tools to produce finite-state automata from
-a group presentation. You can, however, produce automata in this way by
-running the <a href="https://gap-packages.github.io/kbmag/">kbmag</a> program (which is
-not included with <code><a title="geometry_tools" href="../index.html">geometry_tools</a></code>). <code>kbmag</code> will produce automata files
-which you can load and manipulate using <code><a title="geometry_tools.automata" href="#geometry_tools.automata">geometry_tools.automata</a></code>:</p>
-<pre><code class="python">from geometry_tools.automata import fsa
-
-# &quot;automaton_file.wa&quot; is the output of the kbmag &quot;autgroup&quot; command
-my_fsa = fsa.load_kbmag_file(&quot;automaton_file.wa&quot;)
-
-# python dictionary describing the automaton
-my_fsa.graph_dict
-</code></pre>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">r&#34;&#34;&#34;Work with finite-state automata.
+<pre><code class="python">import numpy as np
 
-The `automata` package provides tools meant to manipulate finite-state
-automata, via the `geometry_tools.automata.fsa.FSA` class. Below, we manually
-construct an automaton for the group \((\mathbb{Z}/2) * (\mathbb
-{Z}/3) \simeq \mathrm{PSL}(2, \mathbb{Z})\):
+def fs_ctr_to_aff_ctr(fs_center, fs_radius):
+    fs_center_norm = np.abs(fs_center)
+    fs_normalized_ctr = fs_center / fs_center_norm
 
-```python
-from geometry_tools.automata import fsa
+    zmin = np.tan(np.arctan(fs_center_norm) - fs_radius)
+    zmax = np.tan(np.arctan(fs_center_norm) + fs_radius)
 
-# make the automaton from a python dictionary
-z2_z3_aut = fsa.FSA({
-    0: {&#39;b&#39;: 1, &#39;B&#39;: 2, &#39;a&#39;: 3},
-    1: {&#39;a&#39;: 3},
-    2: {&#39;a&#39;: 3},
-    3: {&#39;b&#39;: 1, &#39;B&#39;:2}
-}, start_vertices=[0])
+    return fs_normalized_ctr * (zmin + zmax) / 2
 
-
-# list accepted words 
-list(z2_z3_aut.enumerate_fixed_length_paths(3))
-```
-        [&#39;bab&#39;, &#39;baB&#39;, &#39;Bab&#39;, &#39;BaB&#39;, &#39;aba&#39;, &#39;aBa&#39;]
-
-For more details, see the documentation for `fsa`.
-
-This package also provides a handful of word-acceptor automata for various
-hyperbolic groups. You can get a list of available automata by running:
-
-```python
-from geometry_tools.automata import fsa
-fsa.list_builtins()
-```
-
-The package does *not* provide any tools to produce finite-state automata from
-a group presentation. You can, however, produce automata in this way by
-running the [kbmag](https://gap-packages.github.io/kbmag/) program (which is
-not included with `geometry_tools`). `kbmag` will produce automata files
-which you can load and manipulate using `geometry_tools.automata`:
-
-```python
-from geometry_tools.automata import fsa
-
-# &#34;automaton_file.wa&#34; is the output of the kbmag &#34;autgroup&#34; command
-my_fsa = fsa.load_kbmag_file(&#34;automaton_file.wa&#34;)
-
-# python dictionary describing the automaton
-my_fsa.graph_dict
-```
-
-&#34;&#34;&#34;</code></pre>
+def aff_ctr_to_fs_ctr(aff_center, aff_radius):
+    aff_center_norm = np.abs(aff_center)
+    return np.tan((np.arctan(aff_center_norm + aff_radius) +
+                   np.arctan(aff_center_norm - aff_radius)) / 2)</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="geometry_tools.automata.coxeter_automaton" href="coxeter_automaton.html">geometry_tools.automata.coxeter_automaton</a></code></dt>
-<dd>
-<div class="desc"><p>coxeter_automaton …</p></div>
-</dd>
-<dt><code class="name"><a title="geometry_tools.automata.fsa" href="fsa.html">geometry_tools.automata.fsa</a></code></dt>
-<dd>
-<div class="desc"><p>Work with finite-state automata …</p></div>
-</dd>
-<dt><code class="name"><a title="geometry_tools.automata.gap_parse" href="gap_parse.html">geometry_tools.automata.gap_parse</a></code></dt>
+<dt id="geometry_tools.utils.cp1.aff_ctr_to_fs_ctr"><code class="name flex">
+<span>def <span class="ident">aff_ctr_to_fs_ctr</span></span>(<span>aff_center, aff_radius)</span>
+</code></dt>
 <dd>
 <div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def aff_ctr_to_fs_ctr(aff_center, aff_radius):
+    aff_center_norm = np.abs(aff_center)
+    return np.tan((np.arctan(aff_center_norm + aff_radius) +
+                   np.arctan(aff_center_norm - aff_radius)) / 2)</code></pre>
+</details>
 </dd>
-<dt><code class="name"><a title="geometry_tools.automata.kbmag_utils" href="kbmag_utils.html">geometry_tools.automata.kbmag_utils</a></code></dt>
+<dt id="geometry_tools.utils.cp1.fs_ctr_to_aff_ctr"><code class="name flex">
+<span>def <span class="ident">fs_ctr_to_aff_ctr</span></span>(<span>fs_center, fs_radius)</span>
+</code></dt>
 <dd>
-<div class="desc"><p>Provides utility functions for working with the kbmag command-line
-tools and their output.</p></div>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fs_ctr_to_aff_ctr(fs_center, fs_radius):
+    fs_center_norm = np.abs(fs_center)
+    fs_normalized_ctr = fs_center / fs_center_norm
+
+    zmin = np.tan(np.arctan(fs_center_norm) - fs_radius)
+    zmax = np.tan(np.arctan(fs_center_norm) + fs_radius)
+
+    return fs_normalized_ctr * (zmin + zmax) / 2</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
 </section>
 <section>
 </section>
@@ -158,15 +98,13 @@ tools and their output.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="geometry_tools" href="../index.html">geometry_tools</a></code></li>
+<li><code><a title="geometry_tools.utils" href="index.html">geometry_tools.utils</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
-<ul>
-<li><code><a title="geometry_tools.automata.coxeter_automaton" href="coxeter_automaton.html">geometry_tools.automata.coxeter_automaton</a></code></li>
-<li><code><a title="geometry_tools.automata.fsa" href="fsa.html">geometry_tools.automata.fsa</a></code></li>
-<li><code><a title="geometry_tools.automata.gap_parse" href="gap_parse.html">geometry_tools.automata.gap_parse</a></code></li>
-<li><code><a title="geometry_tools.automata.kbmag_utils" href="kbmag_utils.html">geometry_tools.automata.kbmag_utils</a></code></li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="geometry_tools.utils.cp1.aff_ctr_to_fs_ctr" href="#geometry_tools.utils.cp1.aff_ctr_to_fs_ctr">aff_ctr_to_fs_ctr</a></code></li>
+<li><code><a title="geometry_tools.utils.cp1.fs_ctr_to_aff_ctr" href="#geometry_tools.utils.cp1.fs_ctr_to_aff_ctr">fs_ctr_to_aff_ctr</a></code></li>
 </ul>
 </li>
 </ul>

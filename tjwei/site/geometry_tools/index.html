@@ -24,26 +24,26 @@
 </header>
 <section id="section-intro">
 <p><code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code> is a Python package meant to help you work with and visualize group actions on hyperbolic space and projective space.</p>
-<p>The package is mostly built on top of <a href="https://numpy.org/">numpy</a> and <a href="https://matplotlib.org/">matplotlib</a>, and provides modules to:</p>
+<p>The package is mostly built on top of <a href="https://numpy.org/">numpy</a>, <a href="https://matplotlib.org/">matplotlib</a>, and <a href="https://scipy.org/">scipy</a> and provides modules to:</p>
 <ul>
 <li>
 <p>perform numerical computations with objects in hyperbolic space, in multiple models (namely the Klein, hyperboloid, projective, Poincare, and half-space models)</p>
 </li>
 <li>
-<p>work (again, numerically) with representations of finitely generated groups into <span><span class="MathJax_Preview">\textrm{O}(d, 1)</span><script type="math/tex">\textrm{O}(d, 1)</script></span> and <span><span class="MathJax_Preview">\textrm{GL}(d, \mathbb{R})</span><script type="math/tex">\textrm{GL}(d, \mathbb{R})</script></span></p>
+<p>work (again, numerically) with representations of finitely generated groups into <span><span class="MathJax_Preview">\textrm{O}(d, 1)</span><script type="math/tex">\textrm{O}(d, 1)</script></span>, <span><span class="MathJax_Preview">\textrm{GL}(d, \mathbb{R})</span><script type="math/tex">\textrm{GL}(d, \mathbb{R})</script></span>, and <span><span class="MathJax_Preview">\textrm{GL}(d, \mathbb{C})</span><script type="math/tex">\textrm{GL}(d, \mathbb{C})</script></span></p>
 </li>
 <li>
 <p>use finite-state automata to do some simple computations in word-hyperbolic groups </p>
 </li>
 <li>
-<p>draw nice pictures in the hyperbolic plane</p>
+<p>draw nice pictures in the hyperbolic plane, the real projective plane, and the complex projective line</p>
 </li>
 </ul>
 <p>None of the functionality of this package is (mathematically) very deep.
 Mostly, the package just wraps more sophisticated tools in a way intended to
 make it easy to quickly draw good pictures in <span><span class="MathJax_Preview">\mathbb{H}^2</span><script type="math/tex">\mathbb{H}^2</script></span>, <span><span class="MathJax_Preview">\mathbb
 {H}^3</span><script type="math/tex">\mathbb
-{H}^3</script></span>, and <span><span class="MathJax_Preview">\mathbb{R}P^2</span><script type="math/tex">\mathbb{R}P^2</script></span>.</p>
+{H}^3</script></span>, and <span><span class="MathJax_Preview">\mathbb{R}P^2</span><script type="math/tex">\mathbb{R}P^2</script></span> and <span><span class="MathJax_Preview">\mathbb{C}P^1</span><script type="math/tex">\mathbb{C}P^1</script></span>.</p>
 <h2 id="a-quick-example">A quick example</h2>
 <p>To draw a picture of a right-angled pentagon in the hyperbolic plane:</p>
 <pre><code class="python">from geometry_tools import hyperbolic, drawtools
@@ -64,14 +64,13 @@ figure.show()
 <p><img alt="A right-angled pentagon in the Poincare disc model for the hyperbolic plane" src="right_angled_pentagon.png"></p>
 <h1 id="installation">Installation</h1>
 <p>Right now, the easiest way to install <code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code> is to download or clone the project from the <a href="https://github.com/tjweisman/geometry_tools">git repository</a>, and run</p>
-<pre><code class="shell">python setup.py install
+<pre><code class="shell">pip install .
 </code></pre>
-<p>from the directory where you've downloaded it.</p>
-<p>At some point in the (very near) future, I hope to upload the package to PyPI so you can install it via <code>pip</code>.</p>
+<p>from the directory where you've downloaded it. If you don't have pip installed, you should <a href="https://pip.pypa.io/en/stable/">install pip</a> first. Alternatively, you can try running <code>python setup.py install</code> from the project directory (this is not recommended).</p>
 <h1 id="drawing-hyperbolic-group-actions">Drawing hyperbolic group actions</h1>
 <p>The <code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code> package is handy for drawing pictures of tilings in <span><span class="MathJax_Preview">\mathbb{H}^2</span><script type="math/tex">\mathbb{H}^2</script></span>. Here we will work with visualizing a (2,3,7) triangular tiling:</p>
 <p><img alt="png" src="output_15_0.png"></p>
-<p>You can also <a href="triangular_tiling.ipynb">download this example as a Jupyter notebook</a> or a <a href="triangular_tiling.py">python file</a>.</p>
+<p>You can also <a href="examples/triangular_tiling.ipynb">download this example as a Jupyter notebook</a> or a <a href="examples/triangular_tiling.py">python file</a>.</p>
 <p>To get started, first instantiate the <code><a title="geometry_tools.coxeter.TriangleGroup" href="coxeter.html#geometry_tools.coxeter.TriangleGroup">TriangleGroup</a></code> class to get a (2,3,7) triangle group, and compute its geometric representation into the isometries of the hyperbolic plane:</p>
 <pre><code class="python"># get a representation for a triangle group.
 # (these are built in to the program)
@@ -83,7 +82,7 @@ triangle_rep = coxeter.TriangleGroup((2,3,7)).hyperbolic_rep()
 <pre><code class="python"># find the fixed points at infinity for the generating reflections
 
 reflections = triangle_rep.isometries([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;])
-walls = hyperbolic.Hyperplane.from_reflection(reflections)
+walls = hyperbolic.Geodesic.from_reflection(reflections)
 
 wall_a, wall_b, wall_c = walls
 
@@ -121,33 +120,10 @@ fig.draw_polygon(tiles, facecolor=&quot;lightgreen&quot;)
 <p><img alt="png" src="output_7_0.png"></p>
 <h3 id="speeding-things-up-with-finite-state-automata">Speeding things up with finite-state automata</h3>
 <p>Drawing copies of the triangle translated by images of all freely reduced words is a little slow. And, we end up drawing the same triangle on top of itself many times. We can speed up the process by picking a <em>unique</em> word for each element of the group, using a <em>finite-state automaton.</em></p>
-<p>The <code><a title="geometry_tools.automata" href="automata/index.html">geometry_tools.automata</a></code> subpackage provides a handful of tools for working with finite-state automata. It can load and manipulate the automata generated by the <a href="https://gap-packages.github.io/kbmag/">kbmag</a> program. While <code>kbmag</code> is not included with <code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code>, the package does provide precomputed automata for a number of word-hyperbolic groups.</p>
-<p>To get the list of precomputed automata, run:</p>
-<pre><code class="python">from geometry_tools.automata import fsa
-
-fsa.list_builtins()
-</code></pre>
-<pre><code>['cox237.wa',
- 'pentagon_ra.wa',
- 'cox535.geowa',
- 'cox3334.geowa',
- 'genus2_surf_alt.wa',
- 'cox535.wa',
- 'genus3_surface.wa',
- 'cox237.geowa',
- 'f2.geowa',
- 'cox334.wa',
- 'genus2_surface.wa',
- 'cone_torus.wa',
- 'genus3_surface.geowa',
- 'cox3334.wa',
- 'f2.wa',
- 'genus2_surface.geowa',
- 'cox334.geowa']
-</code></pre>
-<p>The ".wa" files represent <em>word-acceptor</em> automata. These automata accept a unique (shortlex geodesic) word for each element of an automatic group. This gives us a practical way to get a unique representative for all group elements of at most a given length.</p>
-<pre><code class="python"># load the built-in (2,3,7) automaton
-triangle_fsa = fsa.load_builtin(&quot;cox237.wa&quot;)
+<p>The <code><a title="geometry_tools.automata" href="automata/index.html">geometry_tools.automata</a></code> subpackage provides a handful of tools for working with finite-state automata. It can load and manipulate the automata generated by the <a href="https://gap-packages.github.io/kbmag/">kbmag</a> program. While <code>kbmag</code> is not included with <code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code>, the package does provide precomputed automata for a number of word-hyperbolic groups. To get the list of precomputed automata, import the <code><a title="geometry_tools.automata.fsa" href="automata/fsa.html">geometry_tools.automata.fsa</a></code> submodule and call <code>fsa.list_builtins()</code>. Call <code>fsa.load_builtin()</code> to load an automaton.</p>
+<p>Thanks to code provided by <a href="https://florianstecker.de/">Florian Stecker</a>, the <code><a title="geometry_tools" href="#geometry_tools">geometry_tools</a></code> package can also generate automata for any Coxeter group. So we can get an automaton for the (2,3,7) triangle group like so:</p>
+<pre><code class="python"># construct the (2,3,7) automaton
+triangle_fsa = coxeter.TriangleGroup((2,3,7)).automaton()
 
 # get a unique word for each group element of length &lt; 25.
 # (we convert to a list since enumerate_words returns a generator)
@@ -179,7 +155,7 @@ from geometry_tools.automata import fsa
 # make the triangle group representation and load a finite-state automaton
 triangle_group = coxeter.TriangleGroup((2,3,7))
 triangle_rep = triangle_group.hyperbolic_rep()
-triangle_fsa = fsa.load_builtin(&quot;cox237.wa&quot;)
+triangle_fsa = triangle_group.automaton()
 
 
 # find a fundamental domain for the action by finding 
@@ -207,20 +183,20 @@ fig.show()
 <pre><code class="python">r&#34;&#34;&#34;
 `geometry_tools` is a Python package meant to help you work with and visualize group actions on hyperbolic space and projective space.
 
-The package is mostly built on top of [numpy](https://numpy.org/) and [matplotlib](https://matplotlib.org/), and provides modules to:
+The package is mostly built on top of [numpy](https://numpy.org/), [matplotlib](https://matplotlib.org/), and [scipy](https://scipy.org/) and provides modules to:
 
 - perform numerical computations with objects in hyperbolic space, in multiple models (namely the Klein, hyperboloid, projective, Poincare, and half-space models)
 
-- work (again, numerically) with representations of finitely generated groups into \(\textrm{O}(d, 1)\) and \(\textrm{GL}(d, \mathbb{R})\)
+- work (again, numerically) with representations of finitely generated groups into \(\textrm{O}(d, 1)\), \(\textrm{GL}(d, \mathbb{R})\), and \(\textrm{GL}(d, \mathbb{C})\)
 
 - use finite-state automata to do some simple computations in word-hyperbolic groups 
 
-- draw nice pictures in the hyperbolic plane
+- draw nice pictures in the hyperbolic plane, the real projective plane, and the complex projective line
 
 None of the functionality of this package is (mathematically) very deep.
 Mostly, the package just wraps more sophisticated tools in a way intended to
 make it easy to quickly draw good pictures in \(\mathbb{H}^2\), \(\mathbb
-{H}^3\), and \(\mathbb{R}P^2\).
+{H}^3\), and \(\mathbb{R}P^2\) and \(\mathbb{C}P^1\).
 
 ## A quick example
 
@@ -251,11 +227,9 @@ This code produces:
 Right now, the easiest way to install `geometry_tools` is to download or clone the project from the [git repository](https://github.com/tjweisman/geometry_tools), and run
 
 ```shell
-python setup.py install
+pip install .
 ```
-from the directory where you&#39;ve downloaded it.
-
-At some point in the (very near) future, I hope to upload the package to PyPI so you can install it via `pip`.
+from the directory where you&#39;ve downloaded it. If you don&#39;t have pip installed, you should [install pip](https://pip.pypa.io/en/stable/) first. Alternatively, you can try running `python setup.py install` from the project directory (this is not recommended).
 
 # Drawing hyperbolic group actions
 
@@ -263,7 +237,7 @@ The `geometry_tools` package is handy for drawing pictures of tilings in \(\math
 
 ![png](output_15_0.png)
 
-You can also [download this example as a Jupyter notebook](triangular_tiling.ipynb) or a [python file](triangular_tiling.py).
+You can also [download this example as a Jupyter notebook](examples/triangular_tiling.ipynb) or a [python file](examples/triangular_tiling.py).
 
 To get started, first instantiate the `coxeter.TriangleGroup` class to get a (2,3,7) triangle group, and compute its geometric representation into the isometries of the hyperbolic plane:
 
@@ -282,7 +256,7 @@ We can draw the reflection walls for the group using the `drawtools` subpackage:
 # find the fixed points at infinity for the generating reflections
 
 reflections = triangle_rep.isometries([&#34;a&#34;, &#34;b&#34;, &#34;c&#34;])
-walls = hyperbolic.Hyperplane.from_reflection(reflections)
+walls = hyperbolic.Geodesic.from_reflection(reflections)
 
 wall_a, wall_b, wall_c = walls
 
@@ -340,48 +314,13 @@ fig.draw_polygon(tiles, facecolor=&#34;lightgreen&#34;)
 
 Drawing copies of the triangle translated by images of all freely reduced words is a little slow. And, we end up drawing the same triangle on top of itself many times. We can speed up the process by picking a *unique* word for each element of the group, using a *finite-state automaton.*
 
-The `geometry_tools.automata` subpackage provides a handful of tools for working with finite-state automata. It can load and manipulate the automata generated by the [kbmag](https://gap-packages.github.io/kbmag/) program. While `kbmag` is not included with `geometry_tools`, the package does provide precomputed automata for a number of word-hyperbolic groups.
+The `geometry_tools.automata` subpackage provides a handful of tools for working with finite-state automata. It can load and manipulate the automata generated by the [kbmag](https://gap-packages.github.io/kbmag/) program. While `kbmag` is not included with `geometry_tools`, the package does provide precomputed automata for a number of word-hyperbolic groups. To get the list of precomputed automata, import the `automata.fsa` submodule and call `fsa.list_builtins()`. Call `fsa.load_builtin()` to load an automaton.
 
-To get the list of precomputed automata, run:
-
-
-```python
-from geometry_tools.automata import fsa
-
-fsa.list_builtins()
-```
-
-
-
-
-    [&#39;cox237.wa&#39;,
-     &#39;pentagon_ra.wa&#39;,
-     &#39;cox535.geowa&#39;,
-     &#39;cox3334.geowa&#39;,
-     &#39;genus2_surf_alt.wa&#39;,
-     &#39;cox535.wa&#39;,
-     &#39;genus3_surface.wa&#39;,
-     &#39;cox237.geowa&#39;,
-     &#39;f2.geowa&#39;,
-     &#39;cox334.wa&#39;,
-     &#39;genus2_surface.wa&#39;,
-     &#39;cone_torus.wa&#39;,
-     &#39;genus3_surface.geowa&#39;,
-     &#39;cox3334.wa&#39;,
-     &#39;f2.wa&#39;,
-     &#39;genus2_surface.geowa&#39;,
-     &#39;cox334.geowa&#39;]
-
-
-
-The &#34;.wa&#34; files represent *word-acceptor* automata. These automata accept a unique (shortlex geodesic) word for each element of an automatic group. This gives us a practical way to get a unique representative for all group elements of at most a given length.
-
-
-
+Thanks to code provided by [Florian Stecker](https://florianstecker.de/), the `geometry_tools` package can also generate automata for any Coxeter group. So we can get an automaton for the (2,3,7) triangle group like so:
 
 ```python
-# load the built-in (2,3,7) automaton
-triangle_fsa = fsa.load_builtin(&#34;cox237.wa&#34;)
+# construct the (2,3,7) automaton
+triangle_fsa = coxeter.TriangleGroup((2,3,7)).automaton()
 
 # get a unique word for each group element of length &lt; 25.
 # (we convert to a list since enumerate_words returns a generator)
@@ -429,7 +368,7 @@ from geometry_tools.automata import fsa
 # make the triangle group representation and load a finite-state automaton
 triangle_group = coxeter.TriangleGroup((2,3,7))
 triangle_rep = triangle_group.hyperbolic_rep()
-triangle_fsa = fsa.load_builtin(&#34;cox237.wa&#34;)
+triangle_fsa = triangle_group.automaton()
 
 
 # find a fundamental domain for the action by finding 
@@ -461,9 +400,14 @@ fig.show()
 <dd>
 <div class="desc"><p>Work with finite-state automata …</p></div>
 </dd>
+<dt><code class="name"><a title="geometry_tools.complex_projective" href="complex_projective.html">geometry_tools.complex_projective</a></code></dt>
+<dd>
+<div class="desc"><p>Work with objects in CP^1, the complex projective line, in
+numerical coordinates.</p></div>
+</dd>
 <dt><code class="name"><a title="geometry_tools.coxeter" href="coxeter.html">geometry_tools.coxeter</a></code></dt>
 <dd>
-<div class="desc"><p>Work with Coxeter groups and their representations …</p></div>
+<div class="desc"><p>Work with Coxeter groups and their representations.</p></div>
 </dd>
 <dt><code class="name"><a title="geometry_tools.drawtools" href="drawtools.html">geometry_tools.drawtools</a></code></dt>
 <dd>
@@ -477,14 +421,14 @@ and …</p></div>
 </dd>
 <dt><code class="name"><a title="geometry_tools.projective" href="projective.html">geometry_tools.projective</a></code></dt>
 <dd>
-<div class="desc"><p>Work with projective space in numerical coordinates …</p></div>
+<div class="desc"><p>Work with projective space in numerical coordinates.</p></div>
 </dd>
 <dt><code class="name"><a title="geometry_tools.representation" href="representation.html">geometry_tools.representation</a></code></dt>
 <dd>
 <div class="desc"><p>Work with group representations into finite-dimensional vector
 spaces, using numerical matrices …</p></div>
 </dd>
-<dt><code class="name"><a title="geometry_tools.utils" href="utils.html">geometry_tools.utils</a></code></dt>
+<dt><code class="name"><a title="geometry_tools.utils" href="utils/index.html">geometry_tools.utils</a></code></dt>
 <dd>
 <div class="desc"><p>Provide utility functions used by the various geometry tools in
 this package.</p></div>
@@ -514,12 +458,13 @@ this package.</p></div>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
 <li><code><a title="geometry_tools.automata" href="automata/index.html">geometry_tools.automata</a></code></li>
+<li><code><a title="geometry_tools.complex_projective" href="complex_projective.html">geometry_tools.complex_projective</a></code></li>
 <li><code><a title="geometry_tools.coxeter" href="coxeter.html">geometry_tools.coxeter</a></code></li>
 <li><code><a title="geometry_tools.drawtools" href="drawtools.html">geometry_tools.drawtools</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic" href="hyperbolic.html">geometry_tools.hyperbolic</a></code></li>
 <li><code><a title="geometry_tools.projective" href="projective.html">geometry_tools.projective</a></code></li>
 <li><code><a title="geometry_tools.representation" href="representation.html">geometry_tools.representation</a></code></li>
-<li><code><a title="geometry_tools.utils" href="utils.html">geometry_tools.utils</a></code></li>
+<li><code><a title="geometry_tools.utils" href="utils/index.html">geometry_tools.utils</a></code></li>
 </ul>
 </li>
 </ul>

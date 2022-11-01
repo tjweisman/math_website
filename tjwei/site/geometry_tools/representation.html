@@ -327,7 +327,7 @@ def semi_gens(generators):
         Sequence of semigroup generators
 
     Yields
-    --------
+    ------
     gen : string
         the lowercase characters in `generators`
 
@@ -364,7 +364,7 @@ class Representation:
             the computed matrices.
 
         Returns
-        --------
+        -------
         result : ndarray or tuple
             If `with_words` is `True`, `result` is a tuple `(elements, words)`,
             where `elements` is an ndarray of shape `(k, n, n)`,
@@ -388,7 +388,7 @@ class Representation:
             the length of words to return
 
         Yields
-        --------
+        ------
         word : string
             All freely reduced words in the generators of length
             `length`.
@@ -413,7 +413,7 @@ class Representation:
             the maximum length of words to return
 
         Yields
-        --------
+        ------
         word : string
             All freely reduced words in the generators, up to length
             `length` (inclusive)
@@ -463,7 +463,7 @@ class Representation:
             function is called.
 
         Returns
-        --------
+        -------
         result : ndarray or tuple
             If `with_words` is `True`, `result` is a tuple `(elements, words)`,
             where `elements` is an ndarray containing one
@@ -590,6 +590,25 @@ class Representation:
         precomputed[(length, state)] = accepted
         return accepted
 
+    def elements(self, words):
+        &#34;&#34;&#34;Get images of an iterable of words.
+
+        Parameters
+        ----------
+        words : iterable of strings
+            words to find the image of under the representation
+
+        Returns
+        -------
+        ndarray
+            numpy array of shape `(l, n, n)`, where `l` is the length
+            of `words` and `n` is the dimension of the representation.
+
+        &#34;&#34;&#34;
+        return np.array(
+            [self._word_value(word) for word in words]
+        )
+
     def semi_gens(self):
         &#34;&#34;&#34;Iterate over group generator names for this representation.
 
@@ -597,7 +616,7 @@ class Representation:
         semigroup generators (upper and lowercase letters).
 
         Yields
-        --------
+        ------
         gen : string
             group generator names
 
@@ -677,7 +696,7 @@ class Representation:
             Raised if `self` and `rep` have differing generating sets.
 
         Returns
-        --------
+        -------
         tensor: Representation
             Representation giving the tensor product of self with `rep`.
 
@@ -699,7 +718,7 @@ class Representation:
         &#34;&#34;&#34;Return the symmetric square of this representation.
 
         Returns
-        --------
+        -------
         square : Representation
             Symmetric square of `self`.
 
@@ -749,7 +768,7 @@ def sym_index(i, j, n):
         dimension of the underlying vector space \(\mathbb{R}^n\).
 
     Returns
-    --------
+    -------
     int
         index of the corresponding basis vector in
         \(\mathbb{R}^{\binom{n}{2} + n}\).
@@ -790,7 +809,7 @@ def tensor_pos(i, n):
         dimension of the underlying vector space \(\mathbb{R}^n\)
 
     Returns
-    --------
+    -------
     tuple
         tuple `(j, k)` determining the monomial \(e_j \otimes e_k\)
         mapped to by given the basis vector in \(\mathbb{R}^{n^2}\).
@@ -831,7 +850,7 @@ def tensor_index(i,j,n):
         dimension of the underlying vector space \(\mathbb{R}^n\)
 
     Returns
-    --------
+    -------
     int
         index of a basis vector in \(\mathbb{R}^{n^2}\) mapped to by
         \(e_i \otimes e_j\).
@@ -861,7 +880,7 @@ def symmetric_inclusion(n):
         Dimension of the underlying vector space \(\mathbb{R}^n\).
 
     Returns
-    --------
+    -------
     matrix : ndarray
         \(n^2 \times \binom{n}{2} + n\) array defining this linear map.
 
@@ -892,7 +911,7 @@ def symmetric_projection(n):
         Dimension of the underlying vector space \(\mathbb{R}^n\)
 
     Returns
-    --------
+    -------
     ndarray
         \(\binom{n}{2} + n \times n\) matrix representing the linear map
         in the given bases.
@@ -924,7 +943,7 @@ def sl2_irrep(A, n):
         Dimension of the irreducible representation.
 
     Returns
-    ---------
+    -------
     result : ndarray
         Array of shape `(..., n, n)` giving the representation of
         `A` under the `dim`-dimensional irreducible representation of
@@ -960,13 +979,13 @@ def sl2_to_so21(A):
     `o_to_pgl`.
 
     Parameters
-    ------------
+    ----------
     A : ndarray
         Array of shape `(..., 2, 2)` giving a matrix (or array of
         matrices) in \(\mathrm{SL}(2, \mathbb{R})\).
 
     Returns
-    --------
+    -------
     result : ndarray
         Array of shape `(..., 3, 3)` giving the image of `A` under the
         representation.
@@ -990,7 +1009,7 @@ def o_to_pgl(A, bilinear_form=np.diag((-1., 1., 1.))):
     given by the function `sl2_to_so21`.
 
     Parameters
-    -----------
+    ----------
     A : ndarray
         Array of shape `(..., 3, 3)` giving a matrix (or array of
         matrices) preserving a bilinear form of signature (2, 1).
@@ -999,7 +1018,7 @@ def o_to_pgl(A, bilinear_form=np.diag((-1., 1., 1.))):
         default, the diagonal form `diag(-1, 1, 1)`.
 
     Returns
-    --------
+    -------
     result : ndarray
         Array of shape `(..., 2, 2)` giving the image of `A` under
         this representation.
@@ -1090,7 +1109,7 @@ this representation.</dd>
     given by the function `sl2_to_so21`.
 
     Parameters
-    -----------
+    ----------
     A : ndarray
         Array of shape `(..., 3, 3)` giving a matrix (or array of
         matrices) preserving a bilinear form of signature (2, 1).
@@ -1099,7 +1118,7 @@ this representation.</dd>
         default, the diagonal form `diag(-1, 1, 1)`.
 
     Returns
-    --------
+    -------
     result : ndarray
         Array of shape `(..., 2, 2)` giving the image of `A` under
         this representation.
@@ -1171,7 +1190,7 @@ lowercase ones.</p>
         Sequence of semigroup generators
 
     Yields
-    --------
+    ------
     gen : string
         the lowercase characters in `generators`
 
@@ -1231,7 +1250,7 @@ matrices) to represent.</dd>
         Dimension of the irreducible representation.
 
     Returns
-    ---------
+    -------
     result : ndarray
         Array of shape `(..., n, n)` giving the representation of
         `A` under the `dim`-dimensional irreducible representation of
@@ -1297,13 +1316,13 @@ representation.</dd>
     `o_to_pgl`.
 
     Parameters
-    ------------
+    ----------
     A : ndarray
         Array of shape `(..., 2, 2)` giving a matrix (or array of
         matrices) in \(\mathrm{SL}(2, \mathbb{R})\).
 
     Returns
-    --------
+    -------
     result : ndarray
         Array of shape `(..., 3, 3)` giving the image of `A` under the
         representation.
@@ -1404,7 +1423,7 @@ symmetric square</dd>
         dimension of the underlying vector space \(\mathbb{R}^n\).
 
     Returns
-    --------
+    -------
     int
         index of the corresponding basis vector in
         \(\mathbb{R}^{\binom{n}{2} + n}\).
@@ -1470,7 +1489,7 @@ with respect to the bases specified above.</p>
         Dimension of the underlying vector space \(\mathbb{R}^n\).
 
     Returns
-    --------
+    -------
     matrix : ndarray
         \(n^2 \times \binom{n}{2} + n\) array defining this linear map.
 
@@ -1530,7 +1549,7 @@ in the given bases.</dd>
         Dimension of the underlying vector space \(\mathbb{R}^n\)
 
     Returns
-    --------
+    -------
     ndarray
         \(\binom{n}{2} + n \times n\) matrix representing the linear map
         in the given bases.
@@ -1627,7 +1646,7 @@ element <span><span class="MathJax_Preview">e_i \otimes e_j</span><script type="
         dimension of the underlying vector space \(\mathbb{R}^n\)
 
     Returns
-    --------
+    -------
     int
         index of a basis vector in \(\mathbb{R}^{n^2}\) mapped to by
         \(e_i \otimes e_j\).
@@ -1714,7 +1733,7 @@ mapped to by given the basis vector in <span><span class="MathJax_Preview">\math
         dimension of the underlying vector space \(\mathbb{R}^n\)
 
     Returns
-    --------
+    -------
     tuple
         tuple `(j, k)` determining the monomial \(e_j \otimes e_k\)
         mapped to by given the basis vector in \(\mathbb{R}^{n^2}\).
@@ -1775,7 +1794,7 @@ as arrays later to use the representation properly.</dd>
             the computed matrices.
 
         Returns
-        --------
+        -------
         result : ndarray or tuple
             If `with_words` is `True`, `result` is a tuple `(elements, words)`,
             where `elements` is an ndarray of shape `(k, n, n)`,
@@ -1799,7 +1818,7 @@ as arrays later to use the representation properly.</dd>
             the length of words to return
 
         Yields
-        --------
+        ------
         word : string
             All freely reduced words in the generators of length
             `length`.
@@ -1824,7 +1843,7 @@ as arrays later to use the representation properly.</dd>
             the maximum length of words to return
 
         Yields
-        --------
+        ------
         word : string
             All freely reduced words in the generators, up to length
             `length` (inclusive)
@@ -1874,7 +1893,7 @@ as arrays later to use the representation properly.</dd>
             function is called.
 
         Returns
-        --------
+        -------
         result : ndarray or tuple
             If `with_words` is `True`, `result` is a tuple `(elements, words)`,
             where `elements` is an ndarray containing one
@@ -2001,6 +2020,25 @@ as arrays later to use the representation properly.</dd>
         precomputed[(length, state)] = accepted
         return accepted
 
+    def elements(self, words):
+        &#34;&#34;&#34;Get images of an iterable of words.
+
+        Parameters
+        ----------
+        words : iterable of strings
+            words to find the image of under the representation
+
+        Returns
+        -------
+        ndarray
+            numpy array of shape `(l, n, n)`, where `l` is the length
+            of `words` and `n` is the dimension of the representation.
+
+        &#34;&#34;&#34;
+        return np.array(
+            [self._word_value(word) for word in words]
+        )
+
     def semi_gens(self):
         &#34;&#34;&#34;Iterate over group generator names for this representation.
 
@@ -2008,7 +2046,7 @@ as arrays later to use the representation properly.</dd>
         semigroup generators (upper and lowercase letters).
 
         Yields
-        --------
+        ------
         gen : string
             group generator names
 
@@ -2088,7 +2126,7 @@ as arrays later to use the representation properly.</dd>
             Raised if `self` and `rep` have differing generating sets.
 
         Returns
-        --------
+        -------
         tensor: Representation
             Representation giving the tensor product of self with `rep`.
 
@@ -2110,7 +2148,7 @@ as arrays later to use the representation properly.</dd>
         &#34;&#34;&#34;Return the symmetric square of this representation.
 
         Returns
-        --------
+        -------
         square : Representation
             Symmetric square of `self`.
 
@@ -2237,7 +2275,7 @@ strings containing the corresponding words. If
         function is called.
 
     Returns
-    --------
+    -------
     result : ndarray or tuple
         If `with_words` is `True`, `result` is a tuple `(elements, words)`,
         where `elements` is an ndarray containing one
@@ -2268,6 +2306,46 @@ strings containing the corresponding words. If
                                     state=state,
                                     as_start=as_start,
                                     precomputed=precomputed)</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.representation.Representation.elements"><code class="name flex">
+<span>def <span class="ident">elements</span></span>(<span>self, words)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get images of an iterable of words.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>words</code></strong> :&ensp;<code>iterable</code> of <code>strings</code></dt>
+<dd>words to find the image of under the representation</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ndarray</code></dt>
+<dd>numpy array of shape <code>(l, n, n)</code>, where <code>l</code> is the length
+of <code>words</code> and <code>n</code> is the dimension of the representation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def elements(self, words):
+    &#34;&#34;&#34;Get images of an iterable of words.
+
+    Parameters
+    ----------
+    words : iterable of strings
+        words to find the image of under the representation
+
+    Returns
+    -------
+    ndarray
+        numpy array of shape `(l, n, n)`, where `l` is the length
+        of `words` and `n` is the dimension of the representation.
+
+    &#34;&#34;&#34;
+    return np.array(
+        [self._word_value(word) for word in words]
+    )</code></pre>
 </details>
 </dd>
 <dt id="geometry_tools.representation.Representation.free_words_less_than"><code class="name flex">
@@ -2301,7 +2379,7 @@ length.</p>
         the maximum length of words to return
 
     Yields
-    --------
+    ------
     word : string
         All freely reduced words in the generators, up to length
         `length` (inclusive)
@@ -2341,7 +2419,7 @@ length.</p>
         the length of words to return
 
     Yields
-    --------
+    ------
     word : string
         All freely reduced words in the generators of length
         `length`.
@@ -2409,7 +2487,7 @@ strings, containing those words. If <code>with_words</code> is
         the computed matrices.
 
     Returns
-    --------
+    -------
     result : ndarray or tuple
         If `with_words` is `True`, `result` is a tuple `(elements, words)`,
         where `elements` is an ndarray of shape `(k, n, n)`,
@@ -2448,7 +2526,7 @@ semigroup generators (upper and lowercase letters).</p>
     semigroup generators (upper and lowercase letters).
 
     Yields
-    --------
+    ------
     gen : string
         group generator names
 
@@ -2474,7 +2552,7 @@ semigroup generators (upper and lowercase letters).</p>
     &#34;&#34;&#34;Return the symmetric square of this representation.
 
     Returns
-    --------
+    -------
     square : Representation
         Symmetric square of `self`.
 
@@ -2528,7 +2606,7 @@ semigroup generators (upper and lowercase letters).</p>
         Raised if `self` and `rep` have differing generating sets.
 
     Returns
-    --------
+    -------
     tensor: Representation
         Representation giving the tensor product of self with `rep`.
 
@@ -2583,6 +2661,7 @@ semigroup generators (upper and lowercase letters).</p>
 <ul class="">
 <li><code><a title="geometry_tools.representation.Representation.automaton_accepted" href="#geometry_tools.representation.Representation.automaton_accepted">automaton_accepted</a></code></li>
 <li><code><a title="geometry_tools.representation.Representation.dim" href="#geometry_tools.representation.Representation.dim">dim</a></code></li>
+<li><code><a title="geometry_tools.representation.Representation.elements" href="#geometry_tools.representation.Representation.elements">elements</a></code></li>
 <li><code><a title="geometry_tools.representation.Representation.free_words_less_than" href="#geometry_tools.representation.Representation.free_words_less_than">free_words_less_than</a></code></li>
 <li><code><a title="geometry_tools.representation.Representation.free_words_of_length" href="#geometry_tools.representation.Representation.free_words_of_length">free_words_of_length</a></code></li>
 <li><code><a title="geometry_tools.representation.Representation.freely_reduced_elements" href="#geometry_tools.representation.Representation.freely_reduced_elements">freely_reduced_elements</a></code></li>

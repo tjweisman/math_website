@@ -179,13 +179,18 @@ class FSA:
         else:
             self._out_dict = copy.deepcopy(vert_dict)
             self._build_in_dict()
-            self._build_graph_dict
+            self._build_graph_dict()
 
         self.start_vertices = start_vertices
 
     def _from_graph_dict(self, graph_dict):
         self._graph_dict = copy.deepcopy(graph_dict)
+        hidden = _hidden_vertices(graph_dict)
+        for v in hidden:
+            self._graph_dict[v] = {}
+
         out_dict = {v : {} for v in self._graph_dict}
+
         for v, neighbors in self._graph_dict.items():
             out_dict[v] = defaultdict(list)
             for label, neighbor in neighbors.items():
@@ -203,7 +208,7 @@ class FSA:
         self._graph_dict = label_dict
 
     def _build_in_dict(self):
-        in_dict = {v:{} for v in self._out_dict}
+        in_dict = defaultdict(dict)
         for v, neighbors_out in self._out_dict.items():
             for w, labels in neighbors_out.items():
                 in_dict[w][v] = labels
@@ -281,7 +286,7 @@ class FSA:
         &#34;&#34;&#34;Add edges to the FSA.
 
         Parameters
-        -------------
+        ----------
         edges : list
             a list of tuples of the form `(tail, head, label)`,
             specifying an edge to add.
@@ -339,7 +344,7 @@ class FSA:
         &#34;&#34;&#34;Get all of the edges of this FSA
 
         Yields
-        --------
+        ------
         tuple
             An ordered pair of the form `(tail, head)` for each edge
             in the automaton
@@ -354,7 +359,7 @@ class FSA:
         no dead ends.
 
         Parameters
-        -----------
+        ----------
         inplace : bool
             if `True`, modify the automaton in-place. Otherwise,
             return a recurrent copy.
@@ -397,7 +402,7 @@ class FSA:
         automaton.
 
         Parameters
-        --------------
+        ----------
         edge_ties : bool
             if `True`, if two edges give rise to paths of the
             same length, include both of them in the new graph.
@@ -469,7 +474,7 @@ class FSA:
         starting at a given state.
 
         Parameters
-        -----------
+        ----------
         length : int
             the length of the words we want to enumerate
 
@@ -482,7 +487,7 @@ class FSA:
             automaton at each accepted word.
 
         Yields
-        -------
+        ------
         string or (string, object)
             If `with_states` is false, yield the sequence of words
             accepted (in some arbitrary order). Otherwise, yield pairs
@@ -522,7 +527,7 @@ class FSA:
             accepted word
 
         Yields
-        -------
+        ------
         string or (string, object)
             If `with_states` is false, yield the sequence of words
             accepted (in some arbitrary order). Otherwise, yield pairs
@@ -535,18 +540,30 @@ class FSA:
                     i, start_vertex=start_vertex, with_states=with_states):
                 yield word
 
+    def rename_generators(self, rename_map, inplace=True):
+        new_dict = {
+            vertex: {
+                rename_map[label]: neighbor
+                for label, neighbor in neighbors.items()
+            }
+            for vertex, neighbors in self._graph_dict.items()
+        }
+        if inplace:
+            self._from_graph_dict(new_dict)
+        else:
+            return FSA(new_dict, self.start_vertices)
 
 def load_kbmag_file(filename) -&gt; FSA:
     &#34;&#34;&#34;Build a finite-state automaton from a GAP record file produced by
     the kbmag program.
 
     Parameters
-    -----------
+    ----------
     filename : string
         the GAP record file containing automaton data.
 
     Returns
-    --------
+    -------
     FSA
         The automaton described by the
         file.
@@ -622,7 +639,7 @@ def free_automaton(generating_set):
         Names of the generators for this free group
 
     Returns
-    --------
+    -------
     FSA
         Automaton accepting freely reduced words in the generators
         (and their inverses)
@@ -637,7 +654,18 @@ def free_automaton(generating_set):
         for g in [&#39;&#39;] + generators
     }
     fsa = FSA(graph, start_vertices=[&#39;&#39;])
-    return fsa</code></pre>
+    return fsa
+
+def _hidden_vertices(graph_dict):
+    vertices = list(graph_dict)
+    hidden = []
+    for v, neighbors in graph_dict.items():
+        for _, neighbor in neighbors.items():
+            if (neighbor not in vertices and
+                neighbor not in hidden):
+                hidden.append(neighbor)
+
+    return hidden</code></pre>
 </details>
 </section>
 <section>
@@ -678,7 +706,7 @@ generators</p>
         Names of the generators for this free group
 
     Returns
-    --------
+    -------
     FSA
         Automaton accepting freely reduced words in the generators
         (and their inverses)
@@ -780,12 +808,12 @@ file.</dd>
     the kbmag program.
 
     Parameters
-    -----------
+    ----------
     filename : string
         the GAP record file containing automaton data.
 
     Returns
-    --------
+    -------
     FSA
         The automaton described by the
         file.
@@ -896,13 +924,18 @@ vertex2: ....,
         else:
             self._out_dict = copy.deepcopy(vert_dict)
             self._build_in_dict()
-            self._build_graph_dict
+            self._build_graph_dict()
 
         self.start_vertices = start_vertices
 
     def _from_graph_dict(self, graph_dict):
         self._graph_dict = copy.deepcopy(graph_dict)
+        hidden = _hidden_vertices(graph_dict)
+        for v in hidden:
+            self._graph_dict[v] = {}
+
         out_dict = {v : {} for v in self._graph_dict}
+
         for v, neighbors in self._graph_dict.items():
             out_dict[v] = defaultdict(list)
             for label, neighbor in neighbors.items():
@@ -920,7 +953,7 @@ vertex2: ....,
         self._graph_dict = label_dict
 
     def _build_in_dict(self):
-        in_dict = {v:{} for v in self._out_dict}
+        in_dict = defaultdict(dict)
         for v, neighbors_out in self._out_dict.items():
             for w, labels in neighbors_out.items():
                 in_dict[w][v] = labels
@@ -998,7 +1031,7 @@ vertex2: ....,
         &#34;&#34;&#34;Add edges to the FSA.
 
         Parameters
-        -------------
+        ----------
         edges : list
             a list of tuples of the form `(tail, head, label)`,
             specifying an edge to add.
@@ -1056,7 +1089,7 @@ vertex2: ....,
         &#34;&#34;&#34;Get all of the edges of this FSA
 
         Yields
-        --------
+        ------
         tuple
             An ordered pair of the form `(tail, head)` for each edge
             in the automaton
@@ -1071,7 +1104,7 @@ vertex2: ....,
         no dead ends.
 
         Parameters
-        -----------
+        ----------
         inplace : bool
             if `True`, modify the automaton in-place. Otherwise,
             return a recurrent copy.
@@ -1114,7 +1147,7 @@ vertex2: ....,
         automaton.
 
         Parameters
-        --------------
+        ----------
         edge_ties : bool
             if `True`, if two edges give rise to paths of the
             same length, include both of them in the new graph.
@@ -1186,7 +1219,7 @@ vertex2: ....,
         starting at a given state.
 
         Parameters
-        -----------
+        ----------
         length : int
             the length of the words we want to enumerate
 
@@ -1199,7 +1232,7 @@ vertex2: ....,
             automaton at each accepted word.
 
         Yields
-        -------
+        ------
         string or (string, object)
             If `with_states` is false, yield the sequence of words
             accepted (in some arbitrary order). Otherwise, yield pairs
@@ -1239,7 +1272,7 @@ vertex2: ....,
             accepted word
 
         Yields
-        -------
+        ------
         string or (string, object)
             If `with_states` is false, yield the sequence of words
             accepted (in some arbitrary order). Otherwise, yield pairs
@@ -1250,7 +1283,20 @@ vertex2: ....,
         for i in range(max_length + 1):
             for word in self.enumerate_fixed_length_paths(
                     i, start_vertex=start_vertex, with_states=with_states):
-                yield word</code></pre>
+                yield word
+
+    def rename_generators(self, rename_map, inplace=True):
+        new_dict = {
+            vertex: {
+                rename_map[label]: neighbor
+                for label, neighbor in neighbors.items()
+            }
+            for vertex, neighbors in self._graph_dict.items()
+        }
+        if inplace:
+            self._from_graph_dict(new_dict)
+        else:
+            return FSA(new_dict, self.start_vertices)</code></pre>
 </details>
 <h3>Instance variables</h3>
 <dl>
@@ -1316,7 +1362,7 @@ labels for multiple edges to be added between vertices.</dd>
     &#34;&#34;&#34;Add edges to the FSA.
 
     Parameters
-    -------------
+    ----------
     edges : list
         a list of tuples of the form `(tail, head, label)`,
         specifying an edge to add.
@@ -1469,7 +1515,7 @@ in the automaton</dd>
     &#34;&#34;&#34;Get all of the edges of this FSA
 
     Yields
-    --------
+    ------
     tuple
         An ordered pair of the form `(tail, head)` for each edge
         in the automaton
@@ -1548,7 +1594,7 @@ final state the automaton reaches when accepting <code>word</code>.</dd>
     starting at a given state.
 
     Parameters
-    -----------
+    ----------
     length : int
         the length of the words we want to enumerate
 
@@ -1561,7 +1607,7 @@ final state the automaton reaches when accepting <code>word</code>.</dd>
         automaton at each accepted word.
 
     Yields
-    -------
+    ------
     string or (string, object)
         If `with_states` is false, yield the sequence of words
         accepted (in some arbitrary order). Otherwise, yield pairs
@@ -1630,7 +1676,7 @@ final state the automaton reaches when accepting <code>word</code>.</dd>
         accepted word
 
     Yields
-    -------
+    ------
     string or (string, object)
         If `with_states` is false, yield the sequence of words
         accepted (in some arbitrary order). Otherwise, yield pairs
@@ -1750,7 +1796,7 @@ return a recurrent copy.</dd>
     no dead ends.
 
     Parameters
-    -----------
+    ----------
     inplace : bool
         if `True`, modify the automaton in-place. Otherwise,
         return a recurrent copy.
@@ -1816,7 +1862,7 @@ same length, include both of them in the new graph.</dd>
     automaton.
 
     Parameters
-    --------------
+    ----------
     edge_ties : bool
         if `True`, if two edges give rise to paths of the
         same length, include both of them in the new graph.
@@ -1853,6 +1899,29 @@ same length, include both of them in the new graph.</dd>
         vertex_queue.extend(to_visit)
 
     return H</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.automata.fsa.FSA.rename_generators"><code class="name flex">
+<span>def <span class="ident">rename_generators</span></span>(<span>self, rename_map, inplace=True)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rename_generators(self, rename_map, inplace=True):
+    new_dict = {
+        vertex: {
+            rename_map[label]: neighbor
+            for label, neighbor in neighbors.items()
+        }
+        for vertex, neighbors in self._graph_dict.items()
+    }
+    if inplace:
+        self._from_graph_dict(new_dict)
+    else:
+        return FSA(new_dict, self.start_vertices)</code></pre>
 </details>
 </dd>
 <dt id="geometry_tools.automata.fsa.FSA.vertices"><code class="name flex">
@@ -1935,6 +2004,7 @@ same length, include both of them in the new graph.</dd>
 <li><code><a title="geometry_tools.automata.fsa.FSA.out_dict" href="#geometry_tools.automata.fsa.FSA.out_dict">out_dict</a></code></li>
 <li><code><a title="geometry_tools.automata.fsa.FSA.recurrent" href="#geometry_tools.automata.fsa.FSA.recurrent">recurrent</a></code></li>
 <li><code><a title="geometry_tools.automata.fsa.FSA.remove_long_paths" href="#geometry_tools.automata.fsa.FSA.remove_long_paths">remove_long_paths</a></code></li>
+<li><code><a title="geometry_tools.automata.fsa.FSA.rename_generators" href="#geometry_tools.automata.fsa.FSA.rename_generators">rename_generators</a></code></li>
 <li><code><a title="geometry_tools.automata.fsa.FSA.vertices" href="#geometry_tools.automata.fsa.FSA.vertices">vertices</a></code></li>
 </ul>
 </li>

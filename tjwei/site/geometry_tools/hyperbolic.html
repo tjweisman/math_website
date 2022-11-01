@@ -410,7 +410,7 @@ class Point(HyperbolicObject, projective.Point):
             update coordinates.
 
         Returns
-        --------
+        -------
         ndarray
             Hyperboloid coordinates for this point (or array of
             points).
@@ -433,7 +433,7 @@ class Point(HyperbolicObject, projective.Point):
             coordinates.
 
         Returns
-        --------
+        -------
         ndarray
             Projective coordinates for this point (or array of
             points).
@@ -456,7 +456,7 @@ class Point(HyperbolicObject, projective.Point):
             space H^n. If `None`, do not update coordinates.
 
         Returns
-        --------
+        -------
         ndarray
             Half-space coordinates for this point (or array of
             points).
@@ -513,7 +513,7 @@ class Point(HyperbolicObject, projective.Point):
             The point to compute distances to
 
         Returns
-        --------
+        -------
         ndarray
             distances in hyperbolic space between self and other
 
@@ -528,7 +528,7 @@ class Point(HyperbolicObject, projective.Point):
         &#34;&#34;&#34;Get an isometry taking an &#34;origin&#34; point to this point
 
         Returns
-        --------
+        -------
         Isometry :
             Some isometry taking the point with Kleinian/Poincare
             coordinates (0, 0, ...) to this point. This isometry is
@@ -548,7 +548,7 @@ class Point(HyperbolicObject, projective.Point):
             vector points
 
         Returns
-        --------
+        -------
         TangentVector
             A tangent vector with this point at its base and pointing
             towards `other`.
@@ -569,7 +569,7 @@ class Point(HyperbolicObject, projective.Point):
             Shape of array of origin points to get
 
         Returns
-        --------
+        -------
         Point
             Point object with Kleinian/Poincare coords (0, 0, ...)
         &#34;&#34;&#34;
@@ -644,7 +644,7 @@ class Subspace(IdealPoint):
             Model of hyperbolic space in which to compute coordinates
 
         Returns
-        --------
+        -------
         ndarray
             Coordinates for k vectors in the ideal boundary of
             hyperbolic space, giving a basis for this subspace.
@@ -659,7 +659,7 @@ class Subspace(IdealPoint):
         &#34;&#34;&#34;Get a spacelike point in the orthogonal complement to this subspace
 
         Returns
-        --------
+        -------
         DualPoint
             A spacelike (i.e. Minkowski-positive) point which is
             Minkowski-orthogonal to this subspace. This is not
@@ -703,7 +703,7 @@ class Subspace(IdealPoint):
             `Model.POINCARE` and `Model.HALFSPACE`
 
         Returns
-        ---------
+        -------
         tuple
             Tuple of the form `(centers, radii)`, where `centers` and
             `radii` are `ndarray`s respectively holding the centers
@@ -747,7 +747,7 @@ class Subspace(IdealPoint):
         &#34;&#34;&#34;Get a hyperbolic isometry reflecting across this hyperplane.
 
         Returns
-        --------
+        -------
         Isometry
             Isometry reflecting across this hyperplane.
 
@@ -801,7 +801,7 @@ class PointPair(Point, projective.PointPair):
             model to compute coordinates in
 
         Returns
-        --------
+        -------
         ndarray
             Coordinates for the endpoints of this PointPair, as an
             ndarray with shape `(2, ... n)` (where `n` is the
@@ -814,7 +814,7 @@ class PointPair(Point, projective.PointPair):
         &#34;&#34;&#34;Convert this pair of points to a composite `Point` object
 
         Returns
-        --------
+        -------
         Point
             Composite `Point` object with the same underlying data as
             this point pair.
@@ -833,7 +833,7 @@ class PointPair(Point, projective.PointPair):
             for these points.
 
         Returns
-        --------
+        -------
         tuple
             A tuple `(p1, p2)`, where `p1` and `p2` are either both
             `Point`s or both `ndarrays`, representing the endpoints of
@@ -868,7 +868,7 @@ class Geodesic(PointPair, Subspace):
             hyperbolic model to use for the computation
 
         Returns
-        --------
+        -------
         tuple
             tuple `(centers, radii, thetas)`, where `centers`,
             `radii`, and `thetas` are `ndarray`s representing the
@@ -909,7 +909,7 @@ class Geodesic(PointPair, Subspace):
             dimension of the underlying hyperbolic space is not 2.
 
         Returns
-        --------
+        -------
         Geodesic
             A `Geodesic` fixed by the given isometry.
 
@@ -1014,7 +1014,7 @@ class Segment(Geodesic):
         &#34;&#34;&#34;Get the bi-infinite geodesic spanned by this segment
 
         Returns
-        --------
+        -------
         Geodesic
             Geodesic in hyperbolic space spanned by this segment.
         &#34;&#34;&#34;
@@ -1039,7 +1039,7 @@ class Segment(Geodesic):
             hyperbolic model to use for the computation
 
         Returns
-        --------
+        -------
         tuple
             tuple `(centers, radii, thetas)`, where `centers`,
             `radii`, and `thetas` are `ndarray`s representing the
@@ -1154,7 +1154,7 @@ class Hyperplane(Subspace):
             If the given isometry is not a reflection.
 
         Returns
-        --------
+        -------
         Hyperplane
             A `Hyperplane` fixed by the given isometry.
         &#34;&#34;&#34;
@@ -1378,7 +1378,7 @@ class TangentVector(HyperbolicObject):
         to the second standard basis vector in R^(n,1).
 
         Parameters
-        -----------
+        ----------
         dimension : int
             Dimension of the hyperbolic space where this tangent vector lives
         shape : tuple
@@ -1803,7 +1803,7 @@ class Isometry(projective.Transformation, HyperbolicObject):
             order of descending eigenvalue moduli
 
         Returns
-        --------
+        -------
         Point
             Points fixed by this isometry object.
 
@@ -1822,7 +1822,7 @@ class Isometry(projective.Transformation, HyperbolicObject):
             point has maximum modulus
 
         Returns
-        --------
+        -------
         Point
             A point (possibly ideal) fixed by this isometry object.
 
@@ -1953,7 +1953,7 @@ def spacelike(vectors):
         array is the dimension of the vector space.
 
     Returns
-    --------
+    -------
     ndarray(bool)
         `True` for vectors which have Minkowski norm above a fixed
         error threshold.
@@ -1972,7 +1972,7 @@ def timelike(self, vectors):
         array is the dimension of the vector space.
 
     Returns
-    --------
+    -------
     ndarray(bool)
         `True` for vectors which have Minkowski norm below a fixed
         error threshold.
@@ -1991,7 +1991,7 @@ def lightlike(self, vectors):
         array is the dimension of the vector space.
 
     Returns
-    --------
+    -------
     ndarray(bool)
         `True` for vectors where the absolute value of the Minkowski
         norm is below a fixed error threshold.
@@ -2366,7 +2366,7 @@ norm is below a fixed error threshold.</dd>
         array is the dimension of the vector space.
 
     Returns
-    --------
+    -------
     ndarray(bool)
         `True` for vectors where the absolute value of the Minkowski
         norm is below a fixed error threshold.
@@ -2546,7 +2546,7 @@ error threshold.</dd>
         array is the dimension of the vector space.
 
     Returns
-    --------
+    -------
     ndarray(bool)
         `True` for vectors which have Minkowski norm above a fixed
         error threshold.
@@ -2644,7 +2644,7 @@ error threshold.</dd>
         array is the dimension of the vector space.
 
     Returns
-    --------
+    -------
     ndarray(bool)
         `True` for vectors which have Minkowski norm below a fixed
         error threshold.
@@ -2872,6 +2872,7 @@ endpoints for this pair of points.</p>
 <li><code><b><a title="geometry_tools.hyperbolic.Geodesic" href="#geometry_tools.hyperbolic.Geodesic">Geodesic</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Geodesic.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.endpoint_affine_coords" href="projective.html#geometry_tools.projective.PointPair.endpoint_affine_coords">endpoint_affine_coords</a></code></li>
@@ -2885,13 +2886,13 @@ endpoints for this pair of points.</p>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.ideal_basis_coords" href="#geometry_tools.hyperbolic.Subspace.ideal_basis_coords">ideal_basis_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.Geodesic.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.reflection_across" href="#geometry_tools.hyperbolic.Subspace.reflection_across">reflection_across</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.set_endpoints" href="projective.html#geometry_tools.projective.PointPair.set_endpoints">set_endpoints</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Geodesic.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.spacelike_complement" href="#geometry_tools.hyperbolic.Subspace.spacelike_complement">spacelike_complement</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.sphere_parameters" href="#geometry_tools.hyperbolic.Subspace.sphere_parameters">sphere_parameters</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
@@ -2954,17 +2955,18 @@ coordinates.</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.Point" href="#geometry_tools.hyperbolic.Point">Point</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.Point.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Point.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.get_origin" href="#geometry_tools.hyperbolic.Point.get_origin">get_origin</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.Point.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Point.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
 </ul>
 </li>
@@ -3017,7 +3019,7 @@ endpoints for this pair of points.</p>
             hyperbolic model to use for the computation
 
         Returns
-        --------
+        -------
         tuple
             tuple `(centers, radii, thetas)`, where `centers`,
             `radii`, and `thetas` are `ndarray`s representing the
@@ -3058,7 +3060,7 @@ endpoints for this pair of points.</p>
             dimension of the underlying hyperbolic space is not 2.
 
         Returns
-        --------
+        -------
         Geodesic
             A `Geodesic` fixed by the given isometry.
 
@@ -3130,7 +3132,7 @@ def from_reflection(cls, reflection):
         dimension of the underlying hyperbolic space is not 2.
 
     Returns
-    --------
+    -------
     Geodesic
         A `Geodesic` fixed by the given isometry.
 
@@ -3188,7 +3190,7 @@ order.</dd>
         hyperbolic model to use for the computation
 
     Returns
-    --------
+    -------
     tuple
         tuple `(centers, radii, thetas)`, where `centers`,
         `radii`, and `thetas` are `ndarray`s representing the
@@ -3220,6 +3222,7 @@ order.</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.PointPair" href="#geometry_tools.hyperbolic.PointPair">PointPair</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.PointPair.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.PointPair.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.endpoint_affine_coords" href="projective.html#geometry_tools.projective.PointPair.endpoint_affine_coords">endpoint_affine_coords</a></code></li>
@@ -3231,12 +3234,12 @@ order.</dd>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.get_origin" href="#geometry_tools.hyperbolic.Point.get_origin">get_origin</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.PointPair.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.set_endpoints" href="projective.html#geometry_tools.projective.PointPair.set_endpoints">set_endpoints</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.PointPair.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.PointPair.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
 </ul>
 </li>
@@ -3580,11 +3583,12 @@ poincare coordinates.</p></div>
 <li><code><b><a title="geometry_tools.hyperbolic.HyperbolicObject" href="#geometry_tools.hyperbolic.HyperbolicObject">HyperbolicObject</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.coords" href="#geometry_tools.hyperbolic.HyperbolicObject.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3769,12 +3773,13 @@ well.</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.Horosphere" href="#geometry_tools.hyperbolic.Horosphere">Horosphere</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.Horosphere.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Horosphere.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Horosphere.coords" href="#geometry_tools.hyperbolic.HyperbolicObject.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Horosphere.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Horosphere.intersect_geodesic" href="#geometry_tools.hyperbolic.Horosphere.intersect_geodesic">intersect_geodesic</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.Horosphere.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Horosphere.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Horosphere.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Horosphere.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Horosphere.sphere_parameters" href="#geometry_tools.hyperbolic.Horosphere.sphere_parameters">sphere_parameters</a></code></li>
 </ul>
 </li>
@@ -4008,10 +4013,11 @@ return coordinates.</dd>
 <li><code><b><a title="geometry_tools.projective.ProjectiveObject" href="projective.html#geometry_tools.projective.ProjectiveObject">ProjectiveObject</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.projective.ProjectiveObject.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveObject.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.projective.ProjectiveObject.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveObject.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4123,6 +4129,7 @@ a sequence of words in the generators.</p></div>
 <li><code><b><a title="geometry_tools.projective.ProjectiveRepresentation" href="projective.html#geometry_tools.projective.ProjectiveRepresentation">ProjectiveRepresentation</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.projective.ProjectiveRepresentation.automaton_accepted" href="representation.html#geometry_tools.representation.Representation.automaton_accepted">automaton_accepted</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveRepresentation.elements" href="representation.html#geometry_tools.representation.Representation.elements">elements</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveRepresentation.free_words_less_than" href="representation.html#geometry_tools.representation.Representation.free_words_less_than">free_words_less_than</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveRepresentation.free_words_of_length" href="representation.html#geometry_tools.representation.Representation.free_words_of_length">free_words_of_length</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveRepresentation.freely_reduced_elements" href="representation.html#geometry_tools.representation.Representation.freely_reduced_elements">freely_reduced_elements</a></code></li>
@@ -4242,7 +4249,7 @@ projective model.</dd>
             If the given isometry is not a reflection.
 
         Returns
-        --------
+        -------
         Hyperplane
             A `Hyperplane` fixed by the given isometry.
         &#34;&#34;&#34;
@@ -4323,7 +4330,7 @@ def from_reflection(cls, reflection):
         If the given isometry is not a reflection.
 
     Returns
-    --------
+    -------
     Hyperplane
         A `Hyperplane` fixed by the given isometry.
     &#34;&#34;&#34;
@@ -4361,6 +4368,7 @@ def from_reflection(cls, reflection):
 <li><code><b><a title="geometry_tools.hyperbolic.Subspace" href="#geometry_tools.hyperbolic.Subspace">Subspace</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.Subspace.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Subspace.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
@@ -4368,12 +4376,12 @@ def from_reflection(cls, reflection):
 <li><code><a title="geometry_tools.hyperbolic.Subspace.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.ideal_basis_coords" href="#geometry_tools.hyperbolic.Subspace.ideal_basis_coords">ideal_basis_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.Subspace.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.reflection_across" href="#geometry_tools.hyperbolic.Subspace.reflection_across">reflection_across</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Subspace.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.spacelike_complement" href="#geometry_tools.hyperbolic.Subspace.spacelike_complement">spacelike_complement</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.sphere_parameters" href="#geometry_tools.hyperbolic.Subspace.sphere_parameters">sphere_parameters</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Subspace.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
@@ -4459,17 +4467,18 @@ coordinates.</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.Point" href="#geometry_tools.hyperbolic.Point">Point</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.Point.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Point.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.get_origin" href="#geometry_tools.hyperbolic.Point.get_origin">get_origin</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.Point.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Point.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
 </ul>
 </li>
@@ -4552,7 +4561,7 @@ on the left. Otherwise proj_data gives a <em>row matrix</em>.</dd>
             order of descending eigenvalue moduli
 
         Returns
-        --------
+        -------
         Point
             Points fixed by this isometry object.
 
@@ -4571,7 +4580,7 @@ on the left. Otherwise proj_data gives a <em>row matrix</em>.</dd>
             point has maximum modulus
 
         Returns
-        --------
+        -------
         Point
             A point (possibly ideal) fixed by this isometry object.
 
@@ -4700,7 +4709,7 @@ point has maximum modulus</dd>
         point has maximum modulus
 
     Returns
-    --------
+    -------
     Point
         A point (possibly ideal) fixed by this isometry object.
 
@@ -4739,7 +4748,7 @@ order of descending eigenvalue moduli</dd>
         order of descending eigenvalue moduli
 
     Returns
-    --------
+    -------
     Point
         Points fixed by this isometry object.
 
@@ -4817,11 +4826,12 @@ order of descending eigenvalue moduli</dd>
 <ul class="hlist">
 <li><code><a title="geometry_tools.projective.Transformation.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.Transformation.apply" href="projective.html#geometry_tools.projective.Transformation.apply">apply</a></code></li>
+<li><code><a title="geometry_tools.projective.Transformation.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.projective.Transformation.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
 <li><code><a title="geometry_tools.projective.Transformation.inv" href="projective.html#geometry_tools.projective.Transformation.inv">inv</a></code></li>
-<li><code><a title="geometry_tools.projective.Transformation.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.projective.Transformation.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.Transformation.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.projective.Transformation.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 <li><code><b><a title="geometry_tools.hyperbolic.HyperbolicObject" href="#geometry_tools.hyperbolic.HyperbolicObject">HyperbolicObject</a></b></code>:
@@ -5010,7 +5020,7 @@ coordinates.</dd>
             update coordinates.
 
         Returns
-        --------
+        -------
         ndarray
             Hyperboloid coordinates for this point (or array of
             points).
@@ -5033,7 +5043,7 @@ coordinates.</dd>
             coordinates.
 
         Returns
-        --------
+        -------
         ndarray
             Projective coordinates for this point (or array of
             points).
@@ -5056,7 +5066,7 @@ coordinates.</dd>
             space H^n. If `None`, do not update coordinates.
 
         Returns
-        --------
+        -------
         ndarray
             Half-space coordinates for this point (or array of
             points).
@@ -5113,7 +5123,7 @@ coordinates.</dd>
             The point to compute distances to
 
         Returns
-        --------
+        -------
         ndarray
             distances in hyperbolic space between self and other
 
@@ -5128,7 +5138,7 @@ coordinates.</dd>
         &#34;&#34;&#34;Get an isometry taking an &#34;origin&#34; point to this point
 
         Returns
-        --------
+        -------
         Isometry :
             Some isometry taking the point with Kleinian/Poincare
             coordinates (0, 0, ...) to this point. This isometry is
@@ -5148,7 +5158,7 @@ coordinates.</dd>
             vector points
 
         Returns
-        --------
+        -------
         TangentVector
             A tangent vector with this point at its base and pointing
             towards `other`.
@@ -5169,7 +5179,7 @@ coordinates.</dd>
             Shape of array of origin points to get
 
         Returns
-        --------
+        -------
         Point
             Point object with Kleinian/Poincare coords (0, 0, ...)
         &#34;&#34;&#34;
@@ -5281,7 +5291,7 @@ arrays of points.</p>
         The point to compute distances to
 
     Returns
-    --------
+    -------
     ndarray
         distances in hyperbolic space between self and other
 
@@ -5327,7 +5337,7 @@ space</p>
         Shape of array of origin points to get
 
     Returns
-    --------
+    -------
     Point
         Point object with Kleinian/Poincare coords (0, 0, ...)
     &#34;&#34;&#34;
@@ -5369,7 +5379,7 @@ points).</dd>
         space H^n. If `None`, do not update coordinates.
 
     Returns
-    --------
+    -------
     ndarray
         Half-space coordinates for this point (or array of
         points).
@@ -5419,7 +5429,7 @@ points).</dd>
         update coordinates.
 
     Returns
-    --------
+    -------
     ndarray
         Hyperboloid coordinates for this point (or array of
         points).
@@ -5452,7 +5462,7 @@ orientation-preserving.</dd>
     &#34;&#34;&#34;Get an isometry taking an &#34;origin&#34; point to this point
 
     Returns
-    --------
+    -------
     Isometry :
         Some isometry taking the point with Kleinian/Poincare
         coordinates (0, 0, ...) to this point. This isometry is
@@ -5498,7 +5508,7 @@ points).</dd>
         coordinates.
 
     Returns
-    --------
+    -------
     ndarray
         Projective coordinates for this point (or array of
         points).
@@ -5542,7 +5552,7 @@ towards <code>other</code>.</dd>
         vector points
 
     Returns
-    --------
+    -------
     TangentVector
         A tangent vector with this point at its base and pointing
         towards `other`.
@@ -5558,10 +5568,11 @@ towards <code>other</code>.</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.HyperbolicObject" href="#geometry_tools.hyperbolic.HyperbolicObject">HyperbolicObject</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5628,7 +5639,7 @@ endpoints for this pair of points.</p>
             model to compute coordinates in
 
         Returns
-        --------
+        -------
         ndarray
             Coordinates for the endpoints of this PointPair, as an
             ndarray with shape `(2, ... n)` (where `n` is the
@@ -5641,7 +5652,7 @@ endpoints for this pair of points.</p>
         &#34;&#34;&#34;Convert this pair of points to a composite `Point` object
 
         Returns
-        --------
+        -------
         Point
             Composite `Point` object with the same underlying data as
             this point pair.
@@ -5660,7 +5671,7 @@ endpoints for this pair of points.</p>
             for these points.
 
         Returns
-        --------
+        -------
         tuple
             A tuple `(p1, p2)`, where `p1` and `p2` are either both
             `Point`s or both `ndarrays`, representing the endpoints of
@@ -5718,7 +5729,7 @@ dimension of the hyperbolic space).</dd>
         model to compute coordinates in
 
     Returns
-    --------
+    -------
     ndarray
         Coordinates for the endpoints of this PointPair, as an
         ndarray with shape `(2, ... n)` (where `n` is the
@@ -5762,7 +5773,7 @@ this pair.</dd>
         for these points.
 
     Returns
-    --------
+    -------
     tuple
         A tuple `(p1, p2)`, where `p1` and `p2` are either both
         `Point`s or both `ndarrays`, representing the endpoints of
@@ -5795,7 +5806,7 @@ this point pair.</dd>
     &#34;&#34;&#34;Convert this pair of points to a composite `Point` object
 
     Returns
-    --------
+    -------
     Point
         Composite `Point` object with the same underlying data as
         this point pair.
@@ -5810,17 +5821,18 @@ this point pair.</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.Point" href="#geometry_tools.hyperbolic.Point">Point</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.Point.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Point.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.get_origin" href="#geometry_tools.hyperbolic.Point.get_origin">get_origin</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.Point.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Point.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
 </ul>
 </li>
@@ -6022,17 +6034,18 @@ action of a hyperbolic surface group with genus g.</p></div>
 <li><code><b><a title="geometry_tools.hyperbolic.Point" href="#geometry_tools.hyperbolic.Point">Point</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.Point.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Point.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.get_origin" href="#geometry_tools.hyperbolic.Point.get_origin">get_origin</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.Point.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Point.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Point.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
 </ul>
 </li>
@@ -6161,7 +6174,7 @@ endpoints for this pair of points.</p>
         &#34;&#34;&#34;Get the bi-infinite geodesic spanned by this segment
 
         Returns
-        --------
+        -------
         Geodesic
             Geodesic in hyperbolic space spanned by this segment.
         &#34;&#34;&#34;
@@ -6186,7 +6199,7 @@ endpoints for this pair of points.</p>
             hyperbolic model to use for the computation
 
         Returns
-        --------
+        -------
         tuple
             tuple `(centers, radii, thetas)`, where `centers`,
             `radii`, and `thetas` are `ndarray`s representing the
@@ -6267,7 +6280,7 @@ order.</dd>
         hyperbolic model to use for the computation
 
     Returns
-    --------
+    -------
     tuple
         tuple `(centers, radii, thetas)`, where `centers`,
         `radii`, and `thetas` are `ndarray`s representing the
@@ -6312,7 +6325,7 @@ order.</dd>
     &#34;&#34;&#34;Get the bi-infinite geodesic spanned by this segment
 
     Returns
-    --------
+    -------
     Geodesic
         Geodesic in hyperbolic space spanned by this segment.
     &#34;&#34;&#34;
@@ -6341,6 +6354,7 @@ order.</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.Geodesic" href="#geometry_tools.hyperbolic.Geodesic">Geodesic</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Geodesic.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.endpoint_affine_coords" href="projective.html#geometry_tools.projective.PointPair.endpoint_affine_coords">endpoint_affine_coords</a></code></li>
@@ -6354,13 +6368,13 @@ order.</dd>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.ideal_basis_coords" href="#geometry_tools.hyperbolic.Subspace.ideal_basis_coords">ideal_basis_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.Geodesic.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.reflection_across" href="#geometry_tools.hyperbolic.Subspace.reflection_across">reflection_across</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.set_endpoints" href="projective.html#geometry_tools.projective.PointPair.set_endpoints">set_endpoints</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.Geodesic.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.spacelike_complement" href="#geometry_tools.hyperbolic.Subspace.spacelike_complement">spacelike_complement</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.sphere_parameters" href="#geometry_tools.hyperbolic.Subspace.sphere_parameters">sphere_parameters</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.Geodesic.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
@@ -6421,7 +6435,7 @@ projective model.</dd>
             Model of hyperbolic space in which to compute coordinates
 
         Returns
-        --------
+        -------
         ndarray
             Coordinates for k vectors in the ideal boundary of
             hyperbolic space, giving a basis for this subspace.
@@ -6436,7 +6450,7 @@ projective model.</dd>
         &#34;&#34;&#34;Get a spacelike point in the orthogonal complement to this subspace
 
         Returns
-        --------
+        -------
         DualPoint
             A spacelike (i.e. Minkowski-positive) point which is
             Minkowski-orthogonal to this subspace. This is not
@@ -6480,7 +6494,7 @@ projective model.</dd>
             `Model.POINCARE` and `Model.HALFSPACE`
 
         Returns
-        ---------
+        -------
         tuple
             Tuple of the form `(centers, radii)`, where `centers` and
             `radii` are `ndarray`s respectively holding the centers
@@ -6524,7 +6538,7 @@ projective model.</dd>
         &#34;&#34;&#34;Get a hyperbolic isometry reflecting across this hyperplane.
 
         Returns
-        --------
+        -------
         Isometry
             Isometry reflecting across this hyperplane.
 
@@ -6588,7 +6602,7 @@ hyperbolic space, giving a basis for this subspace.</dd>
         Model of hyperbolic space in which to compute coordinates
 
     Returns
-    --------
+    -------
     ndarray
         Coordinates for k vectors in the ideal boundary of
         hyperbolic space, giving a basis for this subspace.
@@ -6618,7 +6632,7 @@ hyperbolic space, giving a basis for this subspace.</dd>
     &#34;&#34;&#34;Get a hyperbolic isometry reflecting across this hyperplane.
 
     Returns
-    --------
+    -------
     Isometry
         Isometry reflecting across this hyperplane.
 
@@ -6658,7 +6672,7 @@ unless the subspace is a hyperplane.</dd>
     &#34;&#34;&#34;Get a spacelike point in the orthogonal complement to this subspace
 
     Returns
-    --------
+    -------
     DualPoint
         A spacelike (i.e. Minkowski-positive) point which is
         Minkowski-orthogonal to this subspace. This is not
@@ -6711,7 +6725,7 @@ given hyperbolic model.</dd>
         `Model.POINCARE` and `Model.HALFSPACE`
 
     Returns
-    ---------
+    -------
     tuple
         Tuple of the form `(centers, radii)`, where `centers` and
         `radii` are `ndarray`s respectively holding the centers
@@ -6758,17 +6772,18 @@ given hyperbolic model.</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.IdealPoint" href="#geometry_tools.hyperbolic.IdealPoint">IdealPoint</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.IdealPoint.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.coords" href="#geometry_tools.hyperbolic.Point.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.distance" href="#geometry_tools.hyperbolic.Point.distance">distance</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.get_origin" href="#geometry_tools.hyperbolic.Point.get_origin">get_origin</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.halfspace_coords" href="#geometry_tools.hyperbolic.Point.halfspace_coords">halfspace_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.hyperboloid_coords" href="#geometry_tools.hyperbolic.Point.hyperboloid_coords">hyperboloid_coords</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.IdealPoint.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.origin_to" href="#geometry_tools.hyperbolic.Point.origin_to">origin_to</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.poincare_coords" href="#geometry_tools.hyperbolic.Point.poincare_coords">poincare_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.IdealPoint.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.IdealPoint.unit_tangent_towards" href="#geometry_tools.hyperbolic.Point.unit_tangent_towards">unit_tangent_towards</a></code></li>
 </ul>
 </li>
@@ -6994,7 +7009,7 @@ the data for the basepoint and the tangent vector.</dd>
         to the second standard basis vector in R^(n,1).
 
         Parameters
-        -----------
+        ----------
         dimension : int
             Dimension of the hyperbolic space where this tangent vector lives
         shape : tuple
@@ -7052,7 +7067,7 @@ def get_base_tangent(cls, dimension, shape=()):
     to the second standard basis vector in R^(n,1).
 
     Parameters
-    -----------
+    ----------
     dimension : int
         Dimension of the hyperbolic space where this tangent vector lives
     shape : tuple
@@ -7292,11 +7307,12 @@ by this tangent vector</dd>
 <li><code><b><a title="geometry_tools.hyperbolic.HyperbolicObject" href="#geometry_tools.hyperbolic.HyperbolicObject">HyperbolicObject</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.affine_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.combine" href="projective.html#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.coords" href="#geometry_tools.hyperbolic.HyperbolicObject.coords">coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.flatten_to_unit" href="projective.html#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.obj_shape" href="projective.html#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.projective_coords" href="projective.html#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.set" href="projective.html#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.hyperbolic.HyperbolicObject.shape" href="projective.html#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>

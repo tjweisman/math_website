@@ -1,6 +1,8 @@
 #!/bin/bash
 
-WEBPAGE_DIR=/home/teddy/math/web/personal/weisman
+UMICH_SERVER=tjwei@sftp.itd.umich.edu
+
+WEBPAGE_DIR=/home/teddy/math/web/personal/tjwei
 
 EXCLUDE_MKVS="--exclude=*.mkv"
 if [[ "$1" == "--mkv" ]]; then
@@ -8,4 +10,4 @@ if [[ "$1" == "--mkv" ]]; then
     EXCLUDE_MKVS=""
 fi
 
-rsync -r --copy-unsafe-links -F --delete-after $EXCLUDE_MKVS $WEBPAGE_DIR/public_html/ $UT_MATH:~/public_html
+rsync -r --copy-unsafe-links -F --delete-after $EXCLUDE_MKVS $WEBPAGE_DIR/public_html/ $UMICH_SERVER:~/Public/html

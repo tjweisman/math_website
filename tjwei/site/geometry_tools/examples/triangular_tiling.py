@@ -4,10 +4,10 @@ from geometry_tools.automata import fsa
 # make the triangle group representation and load a finite-state automaton
 triangle_group = coxeter.TriangleGroup((2,3,7))
 triangle_rep = triangle_group.hyperbolic_rep()
-triangle_fsa = fsa.load_builtin("cox237.wa")
+triangle_fsa = triangle_group.automaton()
 
 
-# find a fundamental domain for the action by finding
+# find a fundamental domain for the action by finding 
 # fixed points of length-2 elements
 vertices = triangle_rep.isometries(["ab", "bc", "ca"]).fixed_point()
 fund_triangle = hyperbolic.Polygon(vertices)
@@ -20,7 +20,7 @@ pos_isometries = triangle_rep.isometries(even_words)
 # draw the translated triangles
 fig = drawtools.HyperbolicDrawing(model="poincare")
 fig.draw_plane()
-fig.draw_polygon(pos_isometries @ fund_triangle,
+fig.draw_polygon(pos_isometries @ fund_triangle, 
                  facecolor="royalblue", edgecolor="none")
 
 fig.show()

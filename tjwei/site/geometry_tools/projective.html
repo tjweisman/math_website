@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>geometry_tools.projective API documentation</title>
-<meta name="description" content="Work with projective space in numerical coordinates …" />
+<meta name="description" content="Work with projective space in numerical coordinates." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -24,16 +24,11 @@
 </header>
 <section id="section-intro">
 <p>Work with projective space in numerical coordinates.</p>
-<p>The main class provided by this module is ProjectiveSpace, which
-represents a copy of n-dimensional projective space.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Work with projective space in numerical coordinates.
-
-The main class provided by this module is ProjectiveSpace, which
-represents a copy of n-dimensional projective space.
 
 &#34;&#34;&#34;
 
@@ -176,12 +171,13 @@ class ProjectiveObject:
 
         raise TypeError
 
-    def obj_shape(self):
+    @property
+    def shape(self):
         &#34;&#34;&#34;Get the shape of the ndarray of &#34;unit objects&#34; this
         ProjectiveObject represents.
 
         Returns
-        --------
+        -------
         tuple
 
 
@@ -195,7 +191,7 @@ class ProjectiveObject:
         portions of the underlying data.
 
         Parameters
-        -------------
+        ----------
         proj_data : ndarray
             underyling data representing this projective object.
 
@@ -210,6 +206,8 @@ class ProjectiveObject:
         # TODO: assert dual geometry valid here as well.  Right now we
         # don&#39;t bother because the only dual geometry we&#39;re using is
         # technically also auxilliary...
+
+        proj_data = np.array(proj_data)
 
         self._assert_geometry_valid(proj_data)
         if aux_data is None:
@@ -284,6 +282,15 @@ class ProjectiveObject:
     def __getitem__(self, item):
         return self.__class__(self.proj_data[item])
 
+    def __setitem__(self, key, value):
+        self.proj_data[key] = self.__class__(value).proj_data
+
+    def __len__(self):
+        if len(self.proj_data.shape) == self.unit_ndims:
+            raise TypeError(&#34;len() of unsized object&#34;)
+
+        return len(self.proj_data)
+
     def projective_coords(self, proj_data=None):
         &#34;&#34;&#34;Wrapper for ProjectiveObject.set, since underlying coordinates are
         projective.&#34;&#34;&#34;
@@ -316,6 +323,90 @@ class ProjectiveObject:
 
         return affine_coords(self.proj_data, chart_index=chart_index,
                              column_vectors=False)
+
+    @staticmethod
+    def _assert_prop_equal(objects, propname):
+
+        if len(objects) == 0:
+            return
+
+        properties = np.array([obj.__dict__[propname]
+                               for obj in objects])
+
+        if (properties[0] != properties).any():
+            raise GeometryError(
+                f&#34;{propname} does not match for objects.&#34;
+            )
+
+
+    @classmethod
+    def combine(cls, to_combine):
+        &#34;&#34;&#34;Construct a new ProjectiveObject of the same type combining the
+        data of `self` and `other`.
+
+        Both `self` and `other` will be flattened to unit dimensions
+        before combining. If dimensions of the underlying data do not
+        match, this will raise an error.
+
+        Parameters
+        ----------
+        other : ProjectiveObject of the same type as `self`.
+            ProjectiveObject to combine with
+
+        Returns
+        -------
+        ProjectiveObject
+            Object of the same type as `self` containing (flattened)
+            combined data.
+
+        &#34;&#34;&#34;
+        if len(to_combine) == 0:
+            return
+
+        cls._assert_prop_equal(to_combine, &#34;unit_ndims&#34;)
+        cls._assert_prop_equal(to_combine, &#34;aux_ndims&#34;)
+        cls._assert_prop_equal(to_combine, &#34;dual_ndims&#34;)
+
+        unit_ndims = to_combine[0].unit_ndims
+        aux_ndims = to_combine[0].aux_ndims
+        dual_ndims = to_combine[0].dual_ndims
+
+        flattened_objs = [
+            obj.flatten_to_unit()
+            for obj in to_combine
+        ]
+
+        # first make a generic ProjectiveObject
+        new_data = np.concatenate(
+            [obj.proj_data for obj in flattened_objs],
+            axis=-(unit_ndims+1)
+        )
+        new_aux = None
+        new_dual = None
+
+        if aux_ndims &gt; 0:
+            new_data = np.concatenate(
+                [obj.aux_data for obj in flattened_objs],
+                axis=-(aux_ndims+1)
+            )
+            new_aux = np.concatenate([flat_self.aux_data, flat_other.aux_data],
+                                     axis=-(self.aux_ndims+1))
+        if dual_ndims &gt; 0:
+            new_data = np.concatenate(
+                [obj.dual_data for obj in flattened_objs],
+                axis=-(dual_ndims+1)
+            )
+
+        newObj = ProjectiveObject(new_data, new_aux, new_dual,
+                                  unit_ndims=unit_ndims,
+                                  aux_ndims=aux_ndims,
+                                  dual_ndims=dual_ndims)
+
+        # construct an object with the correct type from this underlying data
+        return cls(newObj)
+
+
+
 
 class Point(ProjectiveObject):
     &#34;&#34;&#34;A point (or collection of points) in projective space.
@@ -354,6 +445,9 @@ class Point(ProjectiveObject):
             self.projective_coords(point)
         else:
             self.affine_coords(point, chart_index)
+
+    def in_affine_chart(self, index):
+        return self.proj_data[..., index] != 0
 
 class PointPair(Point):
     &#34;&#34;&#34;A pair of points (or a composite object consisting of a collection
@@ -427,7 +521,7 @@ class PointPair(Point):
         &#34;&#34;&#34;Get a Point representing the endpoints of this pair
 
         Returns
-        --------
+        -------
         Point
             A composite Point object representing the endpoints of
             this (possibly composite) PointPair
@@ -439,7 +533,7 @@ class PointPair(Point):
         &#34;&#34;&#34;Return a pair of point objects, one for each endpoint
 
         Returns
-        -----------
+        -------
         tuple
             Tuple of the form `(endpoint1, endpoint2)`, where
             `endpoint1` and `endpoint2` are (possibly composite)
@@ -458,7 +552,7 @@ class PointPair(Point):
             Index of the standard affine chart to take coordinates in
 
         Returns
-        --------
+        -------
         ndarray
             Affine coordinates of the endpoints of this pair of
             points.
@@ -470,7 +564,7 @@ class PointPair(Point):
         &#34;&#34;&#34;Get endpoints of this segment in projective coordinates.
 
         Returns
-        --------
+        -------
         ndarray
             Projective coordinates of the endpoints of this pair of
             points.
@@ -515,7 +609,7 @@ class Polygon(Point):
         &#34;&#34;&#34;Get the edges of this polygon
 
         Returns
-        --------
+        -------
         PointPair
             Edges of this polygon, as a composite PointPair object.
 
@@ -526,7 +620,7 @@ class Polygon(Point):
         &#34;&#34;&#34;Get the vertices of the polygon.
 
         Returns
-        --------
+        -------
         Point
             Vertices of this polygon, as a composite Point object.
 
@@ -590,7 +684,7 @@ class ConvexPolygon(Polygon):
             (currently unsupported)
 
         Returns
-        --------
+        -------
         ConvexPolygon
             if `in_place` is `False`, return a modified ConvexPolygon
             object with the new points added.
@@ -758,7 +852,7 @@ class Transformation(ProjectiveObject):
         &#34;&#34;&#34;Get the inverse of this transformation.
 
         Returns
-        --------
+        -------
         ProjectiveTransformation
             Inverse of this transformation.
         &#34;&#34;&#34;
@@ -791,17 +885,13 @@ class ProjectiveRepresentation(representation.Representation):
             Sequence of words to apply this representation to.
 
         Returns
-        --------
+        -------
         Transformation
             Composite transformation object containing one
             transformation for each word in `words`.
 
-    &#34;&#34;&#34;
-        matrix_array = np.array(
-            [representation.Representation.__getitem__(self, word)
-             for word in words]
-        )
-        return Transformation(matrix_array, column_vectors=True)
+        &#34;&#34;&#34;
+        return Transformation(self.elements(words), column_vectors=True)
 
     def automaton_accepted(self, automaton, length,
                            maxlen=True, with_words=False,
@@ -839,7 +929,7 @@ def hyperplane_coordinate_transform(normal):
         The vector \(\vec{n}\), normal to some hyperplane in R^n.
 
     Returns
-    --------
+    -------
     Transformation
         Projective transformation (orthogonal in the standard inner
         product on R^n) taking the desired affine chart to the
@@ -854,7 +944,7 @@ def affine_coords(points, chart_index=None, column_vectors=False):
     in one of the standard affine charts.
 
     Parameters
-    -----------
+    ----------
     points: ndarray
         `ndarray` of points in projective space. the last dimension is
         assumed to be the same as the dimension of the underlying
@@ -869,7 +959,7 @@ def affine_coords(points, chart_index=None, column_vectors=False):
         of the underlying vector space.
 
     Returns
-    --------
+    -------
     ndarray
         If chart_index is specified, return an array of points in
         affine coordinates in that chart. Otherwise, return a tuple
@@ -935,7 +1025,7 @@ def projective_coords(points, chart_index=0, column_vectors=False):
         of affine space.
 
     Returns
-    --------
+    -------
     ndarray
         Projective coordinates of the given points. The last dimension
         of the array is the dimension of the underlying vector space
@@ -948,7 +1038,9 @@ def projective_coords(points, chart_index=0, column_vectors=False):
     if column_vectors:
         coords = coords.swapaxes(-1, -2)
 
-    result = np.zeros(coords.shape[:-1] + (coords.shape[-1] + 1,))
+    result = np.zeros(coords.shape[:-1] + (coords.shape[-1] + 1,),
+                      dtype=coords.dtype)
+
     indices = np.arange(coords.shape[-1])
     indices[chart_index:] += 1
 
@@ -969,7 +1061,7 @@ def identity(dimension):
         Dimension of the projective space to act on.
 
     Returns
-    --------
+    -------
     Transformation
         The identity map on RP^n, where n = `dimension`.
 
@@ -997,7 +1089,7 @@ def affine_linear_map(linear_map, chart_index=0, column_vectors=True):
         vectors (on the right).
 
     Returns
-    --------
+    -------
     Transformation
         Projective transformation preserving a standard affine chart
         and acting by a linear map on that affine space (i.e. fixing a
@@ -1026,7 +1118,7 @@ def affine_translation(translation, chart_index=0):
         index of the standard affine chart this translation acts on
 
     Returns
-    --------
+    -------
     Transformation
         Projective transformation preserving a standard affine chart
         and acting by an affine translation in that affine space.
@@ -1088,7 +1180,7 @@ affine space.</p>
     in one of the standard affine charts.
 
     Parameters
-    -----------
+    ----------
     points: ndarray
         `ndarray` of points in projective space. the last dimension is
         assumed to be the same as the dimension of the underlying
@@ -1103,7 +1195,7 @@ affine space.</p>
         of the underlying vector space.
 
     Returns
-    --------
+    -------
     ndarray
         If chart_index is specified, return an array of points in
         affine coordinates in that chart. Otherwise, return a tuple
@@ -1203,7 +1295,7 @@ point in that affine space).</dd>
         vectors (on the right).
 
     Returns
-    --------
+    -------
     Transformation
         Projective transformation preserving a standard affine chart
         and acting by a linear map on that affine space (i.e. fixing a
@@ -1255,7 +1347,7 @@ and acting by an affine translation in that affine space.</dd>
         index of the standard affine chart this translation acts on
 
     Returns
-    --------
+    -------
     Transformation
         Projective transformation preserving a standard affine chart
         and acting by an affine translation in that affine space.
@@ -1303,7 +1395,7 @@ standard chart with index 0.</dd>
         The vector \(\vec{n}\), normal to some hyperplane in R^n.
 
     Returns
-    --------
+    -------
     Transformation
         Projective transformation (orthogonal in the standard inner
         product on R^n) taking the desired affine chart to the
@@ -1342,7 +1434,7 @@ standard chart with index 0.</dd>
         Dimension of the projective space to act on.
 
     Returns
-    --------
+    -------
     Transformation
         The identity map on RP^n, where n = `dimension`.
 
@@ -1396,7 +1488,7 @@ of the array is the dimension of the underlying vector space
         of affine space.
 
     Returns
-    --------
+    -------
     ndarray
         Projective coordinates of the given points. The last dimension
         of the array is the dimension of the underlying vector space
@@ -1409,7 +1501,9 @@ of the array is the dimension of the underlying vector space
     if column_vectors:
         coords = coords.swapaxes(-1, -2)
 
-    result = np.zeros(coords.shape[:-1] + (coords.shape[-1] + 1,))
+    result = np.zeros(coords.shape[:-1] + (coords.shape[-1] + 1,),
+                      dtype=coords.dtype)
+
     indices = np.arange(coords.shape[-1])
     indices[chart_index:] += 1
 
@@ -1524,7 +1618,7 @@ dual vector using lifts of the vertex data.</dd>
             (currently unsupported)
 
         Returns
-        --------
+        -------
         ConvexPolygon
             if `in_place` is `False`, return a modified ConvexPolygon
             object with the new points added.
@@ -1632,7 +1726,7 @@ object with the new points added.</dd>
         (currently unsupported)
 
     Returns
-    --------
+    -------
     ConvexPolygon
         if `in_place` is `False`, return a modified ConvexPolygon
         object with the new points added.
@@ -1662,12 +1756,13 @@ object with the new points added.</dd>
 <li><code><b><a title="geometry_tools.projective.Polygon" href="#geometry_tools.projective.Polygon">Polygon</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.projective.Polygon.affine_coords" href="#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.projective.Polygon.combine" href="#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.projective.Polygon.flatten_to_unit" href="#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
 <li><code><a title="geometry_tools.projective.Polygon.get_edges" href="#geometry_tools.projective.Polygon.get_edges">get_edges</a></code></li>
 <li><code><a title="geometry_tools.projective.Polygon.get_vertices" href="#geometry_tools.projective.Polygon.get_vertices">get_vertices</a></code></li>
-<li><code><a title="geometry_tools.projective.Polygon.obj_shape" href="#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.projective.Polygon.projective_coords" href="#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.Polygon.set" href="#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.projective.Polygon.shape" href="#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1758,7 +1853,10 @@ those coordinates are in.</dd>
         if chart_index is None:
             self.projective_coords(point)
         else:
-            self.affine_coords(point, chart_index)</code></pre>
+            self.affine_coords(point, chart_index)
+
+    def in_affine_chart(self, index):
+        return self.proj_data[..., index] != 0</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1766,19 +1864,37 @@ those coordinates are in.</dd>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="geometry_tools.complex_projective.CP1Point" href="complex_projective.html#geometry_tools.complex_projective.CP1Point">CP1Point</a></li>
 <li><a title="geometry_tools.hyperbolic.Point" href="hyperbolic.html#geometry_tools.hyperbolic.Point">Point</a></li>
 <li><a title="geometry_tools.projective.PointPair" href="#geometry_tools.projective.PointPair">PointPair</a></li>
 <li><a title="geometry_tools.projective.Polygon" href="#geometry_tools.projective.Polygon">Polygon</a></li>
 </ul>
+<h3>Methods</h3>
+<dl>
+<dt id="geometry_tools.projective.Point.in_affine_chart"><code class="name flex">
+<span>def <span class="ident">in_affine_chart</span></span>(<span>self, index)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def in_affine_chart(self, index):
+    return self.proj_data[..., index] != 0</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="geometry_tools.projective.ProjectiveObject" href="#geometry_tools.projective.ProjectiveObject">ProjectiveObject</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.projective.ProjectiveObject.affine_coords" href="#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveObject.combine" href="#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.flatten_to_unit" href="#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.projective.ProjectiveObject.obj_shape" href="#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.projective_coords" href="#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.set" href="#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveObject.shape" href="#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1884,7 +2000,7 @@ endpoints for this pair of points.</p>
         &#34;&#34;&#34;Get a Point representing the endpoints of this pair
 
         Returns
-        --------
+        -------
         Point
             A composite Point object representing the endpoints of
             this (possibly composite) PointPair
@@ -1896,7 +2012,7 @@ endpoints for this pair of points.</p>
         &#34;&#34;&#34;Return a pair of point objects, one for each endpoint
 
         Returns
-        -----------
+        -------
         tuple
             Tuple of the form `(endpoint1, endpoint2)`, where
             `endpoint1` and `endpoint2` are (possibly composite)
@@ -1915,7 +2031,7 @@ endpoints for this pair of points.</p>
             Index of the standard affine chart to take coordinates in
 
         Returns
-        --------
+        -------
         ndarray
             Affine coordinates of the endpoints of this pair of
             points.
@@ -1927,7 +2043,7 @@ endpoints for this pair of points.</p>
         &#34;&#34;&#34;Get endpoints of this segment in projective coordinates.
 
         Returns
-        --------
+        -------
         ndarray
             Projective coordinates of the endpoints of this pair of
             points.
@@ -1975,7 +2091,7 @@ points.</dd>
         Index of the standard affine chart to take coordinates in
 
     Returns
-    --------
+    -------
     ndarray
         Affine coordinates of the endpoints of this pair of
         points.
@@ -2003,7 +2119,7 @@ points.</dd>
     &#34;&#34;&#34;Get endpoints of this segment in projective coordinates.
 
     Returns
-    --------
+    -------
     ndarray
         Projective coordinates of the endpoints of this pair of
         points.
@@ -2032,7 +2148,7 @@ points.</dd>
     &#34;&#34;&#34;Return a pair of point objects, one for each endpoint
 
     Returns
-    -----------
+    -------
     tuple
         Tuple of the form `(endpoint1, endpoint2)`, where
         `endpoint1` and `endpoint2` are (possibly composite)
@@ -2062,7 +2178,7 @@ this (possibly composite) PointPair</dd>
     &#34;&#34;&#34;Get a Point representing the endpoints of this pair
 
     Returns
-    --------
+    -------
     Point
         A composite Point object representing the endpoints of
         this (possibly composite) PointPair
@@ -2122,10 +2238,11 @@ and <code>endpoint2</code> to be arrays of points with the same shape.</p>
 <li><code><b><a title="geometry_tools.projective.Point" href="#geometry_tools.projective.Point">Point</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.projective.Point.affine_coords" href="#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.projective.Point.combine" href="#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.projective.Point.flatten_to_unit" href="#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.projective.Point.obj_shape" href="#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.projective.Point.projective_coords" href="#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.Point.set" href="#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.projective.Point.shape" href="#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2187,7 +2304,7 @@ this polygon).</dd>
         &#34;&#34;&#34;Get the edges of this polygon
 
         Returns
-        --------
+        -------
         PointPair
             Edges of this polygon, as a composite PointPair object.
 
@@ -2198,7 +2315,7 @@ this polygon).</dd>
         &#34;&#34;&#34;Get the vertices of the polygon.
 
         Returns
-        --------
+        -------
         Point
             Vertices of this polygon, as a composite Point object.
 
@@ -2235,7 +2352,7 @@ this polygon).</dd>
     &#34;&#34;&#34;Get the edges of this polygon
 
     Returns
-    --------
+    -------
     PointPair
         Edges of this polygon, as a composite PointPair object.
 
@@ -2261,7 +2378,7 @@ this polygon).</dd>
     &#34;&#34;&#34;Get the vertices of the polygon.
 
     Returns
-    --------
+    -------
     Point
         Vertices of this polygon, as a composite Point object.
 
@@ -2289,10 +2406,11 @@ this polygon).</dd>
 <li><code><b><a title="geometry_tools.projective.Point" href="#geometry_tools.projective.Point">Point</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.projective.Point.affine_coords" href="#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.projective.Point.combine" href="#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.projective.Point.flatten_to_unit" href="#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.projective.Point.obj_shape" href="#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.projective.Point.projective_coords" href="#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.Point.set" href="#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.projective.Point.shape" href="#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2463,12 +2581,13 @@ equal to 2.</dd>
 
         raise TypeError
 
-    def obj_shape(self):
+    @property
+    def shape(self):
         &#34;&#34;&#34;Get the shape of the ndarray of &#34;unit objects&#34; this
         ProjectiveObject represents.
 
         Returns
-        --------
+        -------
         tuple
 
 
@@ -2482,7 +2601,7 @@ equal to 2.</dd>
         portions of the underlying data.
 
         Parameters
-        -------------
+        ----------
         proj_data : ndarray
             underyling data representing this projective object.
 
@@ -2497,6 +2616,8 @@ equal to 2.</dd>
         # TODO: assert dual geometry valid here as well.  Right now we
         # don&#39;t bother because the only dual geometry we&#39;re using is
         # technically also auxilliary...
+
+        proj_data = np.array(proj_data)
 
         self._assert_geometry_valid(proj_data)
         if aux_data is None:
@@ -2571,6 +2692,15 @@ equal to 2.</dd>
     def __getitem__(self, item):
         return self.__class__(self.proj_data[item])
 
+    def __setitem__(self, key, value):
+        self.proj_data[key] = self.__class__(value).proj_data
+
+    def __len__(self):
+        if len(self.proj_data.shape) == self.unit_ndims:
+            raise TypeError(&#34;len() of unsized object&#34;)
+
+        return len(self.proj_data)
+
     def projective_coords(self, proj_data=None):
         &#34;&#34;&#34;Wrapper for ProjectiveObject.set, since underlying coordinates are
         projective.&#34;&#34;&#34;
@@ -2602,14 +2732,188 @@ equal to 2.</dd>
             self.set(projective_coords(aff_data, chart_index=chart_index))
 
         return affine_coords(self.proj_data, chart_index=chart_index,
-                             column_vectors=False)</code></pre>
+                             column_vectors=False)
+
+    @staticmethod
+    def _assert_prop_equal(objects, propname):
+
+        if len(objects) == 0:
+            return
+
+        properties = np.array([obj.__dict__[propname]
+                               for obj in objects])
+
+        if (properties[0] != properties).any():
+            raise GeometryError(
+                f&#34;{propname} does not match for objects.&#34;
+            )
+
+
+    @classmethod
+    def combine(cls, to_combine):
+        &#34;&#34;&#34;Construct a new ProjectiveObject of the same type combining the
+        data of `self` and `other`.
+
+        Both `self` and `other` will be flattened to unit dimensions
+        before combining. If dimensions of the underlying data do not
+        match, this will raise an error.
+
+        Parameters
+        ----------
+        other : ProjectiveObject of the same type as `self`.
+            ProjectiveObject to combine with
+
+        Returns
+        -------
+        ProjectiveObject
+            Object of the same type as `self` containing (flattened)
+            combined data.
+
+        &#34;&#34;&#34;
+        if len(to_combine) == 0:
+            return
+
+        cls._assert_prop_equal(to_combine, &#34;unit_ndims&#34;)
+        cls._assert_prop_equal(to_combine, &#34;aux_ndims&#34;)
+        cls._assert_prop_equal(to_combine, &#34;dual_ndims&#34;)
+
+        unit_ndims = to_combine[0].unit_ndims
+        aux_ndims = to_combine[0].aux_ndims
+        dual_ndims = to_combine[0].dual_ndims
+
+        flattened_objs = [
+            obj.flatten_to_unit()
+            for obj in to_combine
+        ]
+
+        # first make a generic ProjectiveObject
+        new_data = np.concatenate(
+            [obj.proj_data for obj in flattened_objs],
+            axis=-(unit_ndims+1)
+        )
+        new_aux = None
+        new_dual = None
+
+        if aux_ndims &gt; 0:
+            new_data = np.concatenate(
+                [obj.aux_data for obj in flattened_objs],
+                axis=-(aux_ndims+1)
+            )
+            new_aux = np.concatenate([flat_self.aux_data, flat_other.aux_data],
+                                     axis=-(self.aux_ndims+1))
+        if dual_ndims &gt; 0:
+            new_data = np.concatenate(
+                [obj.dual_data for obj in flattened_objs],
+                axis=-(dual_ndims+1)
+            )
+
+        newObj = ProjectiveObject(new_data, new_aux, new_dual,
+                                  unit_ndims=unit_ndims,
+                                  aux_ndims=aux_ndims,
+                                  dual_ndims=dual_ndims)
+
+        # construct an object with the correct type from this underlying data
+        return cls(newObj)</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="geometry_tools.complex_projective.CP1Object" href="complex_projective.html#geometry_tools.complex_projective.CP1Object">CP1Object</a></li>
 <li><a title="geometry_tools.hyperbolic.HyperbolicObject" href="hyperbolic.html#geometry_tools.hyperbolic.HyperbolicObject">HyperbolicObject</a></li>
 <li><a title="geometry_tools.projective.Point" href="#geometry_tools.projective.Point">Point</a></li>
 <li><a title="geometry_tools.projective.Transformation" href="#geometry_tools.projective.Transformation">Transformation</a></li>
 </ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="geometry_tools.projective.ProjectiveObject.combine"><code class="name flex">
+<span>def <span class="ident">combine</span></span>(<span>to_combine)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct a new ProjectiveObject of the same type combining the
+data of <code>self</code> and <code>other</code>.</p>
+<p>Both <code>self</code> and <code>other</code> will be flattened to unit dimensions
+before combining. If dimensions of the underlying data do not
+match, this will raise an error.</p>
+<h2 id="parameters">Parameters</h2>
+<p>other : ProjectiveObject of the same type as <code>self</code>.
+ProjectiveObject to combine with</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="geometry_tools.projective.ProjectiveObject" href="#geometry_tools.projective.ProjectiveObject">ProjectiveObject</a></code></dt>
+<dd>Object of the same type as <code>self</code> containing (flattened)
+combined data.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def combine(cls, to_combine):
+    &#34;&#34;&#34;Construct a new ProjectiveObject of the same type combining the
+    data of `self` and `other`.
+
+    Both `self` and `other` will be flattened to unit dimensions
+    before combining. If dimensions of the underlying data do not
+    match, this will raise an error.
+
+    Parameters
+    ----------
+    other : ProjectiveObject of the same type as `self`.
+        ProjectiveObject to combine with
+
+    Returns
+    -------
+    ProjectiveObject
+        Object of the same type as `self` containing (flattened)
+        combined data.
+
+    &#34;&#34;&#34;
+    if len(to_combine) == 0:
+        return
+
+    cls._assert_prop_equal(to_combine, &#34;unit_ndims&#34;)
+    cls._assert_prop_equal(to_combine, &#34;aux_ndims&#34;)
+    cls._assert_prop_equal(to_combine, &#34;dual_ndims&#34;)
+
+    unit_ndims = to_combine[0].unit_ndims
+    aux_ndims = to_combine[0].aux_ndims
+    dual_ndims = to_combine[0].dual_ndims
+
+    flattened_objs = [
+        obj.flatten_to_unit()
+        for obj in to_combine
+    ]
+
+    # first make a generic ProjectiveObject
+    new_data = np.concatenate(
+        [obj.proj_data for obj in flattened_objs],
+        axis=-(unit_ndims+1)
+    )
+    new_aux = None
+    new_dual = None
+
+    if aux_ndims &gt; 0:
+        new_data = np.concatenate(
+            [obj.aux_data for obj in flattened_objs],
+            axis=-(aux_ndims+1)
+        )
+        new_aux = np.concatenate([flat_self.aux_data, flat_other.aux_data],
+                                 axis=-(self.aux_ndims+1))
+    if dual_ndims &gt; 0:
+        new_data = np.concatenate(
+            [obj.dual_data for obj in flattened_objs],
+            axis=-(dual_ndims+1)
+        )
+
+    newObj = ProjectiveObject(new_data, new_aux, new_dual,
+                              unit_ndims=unit_ndims,
+                              aux_ndims=aux_ndims,
+                              dual_ndims=dual_ndims)
+
+    # construct an object with the correct type from this underlying data
+    return cls(newObj)</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="geometry_tools.projective.ProjectiveObject.dimension"><code class="name">var <span class="ident">dimension</span></code></dt>
@@ -2622,6 +2926,33 @@ equal to 2.</dd>
 <pre><code class="python">@property
 def dimension(self):
     return self.proj_data.shape[-1] - 1</code></pre>
+</details>
+</dd>
+<dt id="geometry_tools.projective.ProjectiveObject.shape"><code class="name">var <span class="ident">shape</span></code></dt>
+<dd>
+<div class="desc"><p>Get the shape of the ndarray of "unit objects" this
+ProjectiveObject represents.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def shape(self):
+    &#34;&#34;&#34;Get the shape of the ndarray of &#34;unit objects&#34; this
+    ProjectiveObject represents.
+
+    Returns
+    -------
+    tuple
+
+
+    &#34;&#34;&#34;
+    return self.proj_data.shape[:-1 * self.unit_ndims]</code></pre>
 </details>
 </dd>
 </dl>
@@ -2758,34 +3089,6 @@ this object into units.</dd>
     return flattened</code></pre>
 </details>
 </dd>
-<dt id="geometry_tools.projective.ProjectiveObject.obj_shape"><code class="name flex">
-<span>def <span class="ident">obj_shape</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Get the shape of the ndarray of "unit objects" this
-ProjectiveObject represents.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def obj_shape(self):
-    &#34;&#34;&#34;Get the shape of the ndarray of &#34;unit objects&#34; this
-    ProjectiveObject represents.
-
-    Returns
-    --------
-    tuple
-
-
-    &#34;&#34;&#34;
-    return self.proj_data.shape[:-1 * self.unit_ndims]</code></pre>
-</details>
-</dd>
 <dt id="geometry_tools.projective.ProjectiveObject.projective_coords"><code class="name flex">
 <span>def <span class="ident">projective_coords</span></span>(<span>self, proj_data=None)</span>
 </code></dt>
@@ -2832,7 +3135,7 @@ portions of the underlying data.</p>
     portions of the underlying data.
 
     Parameters
-    -------------
+    ----------
     proj_data : ndarray
         underyling data representing this projective object.
 
@@ -2847,6 +3150,8 @@ portions of the underlying data.</p>
     # TODO: assert dual geometry valid here as well.  Right now we
     # don&#39;t bother because the only dual geometry we&#39;re using is
     # technically also auxilliary...
+
+    proj_data = np.array(proj_data)
 
     self._assert_geometry_valid(proj_data)
     if aux_data is None:
@@ -2905,17 +3210,13 @@ as arrays later to use the representation properly.</dd>
             Sequence of words to apply this representation to.
 
         Returns
-        --------
+        -------
         Transformation
             Composite transformation object containing one
             transformation for each word in `words`.
 
-    &#34;&#34;&#34;
-        matrix_array = np.array(
-            [representation.Representation.__getitem__(self, word)
-             for word in words]
-        )
-        return Transformation(matrix_array, column_vectors=True)
+        &#34;&#34;&#34;
+        return Transformation(self.elements(words), column_vectors=True)
 
     def automaton_accepted(self, automaton, length,
                            maxlen=True, with_words=False,
@@ -2982,17 +3283,13 @@ transformation for each word in <code>words</code>.</dd>
         Sequence of words to apply this representation to.
 
     Returns
-    --------
+    -------
     Transformation
         Composite transformation object containing one
         transformation for each word in `words`.
 
-&#34;&#34;&#34;
-    matrix_array = np.array(
-        [representation.Representation.__getitem__(self, word)
-         for word in words]
-    )
-    return Transformation(matrix_array, column_vectors=True)</code></pre>
+    &#34;&#34;&#34;
+    return Transformation(self.elements(words), column_vectors=True)</code></pre>
 </details>
 </dd>
 </dl>
@@ -3001,6 +3298,7 @@ transformation for each word in <code>words</code>.</dd>
 <li><code><b><a title="geometry_tools.representation.Representation" href="representation.html#geometry_tools.representation.Representation">Representation</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.representation.Representation.automaton_accepted" href="representation.html#geometry_tools.representation.Representation.automaton_accepted">automaton_accepted</a></code></li>
+<li><code><a title="geometry_tools.representation.Representation.elements" href="representation.html#geometry_tools.representation.Representation.elements">elements</a></code></li>
 <li><code><a title="geometry_tools.representation.Representation.free_words_less_than" href="representation.html#geometry_tools.representation.Representation.free_words_less_than">free_words_less_than</a></code></li>
 <li><code><a title="geometry_tools.representation.Representation.free_words_of_length" href="representation.html#geometry_tools.representation.Representation.free_words_of_length">free_words_of_length</a></code></li>
 <li><code><a title="geometry_tools.representation.Representation.freely_reduced_elements" href="representation.html#geometry_tools.representation.Representation.freely_reduced_elements">freely_reduced_elements</a></code></li>
@@ -3153,7 +3451,7 @@ on the left. Otherwise proj_data gives a <em>row matrix</em>.</dd>
         &#34;&#34;&#34;Get the inverse of this transformation.
 
         Returns
-        --------
+        -------
         ProjectiveTransformation
             Inverse of this transformation.
         &#34;&#34;&#34;
@@ -3282,7 +3580,7 @@ ProjectiveObject.</dd>
     &#34;&#34;&#34;Get the inverse of this transformation.
 
     Returns
-    --------
+    -------
     ProjectiveTransformation
         Inverse of this transformation.
     &#34;&#34;&#34;
@@ -3295,10 +3593,11 @@ ProjectiveObject.</dd>
 <li><code><b><a title="geometry_tools.projective.ProjectiveObject" href="#geometry_tools.projective.ProjectiveObject">ProjectiveObject</a></b></code>:
 <ul class="hlist">
 <li><code><a title="geometry_tools.projective.ProjectiveObject.affine_coords" href="#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveObject.combine" href="#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.flatten_to_unit" href="#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.projective.ProjectiveObject.obj_shape" href="#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.projective_coords" href="#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.set" href="#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveObject.shape" href="#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3340,6 +3639,9 @@ ProjectiveObject.</dd>
 </li>
 <li>
 <h4><code><a title="geometry_tools.projective.Point" href="#geometry_tools.projective.Point">Point</a></code></h4>
+<ul class="">
+<li><code><a title="geometry_tools.projective.Point.in_affine_chart" href="#geometry_tools.projective.Point.in_affine_chart">in_affine_chart</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="geometry_tools.projective.PointPair" href="#geometry_tools.projective.PointPair">PointPair</a></code></h4>
@@ -3363,12 +3665,13 @@ ProjectiveObject.</dd>
 <h4><code><a title="geometry_tools.projective.ProjectiveObject" href="#geometry_tools.projective.ProjectiveObject">ProjectiveObject</a></code></h4>
 <ul class="two-column">
 <li><code><a title="geometry_tools.projective.ProjectiveObject.affine_coords" href="#geometry_tools.projective.ProjectiveObject.affine_coords">affine_coords</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveObject.combine" href="#geometry_tools.projective.ProjectiveObject.combine">combine</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.dimension" href="#geometry_tools.projective.ProjectiveObject.dimension">dimension</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.flatten_to_aux" href="#geometry_tools.projective.ProjectiveObject.flatten_to_aux">flatten_to_aux</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.flatten_to_unit" href="#geometry_tools.projective.ProjectiveObject.flatten_to_unit">flatten_to_unit</a></code></li>
-<li><code><a title="geometry_tools.projective.ProjectiveObject.obj_shape" href="#geometry_tools.projective.ProjectiveObject.obj_shape">obj_shape</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.projective_coords" href="#geometry_tools.projective.ProjectiveObject.projective_coords">projective_coords</a></code></li>
 <li><code><a title="geometry_tools.projective.ProjectiveObject.set" href="#geometry_tools.projective.ProjectiveObject.set">set</a></code></li>
+<li><code><a title="geometry_tools.projective.ProjectiveObject.shape" href="#geometry_tools.projective.ProjectiveObject.shape">shape</a></code></li>
 </ul>
 </li>
 <li>

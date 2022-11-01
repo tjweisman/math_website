@@ -12,7 +12,7 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 
 ## Recent publications and preprints
 
-1. (with K. Mann and J. Manning) *Stability of hyperbolic groups acting on their boundaries.* arXiv:2206.14914, 2022.
+1. (with K. Mann and J. Manning) *Stability of hyperbolic groups acting on their boundaries.* arXiv:2206.14914, 2022. Submitted.
 
 	[most recent version](https://pi.math.cornell.edu/~jfmanning/research/stable93.pdf) | [arXiv](https://arxiv.org/abs/2206.14914)
 
