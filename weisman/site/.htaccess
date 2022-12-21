@@ -1,2 +1,2 @@
 RewriteEngine on
-RewriteRule ^(.*)$ http://www-personal.umich.edu/~tjwei/$1 [L,R=301]
+RewriteRule ^(.*)$ http://www.umich.edu/~tjwei/$1 [L,R=301]

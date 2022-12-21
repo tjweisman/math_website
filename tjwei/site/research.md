@@ -31,8 +31,9 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 
 ## Talks
 
+1. October 2022, CUNY hyperbolic geometry seminar. *Topological stability for hyperbolic group actions on their boundaries.*
 
-1. July 2022, AMS-SMF-EMS Joint International Meeting: special session on deformation spaces of geometric structures. *Extended geometrically finite representations.*
+2. July 2022, AMS-SMF-EMS Joint International Meeting: special session on deformation spaces of geometric structures. *Extended geometrically finite representations.*
 
 2. March 2022, Spring Topology and Dynamical Systems Conference: Special Session on Geometric Topology. *Extended geometrically finite representations.* [Slides](resources/talks/stdc2022_handout.pdf)
 
