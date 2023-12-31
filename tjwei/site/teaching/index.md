@@ -4,9 +4,9 @@
 Teaching
 ===================
 
-## Current (Fall 2022)
+## Current (2023-2024)
 
-I'm not teaching this semester.
+I'm not teaching any courses while at MPI.
 
 ***********************
 
@@ -33,6 +33,10 @@ Instructor: Rostyslav Kravchenko
 *************************
 
 #### Mentorship
+
+**Michigan REU:** I have been a faculty advisor for an REU project at the [University of Michigan math REU](https://lsa.umich.edu/math/undergraduates/research-and-career-opportunities/research/research-experience-for-undergraduates--reu-.html). I worked with Abhi Shukul on a project related to hyperbolic groups and finite-state automata.
+
+**Lab of Geometry at Michigan:** I was a faculty advisor for a [Log(M)](https://lsa.umich.edu/math/undergraduates/research-and-career-opportunities/LoGM.html) project in Winter 2023, working on visualizing actions of Coxeter groups on projective space.
 
 **Texas Experimental Geometry Lab:** I've worked as a graduate student mentor for four semesters at the [Texas Experimental Geometry Lab](https://sites.cns.utexas.edu/geometry_lab) (TXGL).
 

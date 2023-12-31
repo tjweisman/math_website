@@ -12,52 +12,59 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 
 ## Recent publications and preprints
 
-1. (with K. Mann and J. Manning) *Stability of hyperbolic groups acting on their boundaries.* arXiv:2206.14914, 2022. Submitted.
+1. *Examples of extended geometrically finite representations.* arXiv:2311.18653, 2023.
 
-	[most recent version](https://pi.math.cornell.edu/~jfmanning/research/stable93.pdf) | [arXiv](https://arxiv.org/abs/2206.14914)
+	[download](papers/egf_examples.pdf) | [arXiv](https://arxiv.org/abs/2311.18653)
 
-2. *An extended definition of Anosov representation for relatively hyperbolic groups*. arXiv:2205.07183, 2022. Submitted.
+2. (with S. Douba, B. Fléchelles, and F. Zhu) *Cubulated hyperbolic groups admit Anosov representations.* arXiv:2309.03695, 2023. Submitted.
 
-	[most recent version](papers/extended_relative_anosov.pdf) | [arXiv](https://arxiv.org/abs/2205.07183)
+	[download](papers/anosov_cubulated.pdf) | [arXiv](https://arxiv.org/abs/2309.03695)
 
-3. *Dynamical properties of convex cocompact actions in projective space*. arXiv:2009.10994, 2020. Submitted.
+3. (with A. Traaseth) *Combination theorems for geometrically finite convergence groups.*  arXiv:2305.08011, 2023. Submitted.
 
-	[most recent version](papers/convex_cocompact_dynamics.pdf) | [arXiv](https://arxiv.org/abs/2009.10994)
+	[download](papers/combination_convergence.pdf) | [arXiv](https://arxiv.org/abs/2305.08011)
+
+4. (with K. Mann and J. Manning) *Stability of hyperbolic groups acting on their boundaries.* arXiv:2206.14914, 2022. Submitted.
+
+	[download](https://pi.math.cornell.edu/~jfmanning/research/stable93.pdf) | [arXiv](https://arxiv.org/abs/2206.14914)
+
+5. *An extended definition of Anosov representation for relatively hyperbolic groups*. arXiv:2205.07183, 2022. Submitted.
+
+	[download](papers/extended_relative_anosov.pdf) | [arXiv](https://arxiv.org/abs/2205.07183)
+
+6. *Dynamical properties of convex cocompact actions in projective space*. J. Topol., 16(3):990-1047, 2023. 
+
+	[journal](https://doi.org/10.1112/topo.12307) | [download](papers/convex_cocompact_dynamics.pdf) | [arXiv](https://arxiv.org/abs/2009.10994)
 
 [**PhD thesis:**](papers/thesis.pdf) *Higher-rank generalizations of convex cocompact and geometrically finite dynamics*.
 
 <img src="resources/landscape_of_discrete_groups.png" alt="A portion of the landscape of discrete subgroups of Lie groups" width=600px />
 <div class="caption">Part of the landscape of discrete subgroups of Lie groups with "intermediate" behavior between rank-one and higher rank. EGF representations are introduced in my <a href="https://arxiv.org/abs/2205.07183">paper</a> "An extended definition of Anosov representation for relatively hyperbolic groups." </div>
 
-## Talks
+## Talk slides and videos
 
-1. October 2022, CUNY hyperbolic geometry seminar. *Topological stability for hyperbolic group actions on their boundaries.*
+Combination theorems for geometrically finite convergence groups ([NCNGT](https://www.ncngt.org/topic-groups/lie-groups), June 2023)<br />
+[video (part 1)](https://youtu.be/vvAQ6tRbTK0) | [video (part 2)](https://youtu.be/lHSLgRjo3es)
 
-2. July 2022, AMS-SMF-EMS Joint International Meeting: special session on deformation spaces of geometric structures. *Extended geometrically finite representations.*
+Topological stability for (relatively) hyperbolic boundary actions (GTiNY, June 2023)<br />
+[slides](resources/talks/gtiny2023.pdf)
 
-2. March 2022, Spring Topology and Dynamical Systems Conference: Special Session on Geometric Topology. *Extended geometrically finite representations.* [Slides](resources/talks/stdc2022_handout.pdf)
+Extended geometrically finite representations (STDC, March 2022) <br />
+[slides](resources/talks/stdc2022_handout.pdf)
 
-3. February 15 2022, University of Virginia geometry seminar. *Relative Anosov representations and convex projective structures.*
+Extended convergence dynamics and relative Anosov representations (December 2021) <br />
+[slides](resources/talks/rel_anosov_heidelberg.pdf)	
 
-4. February 8 2022, NUS topology and geometry seminar. *Extended convergence dynamics and relative Anosov representations*.
+Expansion/contraction dynamics for non-strictly convex projective manifolds (GTA Philadelphia, June 2021) <br />
+[slides](resources/talks/temple_2021_flat.pdf)
 
-3. December 9 2021, Heidelberg University differential geometry seminar. *Extended convergence dynamics and relative Anosov representations*. [Slides](resources/talks/rel_anosov_heidelberg.pdf)
+Group actions on boundaries of convex divisible domains (November 2019) <br />
+[slides](resources/talks/gainesville_2019.pdf)
 
-4. October 11 2021, University of Wisconsin dynamics seminar. *Relative Anosov representations and convex projective structures*.
 
-5. September 27 2021, Rice topology seminar. *Relative Anosov representations and convex projective structures*.
+## Gallery
 
-6. September 21 2021, Florida State topology and geometry seminar. *Relative Anosov representations and convex projective structures*. [Slides](resources/talks/rel_anosov_fsu.pdf)
-
-4. September 7, 2021, IHES. *Extended convergence dynamics, relative Anosov representations, and stability.* 
-
-5. September 3, 2021, Workshop on Anosov representations in Aussois. *Anosov representations: the relatively hyperbolic case.* (expository talk)
-
-1. May 2021, GTA Philadelphia.
-*Expansion/contraction dynamics for non-strictly convex projective manifolds.* [Slides](resources/talks/temple_2021_flat.pdf)
-
-2. November 2019, AMS Southeastern Sectional Meeting: Special Session on Geometric Structures on Manifolds.
-*Group actions on boundaries of convex divisible domains.* [Slides](resources/talks/gainesville_2019.pdf)
+### Coxeter automaton
 
 <div class="image-container">
 <div class="img-cell" ><img src="resources/h2_automaton_2.png" alt="shortlex automatic structure for a 3,3,4 triangle group in H2"  /></div>
@@ -68,3 +75,12 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 <p>This image was originally created for the <a href="https://www.ncngt.org/postcards">postcard session</a> of the 2021 <a href="https://www.ncngt.org/">Nearly Carbon Neutral Geometric Topology</a> conference.</p>
 </div>
 
+### Figure-eight knot group automaton
+
+<img src="resources/aut_1000_vertex.png" alt="inclusions for a single vertex of a relative automaton" width=600px />
+<div class="caption">Local structure of a finite-state "relative automaton" recognizing quasi-geodesics in the figure-eight knot group. This is an practical implementation of the construction used in <a href="https://arxiv.org/abs/2205.07183">arXiv:2205.07183</a> to prove relative stability properties of extended geometrically finite representations.</div>
+
+### Pontryagin sphere
+
+<img src="resources/pontryaginsphere.png" alt="Pontryagin sphere in the boundary of 4-dimensional hyperbolic space" width=400px />
+<div class="caption">An approximation of the limit set of a convex cocompact reflection group in O(4,1). The limit set of this group is a Pontryagin sphere, embedded equivariantly into the ideal boundary of 4-dimensional hyperbolic space (a 3-sphere). See an <a href="pontryagin_interactive.html">interactive version</a>.</div>
