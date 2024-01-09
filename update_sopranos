@@ -1,9 +1,0 @@
-#! /bin/bash
-
-SEASON=6
-
-rm ~/math/personal_website/sopranos/sopranos*.mkv
-
-ln -s "/home/teddy/media/video/movies_tv/sopranos/season_$SEASON/sopranos_s0${SEASON}e$1.mkv" ~/math/personal_website/sopranos
-
-ln -s "/home/teddy/media/video/movies_tv/sopranos/season_$SEASON/sopranos_s0${SEASON}e$2.mkv" ~/math/personal_website/sopranos

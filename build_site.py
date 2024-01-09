@@ -14,7 +14,14 @@ from mako.lookup import TemplateLookup
 
 from ruamel.yaml import YAML
 
-SCRIPT_DIR = "/home/teddy/math/web/personal"
+SCRIPT_DIR = os.path.abspath(
+    os.path.dirname(
+        os.path.realpath(
+            __file__
+        )
+    )
+)
+
 SITES_LIST = "sites.yaml"
 
 DEFAULT_SITE = "tjwei"
