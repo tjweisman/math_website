@@ -11,4 +11,4 @@ if [[ "$1" == "--mkv" ]]; then
     EXCLUDE_MKVS=""
 fi
 
-rsync -r --copy-unsafe-links -F --delete-after --exclude=dixit $EXCLUDE_MKVS --dry-run --verbose $WEBPAGE_DIR/public_html/ $UMICH_SERVER:~/Public/html
+rsync -r --copy-unsafe-links -F --delete-after --exclude=dixit --exclude=geometry_tools $EXCLUDE_MKVS $WEBPAGE_DIR/public_html/ $UMICH_SERVER:~/Public/html
