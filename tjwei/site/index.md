@@ -22,3 +22,20 @@ Email: [tjwei@umich.edu](mailto:tjwei@umich.edu)
 *************************************
 
 If you are interested in drawing nice pictures of the hyperbolic plane and projective space, check out my [geometry_tools](geometry_tools) Python package!
+
+*************************************
+
+<div class="image-container">
+<div class="img-cell"><a href="research.html#pontryagin-sphere">
+	<img src="resources/pontryaginsphere_highpoly_small.png" alt="pontryagin sphere" />
+</a></div>
+<div class="img-cell"><a href="research.html#coxeter-automaton">
+	<img src="resources/h2_automaton_small.png" alt="coxeter automaton" />
+</a></div>
+<div class="img-cell"><a href="research.html#knotgp-automaton">
+	<img src="resources/aut_1000_vertex_small.png" alt="figure 8 automaton" />
+</a></div>
+<div class="img-cell">
+	<img src="resources/domain.png" alt="a face in a vinberg domain" />
+</div>
+</div>

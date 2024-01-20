@@ -64,6 +64,8 @@ Group actions on boundaries of convex divisible domains (November 2019) <br />
 
 ## Gallery
 
+<a name="coxeter-automaton"></a>
+
 ### Coxeter automaton
 
 <div class="image-container">
@@ -75,10 +77,14 @@ Group actions on boundaries of convex divisible domains (November 2019) <br />
 <p>This image was originally created for the <a href="https://www.ncngt.org/postcards">postcard session</a> of the 2021 <a href="https://www.ncngt.org/">Nearly Carbon Neutral Geometric Topology</a> conference.</p>
 </div>
 
+<a name="knotgp-automaton"></a>
+
 ### Figure-eight knot group automaton
 
 <img src="resources/aut_1000_vertex.png" alt="inclusions for a single vertex of a relative automaton" width=600px />
 <div class="caption">Local structure of a finite-state "relative automaton" recognizing quasi-geodesics in the figure-eight knot group. This is an practical implementation of the construction used in <a href="https://arxiv.org/abs/2205.07183">arXiv:2205.07183</a> to prove relative stability properties of extended geometrically finite representations.</div>
+
+<a name="pontryagin-sphere"></a>
 
 ### Pontryagin sphere
 
