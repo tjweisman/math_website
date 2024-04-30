@@ -12,11 +12,15 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 
 ## Recent publications and preprints
 
-1. *Examples of extended geometrically finite representations.* arXiv:2311.18653, 2023.
+1. (with K. Mann and J.F. Manning) *Topological stability of relatively hyperbolic groups acting on their boundaries*. arXiv:2402.06144, 2024.
+
+	[download](papers/stable_with_parabolic.pdf) | [arXiv](https://arxiv.org/abs/2402.06144)
+
+2. *Examples of extended geometrically finite representations.* arXiv:2311.18653, 2023.
 
 	[download](papers/egf_examples.pdf) | [arXiv](https://arxiv.org/abs/2311.18653)
 
-2. (with S. Douba, B. Fléchelles, and F. Zhu) *Cubulated hyperbolic groups admit Anosov representations.* arXiv:2309.03695, 2023. Submitted.
+3. (with S. Douba, B. Fléchelles, and F. Zhu) *Cubulated hyperbolic groups admit Anosov representations.* arXiv:2309.03695, 2023. Submitted.
 
 	[download](papers/anosov_cubulated.pdf) | [arXiv](https://arxiv.org/abs/2309.03695)
 
@@ -24,7 +28,7 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 
 	[download](papers/combination_convergence.pdf) | [arXiv](https://arxiv.org/abs/2305.08011)
 
-4. (with K. Mann and J. Manning) *Stability of hyperbolic groups acting on their boundaries.* arXiv:2206.14914, 2022. Submitted.
+4. (with K. Mann and J.F. Manning) *Stability of hyperbolic groups acting on their boundaries.* arXiv:2206.14914, 2022. Submitted.
 
 	[download](https://pi.math.cornell.edu/~jfmanning/research/stable93.pdf) | [arXiv](https://arxiv.org/abs/2206.14914)
 
