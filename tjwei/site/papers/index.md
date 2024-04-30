@@ -4,6 +4,8 @@
 
 ## Preprints
 
+1. [Morse properties in convex projective geometry](papers/morse_properties.pdf) (with M. Islam), 2024
+
 1. [Topological stability of relatively hyperbolic groups acting on their boundaries](papers/stable_with_parabolic.pdf) (with K. Mann and J.F. Manning), 2024
 
 1. [Examples of extended geometrically finite representations](papers/egf_examples.pdf), 2023

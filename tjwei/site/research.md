@@ -12,6 +12,10 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 
 ## Recent publications and preprints
 
+1. (with M. Islam) *Morse properties in convex projective geometry*. 2024
+
+	[download](papers/morse_properties.pdf)
+
 1. (with K. Mann and J.F. Manning) *Topological stability of relatively hyperbolic groups acting on their boundaries*. arXiv:2402.06144, 2024.
 
 	[download](papers/stable_with_parabolic.pdf) | [arXiv](https://arxiv.org/abs/2402.06144)
