@@ -21,9 +21,18 @@ Email: [tjwei@umich.edu](mailto:tjwei@umich.edu)
 
 *************************************
 
+## Upcoming
+
+Young researchers workshop at [*20 Years of Anosov Representations*](https://www.mis.mpg.de/events/series/20-years-of-anosov-representations):
+<br />
+October 7-11, 2024 in Leipzig, Germany
+
+*************************************
+
 If you are interested in drawing nice pictures of the hyperbolic plane and projective space, check out my [geometry_tools](geometry_tools) Python package!
 
 *************************************
+
 
 <div class="image-container">
 <div class="img-cell"><a href="research.html#pontryagin-sphere">
