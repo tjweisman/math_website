@@ -89,7 +89,7 @@ hr {
 }
 
 #topbar {
-	font-family: Georgia, sans-serif;
+	font-family: Georgia, serif;
 	margin: 0px;
 	padding:10px;
 	padding-bottom: 0px;
@@ -182,8 +182,12 @@ hr {
 	margin-left: 10px;*/
 }
 
-#content li {
-	
+#content ol li {
+	padding: 5px; 
+}
+
+#content ol li p{
+	margin: 2px;
 }
 
 #content pre {

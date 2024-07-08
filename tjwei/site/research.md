@@ -3,7 +3,7 @@
 Research
 ==========
 
-My research is about the interaction between geometric structures on manifolds, geometric group theory, and dynamics of discrete subgroups of Lie groups. The relationship between these three areas is quite strong in the classical context of *convex cocompact* and *geometrically finite* representations. These are representations of word-hyperbolic (or relatively hyperbolic) groups into rank-one Lie groups (such as PSL(2, R) and PSL(2, C)) which behave well with respect to both the coarse geometry of the represented group and the smooth geometry of the target group.
+My research is about the interaction between geometric structures on manifolds, geometric group theory, and discrete subgroups of Lie groups. The relationship between these three areas is quite strong in the classical context of *convex cocompact* and *geometrically finite* representations. These are representations of word-hyperbolic (or relatively hyperbolic) groups into rank-one Lie groups (such as PSL(2, R) and PSL(2, C)) which behave well with respect to both the coarse geometry of the represented group and the smooth geometry of the target group.
 
 I am particularly interested in the geometry and dynamics of higher-rank generalizations of convex cocompactness and geometrical finiteness, including (but not limited to) Anosov representations. Many of the examples I work with come from convex projective structures on manifolds, and are often inspired by hyperbolic geometry.
 
@@ -12,15 +12,19 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 
 ## Recent publications and preprints
 
-1. (with M. Islam) *Morse properties in convex projective geometry*. arXiv:2405.03269, 2024.
+1. (with A. Guilloux) *Limits of limit sets in rank-one symmetric spaces*. arXiv:2407.04301, 2024.
+
+	[download](papers/rank1_limit.pdf) | [arXiv]((https://arxiv.org/abs/2407.04301)
+
+2. (with M. Islam) *Morse properties in convex projective geometry*. arXiv:2405.03269, 2024. Submitted.
 
 	[download](papers/morse_properties.pdf) | [arXiv](https://arxiv.org/abs/2405.03269)
 
-1. (with K. Mann and J.F. Manning) *Topological stability of relatively hyperbolic groups acting on their boundaries*. arXiv:2402.06144, 2024. Submitted.
+3. (with K. Mann and J.F. Manning) *Topological stability of relatively hyperbolic groups acting on their boundaries*. arXiv:2402.06144, 2024. Submitted.
 
 	[download](papers/stable_with_parabolic.pdf) | [arXiv](https://arxiv.org/abs/2402.06144)
 
-2. *Examples of extended geometrically finite representations.* arXiv:2311.18653, 2023.
+4. *Examples of extended geometrically finite representations.* arXiv:2311.18653, 2023.
 
 	[download](papers/egf_examples.pdf) | [arXiv](https://arxiv.org/abs/2311.18653)
 
