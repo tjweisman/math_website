@@ -14,7 +14,7 @@ I am particularly interested in the geometry and dynamics of higher-rank general
 
 1. (with A. Guilloux) *Limits of limit sets in rank-one symmetric spaces*. arXiv:2407.04301, 2024.
 
-	[download](papers/rank1_limit.pdf) | [arXiv]((https://arxiv.org/abs/2407.04301)
+	[download](papers/rank1_limit.pdf) | [arXiv](https://arxiv.org/abs/2407.04301)
 
 2. (with M. Islam) *Morse properties in convex projective geometry*. arXiv:2405.03269, 2024. Submitted.
 
