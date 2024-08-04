@@ -101,6 +101,6 @@ Group actions on boundaries of convex divisible domains (November 2019) <br />
 ### Pontryagin sphere
 
 <img src="resources/pontryaginsphere_highpoly.png" alt="Pontryagin sphere in the boundary of 4-dimensional hyperbolic space" width=400px />
-<div class="caption">An approximation of the limit set of a convex cocompact reflection group in O(4,1). The limit set of this group is a Pontryagin sphere, embedded equivariantly into the ideal boundary of 4-dimensional hyperbolic space (a 3-sphere).<br />
+<div class="caption">An approximation of the limit set of a convex cocompact reflection group in O(4,1), studied by <a href="https://www.ihes.fr/~/douba/">Sami Douba</a> and <a href="https://sites.google.com/view/lorenzo-ruffoni">Lorenzo Ruffoni</a>. The limit set of this group is a Pontryagin sphere, embedded equivariantly into the ideal boundary of 4-dimensional hyperbolic space (a 3-sphere).<br />
 <a href="resources/pontryagin_anim.gif">Animated version</a> (41MB file) | <a href="pontryagin_interactive.html">Interactive version</a> (5MB file, less detail)
 </div>
